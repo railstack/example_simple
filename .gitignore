@@ -15,6 +15,3 @@
 
 # Ignore Byebug command history file.
 .byebug_history
-
-# Ignore go_app files.
-/go_app/
