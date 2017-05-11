@@ -1,6 +1,8 @@
-# A simple example on how to use go-on-rails generator
+# A simple example on usage of go-on-rails generator
 
-Of course, you can take this example as a tutorial, too. I'll make it as simple and clear as possible to show how to use the go-on-rails generator to generate Golang codes.
+This is an simple example for the [go-on-rails](https://github.com/goonr/go-on-rails), a Rails generator.
+
+You can take the example as a tutorial, too. I'll make it as simple and clear as possible to show how to use the go-on-rails generator to generate Golang codes in a Rails app.
 
 ### Ruby and Rails versions
 
@@ -20,7 +22,7 @@ change to the new directory, add the gem go-on-rails:
 
 ```bash
 # edit Gemfile
-gem 'go-on-rails', '>~0.0.9'
+gem 'go-on-rails', '~> 0.0.9'
 ```
 and then bundle:
 
