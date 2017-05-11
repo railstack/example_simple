@@ -170,7 +170,9 @@ In a terminal window run `go run main.go`, in another terminal use `curl` comman
 curl -XGET 'http://localhost:3000/articles'
 ```
 
-to get all `article` records. And run:
+to get all `article` records.
+
+And run:
 
 ```bash
 curl -XPOST 'http://localhost:3000/articles' -d '{ "title": "Use go-on-rails to build a Golang app", "text": "blablabla..." }'
