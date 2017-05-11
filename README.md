@@ -127,20 +127,54 @@ open http://localhost:3000 by default in your browser, you can see a  welcome pa
 
 <img src="go-on-rails-home-page.jpg" width=700>
 
-## What on earth be generated?
+### What on earth be generated?
 
-### public
+#### public
 
 The dir serves the static assets. You can create new directories or files under `public`, or you can create any other directories under the `go_app`, and then set the routes for serve the file system. [How to set it]()
 
-### models
+#### models
 
 * Each file here heading with `gor_` corresponding to each model we created by the `rails g model` command above, all functions are mostly for database CRUD manipulations, and also some basic validations and associated operations
 * You can create new `.go` files to add more functions for the models under the `models` directory using the package name `model`
 * Run the command `godoc .` under models directory to show all available model functions and methods
 
-### controllers
+#### controllers
 
+* Under the `controllers` dir we create handlers for the HTTP routes we set in the `main.go` file, we call them `controller` by the Rails convention
+* For the structure clearity we create one controller file corresponding to each model like Rails does, too
 
+#### views
+
+* yes, you can put all the template files here
+* Because we choose the Gin HTTP framework, we can load all the templates in at initial time [How to set]()
+
+### Let's go on our example developing
+
+In this simple example we just build APIs interacting with data in JSON format.
+
+#### Create some customed controllers
+
+* We create `articles_controller.go` and `comments_controller.go` for each model. Each function to a RESTful action.
+* Import `model` package to use avaliable functions and methods we have generated
+
+#### Add routes for the controller functions
+
+In the `main.go` add some routes to map the HTTP requests to the right handlers we created in the controller files.
+
+#### Testing with curl command
+
+Use `curl` command to test API we added, for example, run:
+
+```bash
+curl -XGET 'http://localhost:3000/articles'
+```
+
+to get all `article` records. And run:
+
+```bash
+curl -XPOST 'http://localhost:3000/articles' -d '{ "title": "Use go-on-rails to build a Golang app", "text": "blablabla..." }'
+```
+to create a new article.
 
 
