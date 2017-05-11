@@ -91,7 +91,7 @@ Run the command:
 ```bash
 rails g gor dev
 ```
-and a new directory named `go_app` with some files will be made under the root of Rails app:
+and a new directory named `go_app` with some files will be generated under the root of Rails app:
 
 ```
 # directory tree of go_app
@@ -115,8 +115,13 @@ then let's install Golang dependancies(some packages) we'll use:
 rails gor:deps
 ```
 
-You can see completed alert after some while, and make sure you now under the `go_app`
+when the installation completed after some while, make sure you now under the root of `go_app` and run:
 
 ```bash
 go run main.go
 ```
+
+open http://localhost:3000 by default in your browser, you can see a  welcome page from go-on-rails:
+
+<img src="go-on-rails-home-page.jpg" width=600>
+
