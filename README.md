@@ -4,9 +4,13 @@ This is an simple example for the [go-on-rails](https://github.com/goonr/go-on-r
 
 You can take the example as a tutorial, too. I'll make it as simple and clear as possible to show how to use the go-on-rails generator to generate Golang codes in a Rails app.
 
-### Ruby and Rails versions
+### Environments
 
-We choose the Ruby 2.3.3 and Rails 5.0.2 in the example, and all these're specified in the Gemfile, and we take MySQL as our database.
+* macOS Sierra v10.12.4
+* Ruby v2.3.3
+* Rails v5.0.2
+* MySQL v5.7.11
+* Golang v1.7.4 darwin/amd64
 
 ### Build a Rails app
 
