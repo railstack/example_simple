@@ -9,7 +9,7 @@ import (
 	"gopkg.in/gin-gonic/gin.v1"
 )
 
-// GET /comments
+// GET /articles/1/comments
 func CommentsIndex(c *gin.Context) {
 	id, err := ToInt(c.Param("id"))
 	if err != nil {
