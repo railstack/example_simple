@@ -36,5 +36,49 @@ bundle install
 
 ### Create some models
 
-We'll build two models: Article and Comment, which have a has_many association.
+We'll build two models: article and comment, here's an article has_many comments association.
+
+```bash
+rails g model Article title:string text:text
+```
+
+```bash
+rails g model Comment commenter:string body:text article_id:integer
+```
+
+You'd better add some restrict to the migration files, eg. add `null: false` restriction to the `title` column:
+
+```ruby
+# the migration file under db/migrate
+class CreateArticles < ActiveRecord::Migration[5.0]
+  def change
+    create_table :articles do |t|
+      t.string :title, null: false
+      t.text :text
+
+      t.timestamps
+    end
+  end
+end
+```
+
+And meanwhile we add some presence and length validations to the models:
+
+```ruby
+# article model
+class Article < ApplicationRecord
+  has_many :comments, dependent: :destroy
+
+  validates :title, presence: true, length: { in: 10..30 }
+  validates :text, presence: true, length: { minimum: 20 }
+end
+
+# comment model
+class Comment < ApplicationRecord
+  belongs_to :article
+
+  validates :commenter, presence: true
+  validates :body, presence: true, length: { minimum: 20 }
+end
+```
 
