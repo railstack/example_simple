@@ -91,9 +91,11 @@ Run the command:
 ```bash
 rails g gor dev
 ```
-and a new directory will be made under the root of Rails app:
+and a new directory named `go_app` with some files will be made under the root of Rails app:
 
 ```
+# directory tree of go_app
+
 ├── controllers
 │   └── home_controller.go
 ├── main.go
@@ -105,4 +107,16 @@ and a new directory will be made under the root of Rails app:
 │   └── favicon.ico
 └── views
     └── index.tmpl
+```
+
+then let's install Golang dependancies(some packages) we'll use:
+
+```bash
+rails gor:deps
+```
+
+You can see completed alert after some while, and make sure you now under the `go_app`
+
+```bash
+go run main.go
 ```
