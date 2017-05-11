@@ -22,7 +22,7 @@ Let's create a new Rails app:
 rails new example_simple --api --database mysql --skip-bundle
 ```
 
-change to the new directory, add the gem go-on-rails:
+change to the new directory, add the gem `go-on-rails`:
 
 ```bash
 # edit Gemfile
