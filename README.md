@@ -36,7 +36,7 @@ bundle install
 
 ### Create some models
 
-We'll build two models: article and comment, here's an article has_many comments association.
+We'll build two models: article and comment. And there's a `has_many` association between them.
 
 ```bash
 rails g model Article title:string text:text
