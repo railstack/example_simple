@@ -127,7 +127,7 @@ open http://localhost:3000 by default in your browser, you can see a  welcome pa
 
 <img src="go-on-rails-home-page.jpg" width=700>
 
-### What on earth be generated?
+## What on earth be generated?
 
 #### public
 
@@ -149,7 +149,7 @@ The dir serves the static assets. You can create new directories or files under 
 * yes, you can put all the template files here
 * Because we choose the Gin HTTP framework, we can load all the templates in at initial time [How to set]()
 
-### Let's go on our example developing
+## Let's go on our example developing
 
 In this simple example we just build APIs interacting with data in JSON format.
 
@@ -164,7 +164,7 @@ In the `main.go` add some routes to map the HTTP requests to the right handlers 
 
 #### Testing with curl command
 
-Use `curl` command to test API we added, for example, run:
+In a terminal window run `go run main.go`, in another terminal use `curl` command to test API we added, for example, run:
 
 ```bash
 curl -XGET 'http://localhost:3000/articles'
@@ -177,4 +177,4 @@ curl -XPOST 'http://localhost:3000/articles' -d '{ "title": "Use go-on-rails to 
 ```
 to create a new article.
 
-
+You can check the `main.go` and controller files for details.
