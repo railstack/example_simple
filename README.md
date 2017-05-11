@@ -4,6 +4,8 @@ This is an simple example for the [go-on-rails](https://github.com/goonr/go-on-r
 
 You can take the example as a tutorial, too. I'll make it as simple and clear as possible to show how to use the go-on-rails generator to generate Golang codes in a Rails app.
 
+Even though I highly recommend you to get a quick overview of [go-on-rails](https://github.com/goonr/go-on-rails) to learn some commands usage before taking further in this example.
+
 ### Environments
 
 * macOS Sierra v10.12.4
@@ -91,10 +93,10 @@ Run the command:
 ```bash
 rails g gor dev
 ```
-and a new directory named `go_app` with some files will be generated under the root of Rails app:
+and a new directory named `go_app` with some files will be created under the root of Rails app:
 
 ```
-# directory tree of go_app
+# directory structure of go_app
 
 ├── controllers
 │   └── home_controller.go
@@ -123,5 +125,22 @@ go run main.go
 
 open http://localhost:3000 by default in your browser, you can see a  welcome page from go-on-rails:
 
-<img src="go-on-rails-home-page.jpg" width=700 align="center">
+<img src="go-on-rails-home-page.jpg" width=700>
+
+## What on earth be generated?
+
+### public
+
+You can create new directories or files under `public`, or you can create any other directories under the `go_app`, and then set the routes for serve the file system. [More details]()
+
+### models
+
+* `models`: some models functions for database manipulation, some basic validations and associated operations available, each file heading with `gor_` corresponding to each model we created by the `rails g model` command before.
+* You can create new `.go` files to add more functions for the models under the `models` directory using the package name `model`
+* Run the command `godoc .` under models directory to show all available model functions and methods
+
+### controllers
+
+
+
 
