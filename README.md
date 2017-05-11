@@ -46,7 +46,7 @@ rails g model Article title:string text:text
 rails g model Comment commenter:string body:text article_id:integer
 ```
 
-You'd better add some restrict to the migration files, eg. add `null: false` restriction to the `title` column:
+You'd better add some restrictions to the migration files, eg. add `null: false` to the `title` column:
 
 ```ruby
 # the migration file under db/migrate
