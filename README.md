@@ -65,7 +65,7 @@ end
 And meanwhile we add some presence and length validations to the models:
 
 ```ruby
-# article model
+# app/models/article.rb
 class Article < ApplicationRecord
   has_many :comments, dependent: :destroy
 
@@ -73,7 +73,7 @@ class Article < ApplicationRecord
   validates :text, presence: true, length: { minimum: 20 }
 end
 
-# comment model
+# app/models/comment.rb
 class Comment < ApplicationRecord
   belongs_to :article
 
@@ -82,3 +82,27 @@ class Comment < ApplicationRecord
 end
 ```
 
+### Generate Golang codes
+
+Now it's time to show magic!
+
+Run the command:
+
+```bash
+rails g gor dev
+```
+and a new directory will be made under the root of Rails app:
+
+```
+├── controllers
+│   └── home_controller.go
+├── main.go
+├── models
+│   ├── db.go
+│   ├── gor_article.go
+│   └── gor_comment.go
+├── public
+│   └── favicon.ico
+└── views
+    └── index.tmpl
+```
