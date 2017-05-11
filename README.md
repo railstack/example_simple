@@ -123,5 +123,5 @@ go run main.go
 
 open http://localhost:3000 by default in your browser, you can see a  welcome page from go-on-rails:
 
-<img src="go-on-rails-home-page.jpg" width=700>
+<img src="go-on-rails-home-page.jpg" width=700 align="center">
 
