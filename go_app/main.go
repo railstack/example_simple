@@ -21,12 +21,19 @@ func main() {
 	// r.Static("/assets", "./public/assets")
 	r.StaticFile("/favicon.ico", "./public/favicon.ico")
 	// Then we bind some route to some handler(controller action)
+	// for the articles
 	r.GET("/", c.HomeHandler)
 	r.GET("/articles", c.ArticlesIndex)
 	r.POST("/articles", c.ArticlesCreate)
 	r.GET("/articles/:id", c.ArticlesShow)
 	r.DELETE("/articles/:id", c.ArticlesDestroy)
 	r.PUT("/articles/:id", c.ArticlesUpdate)
+	// for the comments
+	r.GET("/articles/:id/comments", c.CommentsIndex)
+	r.POST("/comments", c.CommentsCreate)
+	r.GET("/comments/:id", c.CommentsShow)
+	r.DELETE("/comments/:id", c.CommentsDestroy)
+	r.PUT("/comments/:id", c.CommentsUpdate)
 	// Let's start the server
 	r.Run(":" + *servePort)
 }

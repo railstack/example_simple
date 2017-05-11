@@ -9,6 +9,7 @@ import (
 	"gopkg.in/gin-gonic/gin.v1"
 )
 
+// GET /articles
 func ArticlesIndex(c *gin.Context) {
 	articles, err := m.AllArticles()
 	if err != nil {
@@ -20,6 +21,7 @@ func ArticlesIndex(c *gin.Context) {
 	c.JSON(http.StatusOK, resp)
 }
 
+// GET /articles/1
 func ArticlesShow(c *gin.Context) {
 	id, err := ToInt(c.Param("id"))
 	if err != nil {
@@ -42,6 +44,7 @@ func ArticlesNew(c *gin.Context) {
 func ArticlesEdit(c *gin.Context) {
 }
 
+// POST /articles
 func ArticlesCreate(c *gin.Context) {
 	var ar m.Article
 	if c.BindJSON(&ar) != nil {
@@ -58,6 +61,7 @@ func ArticlesCreate(c *gin.Context) {
 	c.JSON(http.StatusOK, BuildResp("200", "Create article success", nil))
 }
 
+// PUT /articles/1
 func ArticlesUpdate(c *gin.Context) {
 	id, err := ToInt(c.Param("id"))
 	if err != nil {
@@ -91,6 +95,7 @@ func ArticlesUpdate(c *gin.Context) {
 	c.JSON(http.StatusOK, resp)
 }
 
+// DELETE /articles/1
 func ArticlesDestroy(c *gin.Context) {
 	id, err := ToInt(c.Param("id"))
 	if err != nil {
