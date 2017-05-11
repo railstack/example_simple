@@ -179,4 +179,4 @@ curl -XPOST 'http://localhost:3000/articles' -d '{ "title": "Use go-on-rails to 
 ```
 to create a new article.
 
-You can check the `main.go` and controller files in this repository for details.
+You can check the [main.go](https://github.com/goonr/example_simple/blob/master/go_app/main.go) and [controller files](https://github.com/goonr/example_simple/tree/master/go_app/controllers) in this repository for details.
