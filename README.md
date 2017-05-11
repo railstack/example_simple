@@ -135,7 +135,7 @@ The dir serves the static assets. You can create new directories or files under 
 
 ### models
 
-* `models`: some models functions for database manipulation, some basic validations and associated operations available, each file heading with `gor_` corresponding to each model we created by the `rails g model` command before.
+* Each file here heading with `gor_` corresponding to each model we created by the `rails g model` command above, all functions are mostly for database CRUD manipulations, and also some basic validations and associated operations
 * You can create new `.go` files to add more functions for the models under the `models` directory using the package name `model`
 * Run the command `godoc .` under models directory to show all available model functions and methods
 
