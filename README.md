@@ -149,7 +149,7 @@ The dir serves the static assets. You can create new directories or files under 
 * yes, you can put all the template files here
 * Because we choose the Gin HTTP framework, we can load all the templates in at initial time [How to set]()
 
-## Let's go on our example developing
+## Let's go on our example
 
 In this simple example we just build APIs interacting with data in JSON format.
 
@@ -162,21 +162,30 @@ In this simple example we just build APIs interacting with data in JSON format.
 
 In the `main.go` add some routes to map the HTTP requests to the right handlers we created in the controller files.
 
+```go
+// for the articles
+r.GET("/", c.HomeHandler)
+r.GET("/articles", c.ArticlesIndex)
+r.POST("/articles", c.ArticlesCreate)
+r.GET("/articles/:id", c.ArticlesShow)
+r.DELETE("/articles/:id", c.ArticlesDestroy)
+r.PUT("/articles/:id", c.ArticlesUpdate)
+```
+
 #### Testing with curl command
 
-In a terminal window run `go run main.go`, in another terminal use `curl` command to test API we added, for example, run:
+In a terminal window run `go run main.go`, in another terminal use `curl` command to test API we added.
+
+For example, to get all `article` records:
 
 ```bash
 curl -XGET 'http://localhost:3000/articles'
 ```
 
-to get all `article` records.
-
-And run:
+To create a new article, run:
 
 ```bash
 curl -XPOST 'http://localhost:3000/articles' -d '{ "title": "Use go-on-rails to build a Golang app", "text": "blablabla..." }'
 ```
-to create a new article.
 
 You can check the [main.go](https://github.com/goonr/example_simple/blob/master/go_app/main.go) and [controller files](https://github.com/goonr/example_simple/tree/master/go_app/controllers) in this repository for details.
