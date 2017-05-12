@@ -84,6 +84,12 @@ class Comment < ApplicationRecord
 end
 ```
 
+Then run the migration:
+
+```bash
+rails db:migrate
+```
+
 ### Generate Golang codes
 
 Now it's time to show magic!
