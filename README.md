@@ -137,7 +137,7 @@ open http://localhost:3000 by default in your browser, you can see a  welcome pa
 
 #### public
 
-The dir serves the static assets. You can create new directories or files under `public`, or you can create any other directories under the `go_app`, and then set the routes for serve the file system. [How to set it]()
+The dir serves the static assets. You can create new directories or files under `public`, or you can create any other directories under the `go_app`, and then set the routes for serve the file system. [How to set it](https://github.com/gin-gonic/gin/tree/develop#serving-static-files)
 
 #### models
 
@@ -153,7 +153,7 @@ The dir serves the static assets. You can create new directories or files under 
 #### views
 
 * yes, you can put all the template files here
-* Because we choose the Gin HTTP framework, we can load all the templates in at initial time [How to set]()
+* Because we choose the Gin HTTP framework, we can load all the templates in at initial time [How to set](https://github.com/gin-gonic/gin/tree/develop#html-rendering)
 
 ## Let's go on our example
 
