@@ -141,6 +141,36 @@ func AllComments() (comments []Comment, err error) {
 	return comments, nil
 }
 
+// CommentCount get the count of all the Comment records
+func CommentCount() (c int64, err error) {
+	err = db.Get(&c, "SELECT count(*) FROM comments")
+	if err != nil {
+		log.Println(err)
+		return 0, err
+	}
+	return c, nil
+}
+
+// CommentCountWhere get the count of all the Comment records with a where clause
+func CommentCountWhere(where string, args ...interface{}) (c int64, err error) {
+	sql := "SELECT count(*) FROM comments"
+	if len(where) > 0 {
+		sql = sql + " WHERE " + where
+	}
+	stmt, err := db.Preparex(db.Rebind(sql))
+	if err != nil {
+		log.Println(err)
+		return 0, err
+	}
+	err = stmt.Get(&c, args...)
+	if err != nil {
+		log.Println(err)
+		return 0, err
+	}
+	return c, nil
+}
+
+// CommentIncludesWhere get the Comment associated models records, it's just the eager_load function
 func CommentIncludesWhere(assocs []string, sql string, args ...interface{}) (var_comments []Comment, err error) {
 	var_comments, err = FindCommentsWhere(sql, args...)
 	if err != nil {
@@ -284,7 +314,7 @@ func CreateComment(am map[string]interface{}) (int64, error) {
 	return lastId, nil
 }
 
-func (var_comment *Comment) Create() error {
+func (var_comment *Comment) Create() (int64, error) {
 	ok, err := govalidator.ValidateStruct(var_comment)
 	if !ok {
 		errMsg := "Validate Comment struct error: Unknown error"
@@ -292,14 +322,23 @@ func (var_comment *Comment) Create() error {
 			errMsg = "Validate Comment struct error: " + err.Error()
 		}
 		log.Println(errMsg)
-		return errors.New(errMsg)
+		return 0, errors.New(errMsg)
 	}
 	t := time.Now()
 	var_comment.CreatedAt = t
 	var_comment.UpdatedAt = t
 	sql := `INSERT INTO comments (commenter,body,article_id,created_at,updated_at) VALUES (:commenter,:body,:article_id,:created_at,:updated_at)`
-	_, err = db.NamedExec(sql, var_comment)
-	return err
+	result, err := db.NamedExec(sql, var_comment)
+	if err != nil {
+		log.Println(err)
+		return 0, err
+	}
+	lastId, err := result.LastInsertId()
+	if err != nil {
+		log.Println(err)
+		return 0, err
+	}
+	return lastId, nil
 }
 
 func (var_comment *Comment) CreateArticle(am map[string]interface{}) error {

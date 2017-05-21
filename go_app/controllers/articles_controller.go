@@ -51,14 +51,14 @@ func ArticlesCreate(c *gin.Context) {
 		c.JSON(http.StatusOK, BuildResp("400", "Parsing id error!", nil))
 		return
 	}
-	err := ar.Create()
+	id, err := ar.Create()
 	if err != nil {
 		msg := fmt.Sprintf("Create article error: %v", err)
 		log.Println(msg)
 		c.JSON(http.StatusOK, BuildResp("400", msg, nil))
 		return
 	}
-	c.JSON(http.StatusOK, BuildResp("200", "Create article success", nil))
+	c.JSON(http.StatusOK, BuildResp("200", "Create article success", map[string]int64{"id": id}))
 }
 
 // PUT /articles/1

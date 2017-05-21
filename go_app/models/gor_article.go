@@ -140,6 +140,36 @@ func AllArticles() (articles []Article, err error) {
 	return articles, nil
 }
 
+// ArticleCount get the count of all the Article records
+func ArticleCount() (c int64, err error) {
+	err = db.Get(&c, "SELECT count(*) FROM articles")
+	if err != nil {
+		log.Println(err)
+		return 0, err
+	}
+	return c, nil
+}
+
+// ArticleCountWhere get the count of all the Article records with a where clause
+func ArticleCountWhere(where string, args ...interface{}) (c int64, err error) {
+	sql := "SELECT count(*) FROM articles"
+	if len(where) > 0 {
+		sql = sql + " WHERE " + where
+	}
+	stmt, err := db.Preparex(db.Rebind(sql))
+	if err != nil {
+		log.Println(err)
+		return 0, err
+	}
+	err = stmt.Get(&c, args...)
+	if err != nil {
+		log.Println(err)
+		return 0, err
+	}
+	return c, nil
+}
+
+// ArticleIncludesWhere get the Article associated models records, it's just the eager_load function
 func ArticleIncludesWhere(assocs []string, sql string, args ...interface{}) (var_articles []Article, err error) {
 	var_articles, err = FindArticlesWhere(sql, args...)
 	if err != nil {
@@ -303,7 +333,7 @@ func CreateArticle(am map[string]interface{}) (int64, error) {
 	return lastId, nil
 }
 
-func (var_article *Article) Create() error {
+func (var_article *Article) Create() (int64, error) {
 	ok, err := govalidator.ValidateStruct(var_article)
 	if !ok {
 		errMsg := "Validate Article struct error: Unknown error"
@@ -311,14 +341,23 @@ func (var_article *Article) Create() error {
 			errMsg = "Validate Article struct error: " + err.Error()
 		}
 		log.Println(errMsg)
-		return errors.New(errMsg)
+		return 0, errors.New(errMsg)
 	}
 	t := time.Now()
 	var_article.CreatedAt = t
 	var_article.UpdatedAt = t
 	sql := `INSERT INTO articles (title,text,created_at,updated_at) VALUES (:title,:text,:created_at,:updated_at)`
-	_, err = db.NamedExec(sql, var_article)
-	return err
+	result, err := db.NamedExec(sql, var_article)
+	if err != nil {
+		log.Println(err)
+		return 0, err
+	}
+	lastId, err := result.LastInsertId()
+	if err != nil {
+		log.Println(err)
+		return 0, err
+	}
+	return lastId, nil
 }
 
 func (var_article *Article) CommentsCreate(am map[string]interface{}) error {
