@@ -266,10 +266,28 @@ func FindCommentsWhere(where string, args ...interface{}) (comments []Comment, e
 	return comments, nil
 }
 
-// FindCommentsBySQL query use a complete SQL clause
-// with placeholders, eg: FindUsersBySQL("SELECT * FROM users WHERE first_name = ? AND age > ?", "John", 18)
+// FindCommentBySql query use a complete SQL clause
+// with placeholders, eg: FindUserBySql("SELECT * FROM users WHERE first_name = ? AND age > ? ORDER BY DESC LIMIT 1", "John", 18)
+// will return only One record in the table "users" whose first_name is "John" and age elder than 18
+func FindCommentBySql(sql string, args ...interface{}) (*Comment, error) {
+	stmt, err := db.Preparex(db.Rebind(sql))
+	if err != nil {
+		log.Println(err)
+		return nil, err
+	}
+	_comment := &Comment{}
+	err = stmt.Get(_comment, args...)
+	if err != nil {
+		log.Println(err)
+		return nil, err
+	}
+	return _comment, nil
+}
+
+// FindCommentsBySql query use a complete SQL clause
+// with placeholders, eg: FindUsersBySql("SELECT * FROM users WHERE first_name = ? AND age > ?", "John", 18)
 // will return those records in the table "users" whose first_name is "John" and age elder than 18
-func FindCommentsBySQL(sql string, args ...interface{}) (comments []Comment, err error) {
+func FindCommentsBySql(sql string, args ...interface{}) (comments []Comment, err error) {
 	stmt, err := db.Preparex(db.Rebind(sql))
 	if err != nil {
 		log.Println(err)
@@ -480,7 +498,7 @@ func (_comment *Comment) UpdateColumns(am map[string]interface{}) error {
 	return err
 }
 
-func UpdateCommentsBySQL(sql string, args ...interface{}) (int64, error) {
+func UpdateCommentsBySql(sql string, args ...interface{}) (int64, error) {
 	if sql == "" {
 		return 0, errors.New("A blank SQL clause")
 	}

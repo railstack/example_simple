@@ -28,7 +28,7 @@ change to the new directory, add the gem `go-on-rails`:
 
 ```bash
 # edit Gemfile
-gem 'go-on-rails', '~> 0.1.1'
+gem 'go-on-rails', '~> 0.1.2'
 ```
 and then bundle:
 

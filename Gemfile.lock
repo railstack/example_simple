@@ -1,5 +1,5 @@
 GEM
-  remote: https://rubygems.org/
+  remote: https://gems.ruby-china.org/
   specs:
     actioncable (5.0.2)
       actionpack (= 5.0.2)
@@ -49,7 +49,7 @@ GEM
     ffi (1.9.18)
     globalid (0.4.0)
       activesupport (>= 4.2.0)
-    go-on-rails (0.1.1)
+    go-on-rails (0.1.2)
     i18n (0.8.1)
     listen (3.0.8)
       rb-fsevent (~> 0.9, >= 0.9.4)
@@ -125,7 +125,7 @@ PLATFORMS
 DEPENDENCIES
   annotate
   byebug
-  go-on-rails (~> 0.1.1)
+  go-on-rails (~> 0.1.2)
   listen (~> 3.0.5)
   mysql2 (>= 0.3.18, < 0.5)
   puma (~> 3.0)
