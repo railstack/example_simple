@@ -28,7 +28,7 @@ change to the new directory, add the gem `go-on-rails`:
 
 ```bash
 # edit Gemfile
-gem 'go-on-rails', '~> 0.1.3'
+gem 'go-on-rails', '~> 0.1.4'
 ```
 and then bundle:
 
@@ -143,7 +143,11 @@ The dir serves the static assets. You can create new directories or files under 
 
 * Each file here heading with `gor_` corresponding to each model we created by the `rails g model` command above, all functions are mostly for database CRUD manipulations, and also some basic validations and associated operations
 * You can create new `.go` files to add more functions for the models under the `models` directory using the package name `model`
-* Run the command `godoc .` under models directory to show all available model functions and methods
+* You can view the godoc page of all functions in http://localhost:7979/doc/models.html after run:
+
+``bash
+rails gor:doc
+```
 
 #### controllers
 

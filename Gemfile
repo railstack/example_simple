@@ -11,7 +11,7 @@ ruby '2.3.3'
 gem 'rails', '~> 5.0.2'
 gem 'mysql2', '>= 0.3.18', '< 0.5'
 gem 'puma', '~> 3.0'
-gem 'go-on-rails', '~> 0.1.3'
+gem 'go-on-rails', '~> 0.1.4'
 
 group :development, :test do
   gem 'byebug', platform: :mri
