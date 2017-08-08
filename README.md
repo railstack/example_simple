@@ -145,7 +145,7 @@ The dir serves the static assets. You can create new directories or files under 
 * You can create new `.go` files to add more functions for the models under the `models` directory using the package name `model`
 * You can view the godoc page of all functions in http://localhost:7979/doc/models.html after run:
 
-``bash
+```bash
 rails gor:doc
 ```
 
