@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"log"
+	"math"
 	"strings"
 	"time"
 
@@ -26,13 +27,183 @@ type Comment struct {
 	Article   Article   `json:"article,omitempty" db:"article" valid:"-"`
 }
 
-// FindComment find a single comment by an id
+// DataStruct for the pagination
+type CommentPage struct {
+	WhereString string
+	WhereParams []interface{}
+	Order       map[string]string
+	FirstId     int64
+	LastId      int64
+	PageNum     int
+	PerPage     int
+	TotalPages  int
+	TotalItems  int64
+	orderStr    string
+}
+
+// Current get the current page of CommentPage object for pagination
+func (_p *CommentPage) Current() ([]Comment, error) {
+	if _, exist := _p.Order["id"]; !exist {
+		return nil, errors.New("No id order specified in Order map")
+	}
+	err := _p.buildPageCount()
+	if err != nil {
+		return nil, fmt.Errorf("Calculate page count error: %v", err)
+	}
+	if _p.orderStr == "" {
+		_p.buildOrder()
+	}
+	idStr, idParams := _p.buildIdRestrict("current")
+
+	whereStr := fmt.Sprintf("%s %s %s LIMIT %v", _p.WhereString, idStr, _p.orderStr, _p.PerPage)
+
+	whereParams := []interface{}{}
+	whereParams = append(append(whereParams, _p.WhereParams...), idParams...)
+	comments, err := FindCommentsWhere(whereStr, whereParams...)
+	if err != nil {
+		return nil, err
+	}
+	if len(comments) != 0 {
+		_p.FirstId, _p.LastId = comments[0].Id, comments[len(comments)-1].Id
+	}
+	return comments, nil
+}
+
+// Current get the previous page of CommentPage object for pagination
+func (_p *CommentPage) Previous() ([]Comment, error) {
+	if _p.PageNum == 0 {
+		return nil, errors.New("This's the first page, no previous page yet")
+	}
+	if _, exist := _p.Order["id"]; !exist {
+		return nil, errors.New("No id order specified in Order map")
+	}
+	err := _p.buildPageCount()
+	if err != nil {
+		return nil, fmt.Errorf("Calculate page count error: %v", err)
+	}
+	if _p.orderStr == "" {
+		_p.buildOrder()
+	}
+	idStr, idParams := _p.buildIdRestrict("previous")
+
+	whereStr := fmt.Sprintf("%s %s %s LIMIT %v", _p.WhereString, idStr, _p.orderStr, _p.PerPage)
+
+	whereParams := []interface{}{}
+	whereParams = append(append(whereParams, _p.WhereParams...), idParams...)
+	comments, err := FindCommentsWhere(whereStr, whereParams...)
+	if err != nil {
+		return nil, err
+	}
+	if len(comments) != 0 {
+		_p.FirstId, _p.LastId = comments[0].Id, comments[len(comments)-1].Id
+	}
+	_p.PageNum -= 1
+	return comments, nil
+}
+
+// Current get the next page of CommentPage object for pagination
+func (_p *CommentPage) Next() ([]Comment, error) {
+	if _p.PageNum == _p.TotalPages-1 {
+		return nil, errors.New("This's the last page, no next page yet")
+	}
+	if _, exist := _p.Order["id"]; !exist {
+		return nil, errors.New("No id order specified in Order map")
+	}
+	err := _p.buildPageCount()
+	if err != nil {
+		return nil, fmt.Errorf("Calculate page count error: %v", err)
+	}
+	if _p.orderStr == "" {
+		_p.buildOrder()
+	}
+	idStr, idParams := _p.buildIdRestrict("next")
+
+	whereStr := fmt.Sprintf("%s %s %s LIMIT %v", _p.WhereString, idStr, _p.orderStr, _p.PerPage)
+
+	whereParams := []interface{}{}
+	whereParams = append(append(whereParams, _p.WhereParams...), idParams...)
+	comments, err := FindCommentsWhere(whereStr, whereParams...)
+	if err != nil {
+		return nil, err
+	}
+	if len(comments) != 0 {
+		_p.FirstId, _p.LastId = comments[0].Id, comments[len(comments)-1].Id
+	}
+	_p.PageNum += 1
+	return comments, nil
+}
+
+// buildOrder is for CommentPage object to build SQL ORDER clause
+func (_p *CommentPage) buildOrder() {
+	tempList := []string{}
+	for k, v := range _p.Order {
+		tempList = append(tempList, fmt.Sprintf("%v %v", k, v))
+	}
+	_p.orderStr = " ORDER BY " + strings.Join(tempList, ", ")
+}
+
+// buildIdRestrict is for CommentPage object to build a SQL clause for ID restriction,
+// implementing a simple keyset style pagination
+func (_p *CommentPage) buildIdRestrict(direction string) (idStr string, idParams []interface{}) {
+	switch direction {
+	case "previous":
+		if strings.ToLower(_p.Order["id"]) == "desc" {
+			idStr += "id > ? "
+			idParams = append(idParams, _p.FirstId)
+		} else {
+			idStr += "id < ? "
+			idParams = append(idParams, _p.FirstId)
+		}
+	case "current":
+		// trick to make Where function work
+		if _p.PageNum == 0 && _p.FirstId == 0 && _p.LastId == 0 {
+			idStr += "id > ? "
+			idParams = append(idParams, 0)
+		} else {
+			if strings.ToLower(_p.Order["id"]) == "desc" {
+				idStr += "id <= ? AND id >= ? "
+				idParams = append(idParams, _p.FirstId, _p.LastId)
+			} else {
+				idStr += "id >= ? AND id <= ? "
+				idParams = append(idParams, _p.FirstId, _p.LastId)
+			}
+		}
+	case "next":
+		if strings.ToLower(_p.Order["id"]) == "desc" {
+			idStr += "id < ? "
+			idParams = append(idParams, _p.LastId)
+		} else {
+			idStr += "id > ? "
+			idParams = append(idParams, _p.LastId)
+		}
+	}
+	if _p.WhereString != "" {
+		idStr = " AND " + idStr
+	}
+	return
+}
+
+// buildPageCount calculate the TotalItems/TotalPages for the CommentPage object
+func (_p *CommentPage) buildPageCount() error {
+	count, err := CommentCountWhere(_p.WhereString, _p.WhereParams...)
+	if err != nil {
+		return err
+	}
+	_p.TotalItems = count
+	if _p.PerPage == 0 {
+		_p.PerPage = 10
+	}
+	_p.TotalPages = int(math.Ceil(float64(_p.TotalItems) / float64(_p.PerPage)))
+	return nil
+}
+
+// FindComment find a single comment by an ID
 func FindComment(id int64) (*Comment, error) {
 	if id == 0 {
-		return nil, errors.New("Invalid id: it can't be zero")
+		return nil, errors.New("Invalid ID: it can't be zero")
 	}
 	_comment := Comment{}
-	err := db.Get(&_comment, db.Rebind(`SELECT * FROM comments WHERE id = ? LIMIT 1`), id)
+	err := DB.Get(&_comment, DB.Rebind(`SELECT * FROM comments WHERE id = ? LIMIT 1`), id)
 	if err != nil {
 		log.Printf("Error: %v\n", err)
 		return nil, err
@@ -40,10 +211,10 @@ func FindComment(id int64) (*Comment, error) {
 	return &_comment, nil
 }
 
-// FirstComment find the first one comment by id ASC order
+// FirstComment find the first one comment by ID ASC order
 func FirstComment() (*Comment, error) {
 	_comment := Comment{}
-	err := db.Get(&_comment, db.Rebind(`SELECT * FROM comments ORDER BY id ASC LIMIT 1`))
+	err := DB.Get(&_comment, DB.Rebind(`SELECT * FROM comments ORDER BY id ASC LIMIT 1`))
 	if err != nil {
 		log.Printf("Error: %v\n", err)
 		return nil, err
@@ -51,11 +222,11 @@ func FirstComment() (*Comment, error) {
 	return &_comment, nil
 }
 
-// FirstComments find the first N comments by id ASC order
+// FirstComments find the first N comments by ID ASC order
 func FirstComments(n uint32) ([]Comment, error) {
 	_comments := []Comment{}
 	sql := fmt.Sprintf("SELECT * FROM comments ORDER BY id ASC LIMIT %v", n)
-	err := db.Select(&_comments, db.Rebind(sql))
+	err := DB.Select(&_comments, DB.Rebind(sql))
 	if err != nil {
 		log.Printf("Error: %v\n", err)
 		return nil, err
@@ -63,10 +234,10 @@ func FirstComments(n uint32) ([]Comment, error) {
 	return _comments, nil
 }
 
-// LastComment find the last one comment by id DESC order
+// LastComment find the last one comment by ID DESC order
 func LastComment() (*Comment, error) {
 	_comment := Comment{}
-	err := db.Get(&_comment, db.Rebind(`SELECT * FROM comments ORDER BY id DESC LIMIT 1`))
+	err := DB.Get(&_comment, DB.Rebind(`SELECT * FROM comments ORDER BY id DESC LIMIT 1`))
 	if err != nil {
 		log.Printf("Error: %v\n", err)
 		return nil, err
@@ -74,11 +245,11 @@ func LastComment() (*Comment, error) {
 	return &_comment, nil
 }
 
-// LastComments find the last N comments by id DESC order
+// LastComments find the last N comments by ID DESC order
 func LastComments(n uint32) ([]Comment, error) {
 	_comments := []Comment{}
 	sql := fmt.Sprintf("SELECT * FROM comments ORDER BY id DESC LIMIT %v", n)
-	err := db.Select(&_comments, db.Rebind(sql))
+	err := DB.Select(&_comments, DB.Rebind(sql))
 	if err != nil {
 		log.Printf("Error: %v\n", err)
 		return nil, err
@@ -86,7 +257,7 @@ func LastComments(n uint32) ([]Comment, error) {
 	return _comments, nil
 }
 
-// FindComments find one or more comments by one or more ids
+// FindComments find one or more comments by the given ID(s)
 func FindComments(ids ...int64) ([]Comment, error) {
 	if len(ids) == 0 {
 		msg := "At least one or more ids needed"
@@ -95,12 +266,12 @@ func FindComments(ids ...int64) ([]Comment, error) {
 	}
 	_comments := []Comment{}
 	idsHolder := strings.Repeat(",?", len(ids)-1)
-	sql := db.Rebind(fmt.Sprintf(`SELECT * FROM comments WHERE id IN (?%s)`, idsHolder))
+	sql := DB.Rebind(fmt.Sprintf(`SELECT * FROM comments WHERE id IN (?%s)`, idsHolder))
 	idsT := []interface{}{}
 	for _, id := range ids {
 		idsT = append(idsT, interface{}(id))
 	}
-	err := db.Select(&_comments, sql, idsT...)
+	err := DB.Select(&_comments, sql, idsT...)
 	if err != nil {
 		log.Printf("Error: %v\n", err)
 		return nil, err
@@ -113,7 +284,7 @@ func FindCommentBy(field string, val interface{}) (*Comment, error) {
 	_comment := Comment{}
 	sqlFmt := `SELECT * FROM comments WHERE %s = ? LIMIT 1`
 	sqlStr := fmt.Sprintf(sqlFmt, field)
-	err := db.Get(&_comment, db.Rebind(sqlStr), val)
+	err := DB.Get(&_comment, DB.Rebind(sqlStr), val)
 	if err != nil {
 		log.Printf("Error: %v\n", err)
 		return nil, err
@@ -125,7 +296,7 @@ func FindCommentBy(field string, val interface{}) (*Comment, error) {
 func FindCommentsBy(field string, val interface{}) (_comments []Comment, err error) {
 	sqlFmt := `SELECT * FROM comments WHERE %s = ?`
 	sqlStr := fmt.Sprintf(sqlFmt, field)
-	err = db.Select(&_comments, db.Rebind(sqlStr), val)
+	err = DB.Select(&_comments, DB.Rebind(sqlStr), val)
 	if err != nil {
 		log.Printf("Error: %v\n", err)
 		return nil, err
@@ -135,7 +306,7 @@ func FindCommentsBy(field string, val interface{}) (_comments []Comment, err err
 
 // AllComments get all the Comment records
 func AllComments() (comments []Comment, err error) {
-	err = db.Select(&comments, "SELECT * FROM comments")
+	err = DB.Select(&comments, "SELECT * FROM comments")
 	if err != nil {
 		log.Println(err)
 		return nil, err
@@ -145,7 +316,7 @@ func AllComments() (comments []Comment, err error) {
 
 // CommentCount get the count of all the Comment records
 func CommentCount() (c int64, err error) {
-	err = db.Get(&c, "SELECT count(*) FROM comments")
+	err = DB.Get(&c, "SELECT count(*) FROM comments")
 	if err != nil {
 		log.Println(err)
 		return 0, err
@@ -159,7 +330,7 @@ func CommentCountWhere(where string, args ...interface{}) (c int64, err error) {
 	if len(where) > 0 {
 		sql = sql + " WHERE " + where
 	}
-	stmt, err := db.Preparex(db.Rebind(sql))
+	stmt, err := DB.Preparex(DB.Rebind(sql))
 	if err != nil {
 		log.Println(err)
 		return 0, err
@@ -193,9 +364,9 @@ func CommentIncludesWhere(assocs []string, sql string, args ...interface{}) (_co
 	return _comments, nil
 }
 
-// CommentIds get all the Ids of Comment records
+// CommentIds get all the IDs of Comment records
 func CommentIds() (ids []int64, err error) {
-	err = db.Select(&ids, "SELECT id FROM comments")
+	err = DB.Select(&ids, "SELECT id FROM comments")
 	if err != nil {
 		log.Println(err)
 		return nil, err
@@ -203,7 +374,7 @@ func CommentIds() (ids []int64, err error) {
 	return ids, nil
 }
 
-// CommentIdsWhere get all the Ids of Comment records by where restriction
+// CommentIdsWhere get all the IDs of Comment records by where restriction
 func CommentIdsWhere(where string, args ...interface{}) ([]int64, error) {
 	ids, err := CommentIntCol("id", where, args...)
 	return ids, err
@@ -215,7 +386,7 @@ func CommentIntCol(col, where string, args ...interface{}) (intColRecs []int64, 
 	if len(where) > 0 {
 		sql = sql + " WHERE " + where
 	}
-	stmt, err := db.Preparex(db.Rebind(sql))
+	stmt, err := DB.Preparex(DB.Rebind(sql))
 	if err != nil {
 		log.Println(err)
 		return nil, err
@@ -234,7 +405,7 @@ func CommentStrCol(col, where string, args ...interface{}) (strColRecs []string,
 	if len(where) > 0 {
 		sql = sql + " WHERE " + where
 	}
-	stmt, err := db.Preparex(db.Rebind(sql))
+	stmt, err := DB.Preparex(DB.Rebind(sql))
 	if err != nil {
 		log.Println(err)
 		return nil, err
@@ -255,7 +426,7 @@ func FindCommentsWhere(where string, args ...interface{}) (comments []Comment, e
 	if len(where) > 0 {
 		sql = sql + " WHERE " + where
 	}
-	stmt, err := db.Preparex(db.Rebind(sql))
+	stmt, err := DB.Preparex(DB.Rebind(sql))
 	if err != nil {
 		log.Println(err)
 		return nil, err
@@ -272,7 +443,7 @@ func FindCommentsWhere(where string, args ...interface{}) (comments []Comment, e
 // with placeholders, eg: FindUserBySql("SELECT * FROM users WHERE first_name = ? AND age > ? ORDER BY DESC LIMIT 1", "John", 18)
 // will return only One record in the table "users" whose first_name is "John" and age elder than 18
 func FindCommentBySql(sql string, args ...interface{}) (*Comment, error) {
-	stmt, err := db.Preparex(db.Rebind(sql))
+	stmt, err := DB.Preparex(DB.Rebind(sql))
 	if err != nil {
 		log.Println(err)
 		return nil, err
@@ -290,7 +461,7 @@ func FindCommentBySql(sql string, args ...interface{}) (*Comment, error) {
 // with placeholders, eg: FindUsersBySql("SELECT * FROM users WHERE first_name = ? AND age > ?", "John", 18)
 // will return those records in the table "users" whose first_name is "John" and age elder than 18
 func FindCommentsBySql(sql string, args ...interface{}) (comments []Comment, err error) {
-	stmt, err := db.Preparex(db.Rebind(sql))
+	stmt, err := DB.Preparex(DB.Rebind(sql))
 	if err != nil {
 		log.Println(err)
 		return nil, err
@@ -323,7 +494,7 @@ func CreateComment(am map[string]interface{}) (int64, error) {
 	}
 	sqlFmt := `INSERT INTO comments (%s) VALUES (%s)`
 	sqlStr := fmt.Sprintf(sqlFmt, strings.Join(keys, ","), ":"+strings.Join(keys, ",:"))
-	result, err := db.NamedExec(sqlStr, am)
+	result, err := DB.NamedExec(sqlStr, am)
 	if err != nil {
 		log.Println(err)
 		return 0, err
@@ -351,7 +522,7 @@ func (_comment *Comment) Create() (int64, error) {
 	_comment.CreatedAt = t
 	_comment.UpdatedAt = t
 	sql := `INSERT INTO comments (commenter,body,article_id,created_at,updated_at) VALUES (:commenter,:body,:article_id,:created_at,:updated_at)`
-	result, err := db.NamedExec(sql, _comment)
+	result, err := DB.NamedExec(sql, _comment)
 	if err != nil {
 		log.Println(err)
 		return 0, err
@@ -380,9 +551,9 @@ func (_comment *Comment) Destroy() error {
 	return err
 }
 
-// DestroyComment will destroy a Comment record specified by id parameter.
+// DestroyComment will destroy a Comment record specified by the id parameter.
 func DestroyComment(id int64) error {
-	stmt, err := db.Preparex(db.Rebind(`DELETE FROM comments WHERE id = ?`))
+	stmt, err := DB.Preparex(DB.Rebind(`DELETE FROM comments WHERE id = ?`))
 	_, err = stmt.Exec(id)
 	if err != nil {
 		return err
@@ -403,7 +574,7 @@ func DestroyComments(ids ...int64) (int64, error) {
 	for _, id := range ids {
 		idsT = append(idsT, interface{}(id))
 	}
-	stmt, err := db.Preparex(db.Rebind(sql))
+	stmt, err := DB.Preparex(DB.Rebind(sql))
 	result, err := stmt.Exec(idsT...)
 	if err != nil {
 		return 0, err
@@ -415,8 +586,8 @@ func DestroyComments(ids ...int64) (int64, error) {
 	return cnt, nil
 }
 
-// DestroyCommentsWhere delete records by a where clause
-// like: DestroyCommentsWhere("name = ?", "John")
+// DestroyCommentsWhere delete records by a where clause restriction.
+// e.g. DestroyCommentsWhere("name = ?", "John")
 // And this func will not call the association dependent action
 func DestroyCommentsWhere(where string, args ...interface{}) (int64, error) {
 	sql := `DELETE FROM comments WHERE `
@@ -425,7 +596,7 @@ func DestroyCommentsWhere(where string, args ...interface{}) (int64, error) {
 	} else {
 		return 0, errors.New("No WHERE conditions provided")
 	}
-	stmt, err := db.Preparex(db.Rebind(sql))
+	stmt, err := DB.Preparex(DB.Rebind(sql))
 	result, err := stmt.Exec(args...)
 	if err != nil {
 		return 0, err
@@ -456,7 +627,7 @@ func (_comment *Comment) Save() error {
 	_comment.UpdatedAt = time.Now()
 	sqlFmt := `UPDATE comments SET %s WHERE id = %v`
 	sqlStr := fmt.Sprintf(sqlFmt, "commenter = :commenter, body = :body, article_id = :article_id, updated_at = :updated_at", _comment.Id)
-	_, err = db.NamedExec(sqlStr, _comment)
+	_, err = DB.NamedExec(sqlStr, _comment)
 	return err
 }
 
@@ -479,7 +650,7 @@ func UpdateComment(id int64, am map[string]interface{}) error {
 		setKeysArr = append(setKeysArr, s)
 	}
 	sqlStr := fmt.Sprintf(sqlFmt, strings.Join(setKeysArr, ", "), id)
-	_, err := db.NamedExec(sqlStr, am)
+	_, err := DB.NamedExec(sqlStr, am)
 	if err != nil {
 		log.Println(err)
 		return err
@@ -496,6 +667,7 @@ func (_comment *Comment) Update(am map[string]interface{}) error {
 	return err
 }
 
+// UpdateAttributes method is supposed to be used to update Comment records as corresponding update_attributes in Ruby on Rails.
 func (_comment *Comment) UpdateAttributes(am map[string]interface{}) error {
 	if _comment.Id == 0 {
 		return errors.New("Invalid Id field: it can't be a zero value")
@@ -504,7 +676,7 @@ func (_comment *Comment) UpdateAttributes(am map[string]interface{}) error {
 	return err
 }
 
-// UpdateColumns method is supposed to be used to update Comment records as corresponding update_columns in Rails
+// UpdateColumns method is supposed to be used to update Comment records as corresponding update_columns in Ruby on Rails.
 func (_comment *Comment) UpdateColumns(am map[string]interface{}) error {
 	if _comment.Id == 0 {
 		return errors.New("Invalid Id field: it can't be a zero value")
@@ -514,14 +686,14 @@ func (_comment *Comment) UpdateColumns(am map[string]interface{}) error {
 }
 
 // UpdateCommentsBySql is used to update Comment records by a SQL clause
-// that use '?' binding syntax
+// using the '?' binding syntax.
 func UpdateCommentsBySql(sql string, args ...interface{}) (int64, error) {
 	if sql == "" {
 		return 0, errors.New("A blank SQL clause")
 	}
 	sql = strings.Replace(strings.ToLower(sql), "set", "set updated_at = ?, ", 1)
 	args = append([]interface{}{time.Now()}, args...)
-	stmt, err := db.Preparex(db.Rebind(sql))
+	stmt, err := DB.Preparex(DB.Rebind(sql))
 	result, err := stmt.Exec(args...)
 	if err != nil {
 		return 0, err

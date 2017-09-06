@@ -1,4 +1,4 @@
-package controller
+package controllers
 
 import (
 	"net/http"
@@ -23,7 +23,7 @@ func HomeHandler(c *gin.Context) {
 		GolangVer    string
 	}
 
-	gorVer := "0.1.4"
+	gorVer := "0.1.6"
 	golangVer := "go version go1.7.4 darwin/amd64"
 
 	envs := Envs{GoOnRailsVer: gorVer, GolangVer: golangVer}

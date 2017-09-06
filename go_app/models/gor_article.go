@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"log"
+	"math"
 	"strings"
 	"time"
 
@@ -25,13 +26,183 @@ type Article struct {
 	Comments  []Comment `json:"comments,omitempty" db:"comments" valid:"-"`
 }
 
-// FindArticle find a single article by an id
+// DataStruct for the pagination
+type ArticlePage struct {
+	WhereString string
+	WhereParams []interface{}
+	Order       map[string]string
+	FirstId     int64
+	LastId      int64
+	PageNum     int
+	PerPage     int
+	TotalPages  int
+	TotalItems  int64
+	orderStr    string
+}
+
+// Current get the current page of ArticlePage object for pagination
+func (_p *ArticlePage) Current() ([]Article, error) {
+	if _, exist := _p.Order["id"]; !exist {
+		return nil, errors.New("No id order specified in Order map")
+	}
+	err := _p.buildPageCount()
+	if err != nil {
+		return nil, fmt.Errorf("Calculate page count error: %v", err)
+	}
+	if _p.orderStr == "" {
+		_p.buildOrder()
+	}
+	idStr, idParams := _p.buildIdRestrict("current")
+
+	whereStr := fmt.Sprintf("%s %s %s LIMIT %v", _p.WhereString, idStr, _p.orderStr, _p.PerPage)
+
+	whereParams := []interface{}{}
+	whereParams = append(append(whereParams, _p.WhereParams...), idParams...)
+	articles, err := FindArticlesWhere(whereStr, whereParams...)
+	if err != nil {
+		return nil, err
+	}
+	if len(articles) != 0 {
+		_p.FirstId, _p.LastId = articles[0].Id, articles[len(articles)-1].Id
+	}
+	return articles, nil
+}
+
+// Current get the previous page of ArticlePage object for pagination
+func (_p *ArticlePage) Previous() ([]Article, error) {
+	if _p.PageNum == 0 {
+		return nil, errors.New("This's the first page, no previous page yet")
+	}
+	if _, exist := _p.Order["id"]; !exist {
+		return nil, errors.New("No id order specified in Order map")
+	}
+	err := _p.buildPageCount()
+	if err != nil {
+		return nil, fmt.Errorf("Calculate page count error: %v", err)
+	}
+	if _p.orderStr == "" {
+		_p.buildOrder()
+	}
+	idStr, idParams := _p.buildIdRestrict("previous")
+
+	whereStr := fmt.Sprintf("%s %s %s LIMIT %v", _p.WhereString, idStr, _p.orderStr, _p.PerPage)
+
+	whereParams := []interface{}{}
+	whereParams = append(append(whereParams, _p.WhereParams...), idParams...)
+	articles, err := FindArticlesWhere(whereStr, whereParams...)
+	if err != nil {
+		return nil, err
+	}
+	if len(articles) != 0 {
+		_p.FirstId, _p.LastId = articles[0].Id, articles[len(articles)-1].Id
+	}
+	_p.PageNum -= 1
+	return articles, nil
+}
+
+// Current get the next page of ArticlePage object for pagination
+func (_p *ArticlePage) Next() ([]Article, error) {
+	if _p.PageNum == _p.TotalPages-1 {
+		return nil, errors.New("This's the last page, no next page yet")
+	}
+	if _, exist := _p.Order["id"]; !exist {
+		return nil, errors.New("No id order specified in Order map")
+	}
+	err := _p.buildPageCount()
+	if err != nil {
+		return nil, fmt.Errorf("Calculate page count error: %v", err)
+	}
+	if _p.orderStr == "" {
+		_p.buildOrder()
+	}
+	idStr, idParams := _p.buildIdRestrict("next")
+
+	whereStr := fmt.Sprintf("%s %s %s LIMIT %v", _p.WhereString, idStr, _p.orderStr, _p.PerPage)
+
+	whereParams := []interface{}{}
+	whereParams = append(append(whereParams, _p.WhereParams...), idParams...)
+	articles, err := FindArticlesWhere(whereStr, whereParams...)
+	if err != nil {
+		return nil, err
+	}
+	if len(articles) != 0 {
+		_p.FirstId, _p.LastId = articles[0].Id, articles[len(articles)-1].Id
+	}
+	_p.PageNum += 1
+	return articles, nil
+}
+
+// buildOrder is for ArticlePage object to build SQL ORDER clause
+func (_p *ArticlePage) buildOrder() {
+	tempList := []string{}
+	for k, v := range _p.Order {
+		tempList = append(tempList, fmt.Sprintf("%v %v", k, v))
+	}
+	_p.orderStr = " ORDER BY " + strings.Join(tempList, ", ")
+}
+
+// buildIdRestrict is for ArticlePage object to build a SQL clause for ID restriction,
+// implementing a simple keyset style pagination
+func (_p *ArticlePage) buildIdRestrict(direction string) (idStr string, idParams []interface{}) {
+	switch direction {
+	case "previous":
+		if strings.ToLower(_p.Order["id"]) == "desc" {
+			idStr += "id > ? "
+			idParams = append(idParams, _p.FirstId)
+		} else {
+			idStr += "id < ? "
+			idParams = append(idParams, _p.FirstId)
+		}
+	case "current":
+		// trick to make Where function work
+		if _p.PageNum == 0 && _p.FirstId == 0 && _p.LastId == 0 {
+			idStr += "id > ? "
+			idParams = append(idParams, 0)
+		} else {
+			if strings.ToLower(_p.Order["id"]) == "desc" {
+				idStr += "id <= ? AND id >= ? "
+				idParams = append(idParams, _p.FirstId, _p.LastId)
+			} else {
+				idStr += "id >= ? AND id <= ? "
+				idParams = append(idParams, _p.FirstId, _p.LastId)
+			}
+		}
+	case "next":
+		if strings.ToLower(_p.Order["id"]) == "desc" {
+			idStr += "id < ? "
+			idParams = append(idParams, _p.LastId)
+		} else {
+			idStr += "id > ? "
+			idParams = append(idParams, _p.LastId)
+		}
+	}
+	if _p.WhereString != "" {
+		idStr = " AND " + idStr
+	}
+	return
+}
+
+// buildPageCount calculate the TotalItems/TotalPages for the ArticlePage object
+func (_p *ArticlePage) buildPageCount() error {
+	count, err := ArticleCountWhere(_p.WhereString, _p.WhereParams...)
+	if err != nil {
+		return err
+	}
+	_p.TotalItems = count
+	if _p.PerPage == 0 {
+		_p.PerPage = 10
+	}
+	_p.TotalPages = int(math.Ceil(float64(_p.TotalItems) / float64(_p.PerPage)))
+	return nil
+}
+
+// FindArticle find a single article by an ID
 func FindArticle(id int64) (*Article, error) {
 	if id == 0 {
-		return nil, errors.New("Invalid id: it can't be zero")
+		return nil, errors.New("Invalid ID: it can't be zero")
 	}
 	_article := Article{}
-	err := db.Get(&_article, db.Rebind(`SELECT * FROM articles WHERE id = ? LIMIT 1`), id)
+	err := DB.Get(&_article, DB.Rebind(`SELECT * FROM articles WHERE id = ? LIMIT 1`), id)
 	if err != nil {
 		log.Printf("Error: %v\n", err)
 		return nil, err
@@ -39,10 +210,10 @@ func FindArticle(id int64) (*Article, error) {
 	return &_article, nil
 }
 
-// FirstArticle find the first one article by id ASC order
+// FirstArticle find the first one article by ID ASC order
 func FirstArticle() (*Article, error) {
 	_article := Article{}
-	err := db.Get(&_article, db.Rebind(`SELECT * FROM articles ORDER BY id ASC LIMIT 1`))
+	err := DB.Get(&_article, DB.Rebind(`SELECT * FROM articles ORDER BY id ASC LIMIT 1`))
 	if err != nil {
 		log.Printf("Error: %v\n", err)
 		return nil, err
@@ -50,11 +221,11 @@ func FirstArticle() (*Article, error) {
 	return &_article, nil
 }
 
-// FirstArticles find the first N articles by id ASC order
+// FirstArticles find the first N articles by ID ASC order
 func FirstArticles(n uint32) ([]Article, error) {
 	_articles := []Article{}
 	sql := fmt.Sprintf("SELECT * FROM articles ORDER BY id ASC LIMIT %v", n)
-	err := db.Select(&_articles, db.Rebind(sql))
+	err := DB.Select(&_articles, DB.Rebind(sql))
 	if err != nil {
 		log.Printf("Error: %v\n", err)
 		return nil, err
@@ -62,10 +233,10 @@ func FirstArticles(n uint32) ([]Article, error) {
 	return _articles, nil
 }
 
-// LastArticle find the last one article by id DESC order
+// LastArticle find the last one article by ID DESC order
 func LastArticle() (*Article, error) {
 	_article := Article{}
-	err := db.Get(&_article, db.Rebind(`SELECT * FROM articles ORDER BY id DESC LIMIT 1`))
+	err := DB.Get(&_article, DB.Rebind(`SELECT * FROM articles ORDER BY id DESC LIMIT 1`))
 	if err != nil {
 		log.Printf("Error: %v\n", err)
 		return nil, err
@@ -73,11 +244,11 @@ func LastArticle() (*Article, error) {
 	return &_article, nil
 }
 
-// LastArticles find the last N articles by id DESC order
+// LastArticles find the last N articles by ID DESC order
 func LastArticles(n uint32) ([]Article, error) {
 	_articles := []Article{}
 	sql := fmt.Sprintf("SELECT * FROM articles ORDER BY id DESC LIMIT %v", n)
-	err := db.Select(&_articles, db.Rebind(sql))
+	err := DB.Select(&_articles, DB.Rebind(sql))
 	if err != nil {
 		log.Printf("Error: %v\n", err)
 		return nil, err
@@ -85,7 +256,7 @@ func LastArticles(n uint32) ([]Article, error) {
 	return _articles, nil
 }
 
-// FindArticles find one or more articles by one or more ids
+// FindArticles find one or more articles by the given ID(s)
 func FindArticles(ids ...int64) ([]Article, error) {
 	if len(ids) == 0 {
 		msg := "At least one or more ids needed"
@@ -94,12 +265,12 @@ func FindArticles(ids ...int64) ([]Article, error) {
 	}
 	_articles := []Article{}
 	idsHolder := strings.Repeat(",?", len(ids)-1)
-	sql := db.Rebind(fmt.Sprintf(`SELECT * FROM articles WHERE id IN (?%s)`, idsHolder))
+	sql := DB.Rebind(fmt.Sprintf(`SELECT * FROM articles WHERE id IN (?%s)`, idsHolder))
 	idsT := []interface{}{}
 	for _, id := range ids {
 		idsT = append(idsT, interface{}(id))
 	}
-	err := db.Select(&_articles, sql, idsT...)
+	err := DB.Select(&_articles, sql, idsT...)
 	if err != nil {
 		log.Printf("Error: %v\n", err)
 		return nil, err
@@ -112,7 +283,7 @@ func FindArticleBy(field string, val interface{}) (*Article, error) {
 	_article := Article{}
 	sqlFmt := `SELECT * FROM articles WHERE %s = ? LIMIT 1`
 	sqlStr := fmt.Sprintf(sqlFmt, field)
-	err := db.Get(&_article, db.Rebind(sqlStr), val)
+	err := DB.Get(&_article, DB.Rebind(sqlStr), val)
 	if err != nil {
 		log.Printf("Error: %v\n", err)
 		return nil, err
@@ -124,7 +295,7 @@ func FindArticleBy(field string, val interface{}) (*Article, error) {
 func FindArticlesBy(field string, val interface{}) (_articles []Article, err error) {
 	sqlFmt := `SELECT * FROM articles WHERE %s = ?`
 	sqlStr := fmt.Sprintf(sqlFmt, field)
-	err = db.Select(&_articles, db.Rebind(sqlStr), val)
+	err = DB.Select(&_articles, DB.Rebind(sqlStr), val)
 	if err != nil {
 		log.Printf("Error: %v\n", err)
 		return nil, err
@@ -134,7 +305,7 @@ func FindArticlesBy(field string, val interface{}) (_articles []Article, err err
 
 // AllArticles get all the Article records
 func AllArticles() (articles []Article, err error) {
-	err = db.Select(&articles, "SELECT * FROM articles")
+	err = DB.Select(&articles, "SELECT * FROM articles")
 	if err != nil {
 		log.Println(err)
 		return nil, err
@@ -144,7 +315,7 @@ func AllArticles() (articles []Article, err error) {
 
 // ArticleCount get the count of all the Article records
 func ArticleCount() (c int64, err error) {
-	err = db.Get(&c, "SELECT count(*) FROM articles")
+	err = DB.Get(&c, "SELECT count(*) FROM articles")
 	if err != nil {
 		log.Println(err)
 		return 0, err
@@ -158,7 +329,7 @@ func ArticleCountWhere(where string, args ...interface{}) (c int64, err error) {
 	if len(where) > 0 {
 		sql = sql + " WHERE " + where
 	}
-	stmt, err := db.Preparex(db.Rebind(sql))
+	stmt, err := DB.Preparex(DB.Rebind(sql))
 	if err != nil {
 		log.Println(err)
 		return 0, err
@@ -212,9 +383,9 @@ func ArticleIncludesWhere(assocs []string, sql string, args ...interface{}) (_ar
 	return _articles, nil
 }
 
-// ArticleIds get all the Ids of Article records
+// ArticleIds get all the IDs of Article records
 func ArticleIds() (ids []int64, err error) {
-	err = db.Select(&ids, "SELECT id FROM articles")
+	err = DB.Select(&ids, "SELECT id FROM articles")
 	if err != nil {
 		log.Println(err)
 		return nil, err
@@ -222,7 +393,7 @@ func ArticleIds() (ids []int64, err error) {
 	return ids, nil
 }
 
-// ArticleIdsWhere get all the Ids of Article records by where restriction
+// ArticleIdsWhere get all the IDs of Article records by where restriction
 func ArticleIdsWhere(where string, args ...interface{}) ([]int64, error) {
 	ids, err := ArticleIntCol("id", where, args...)
 	return ids, err
@@ -234,7 +405,7 @@ func ArticleIntCol(col, where string, args ...interface{}) (intColRecs []int64, 
 	if len(where) > 0 {
 		sql = sql + " WHERE " + where
 	}
-	stmt, err := db.Preparex(db.Rebind(sql))
+	stmt, err := DB.Preparex(DB.Rebind(sql))
 	if err != nil {
 		log.Println(err)
 		return nil, err
@@ -253,7 +424,7 @@ func ArticleStrCol(col, where string, args ...interface{}) (strColRecs []string,
 	if len(where) > 0 {
 		sql = sql + " WHERE " + where
 	}
-	stmt, err := db.Preparex(db.Rebind(sql))
+	stmt, err := DB.Preparex(DB.Rebind(sql))
 	if err != nil {
 		log.Println(err)
 		return nil, err
@@ -274,7 +445,7 @@ func FindArticlesWhere(where string, args ...interface{}) (articles []Article, e
 	if len(where) > 0 {
 		sql = sql + " WHERE " + where
 	}
-	stmt, err := db.Preparex(db.Rebind(sql))
+	stmt, err := DB.Preparex(DB.Rebind(sql))
 	if err != nil {
 		log.Println(err)
 		return nil, err
@@ -291,7 +462,7 @@ func FindArticlesWhere(where string, args ...interface{}) (articles []Article, e
 // with placeholders, eg: FindUserBySql("SELECT * FROM users WHERE first_name = ? AND age > ? ORDER BY DESC LIMIT 1", "John", 18)
 // will return only One record in the table "users" whose first_name is "John" and age elder than 18
 func FindArticleBySql(sql string, args ...interface{}) (*Article, error) {
-	stmt, err := db.Preparex(db.Rebind(sql))
+	stmt, err := DB.Preparex(DB.Rebind(sql))
 	if err != nil {
 		log.Println(err)
 		return nil, err
@@ -309,7 +480,7 @@ func FindArticleBySql(sql string, args ...interface{}) (*Article, error) {
 // with placeholders, eg: FindUsersBySql("SELECT * FROM users WHERE first_name = ? AND age > ?", "John", 18)
 // will return those records in the table "users" whose first_name is "John" and age elder than 18
 func FindArticlesBySql(sql string, args ...interface{}) (articles []Article, err error) {
-	stmt, err := db.Preparex(db.Rebind(sql))
+	stmt, err := DB.Preparex(DB.Rebind(sql))
 	if err != nil {
 		log.Println(err)
 		return nil, err
@@ -342,7 +513,7 @@ func CreateArticle(am map[string]interface{}) (int64, error) {
 	}
 	sqlFmt := `INSERT INTO articles (%s) VALUES (%s)`
 	sqlStr := fmt.Sprintf(sqlFmt, strings.Join(keys, ","), ":"+strings.Join(keys, ",:"))
-	result, err := db.NamedExec(sqlStr, am)
+	result, err := DB.NamedExec(sqlStr, am)
 	if err != nil {
 		log.Println(err)
 		return 0, err
@@ -370,7 +541,7 @@ func (_article *Article) Create() (int64, error) {
 	_article.CreatedAt = t
 	_article.UpdatedAt = t
 	sql := `INSERT INTO articles (title,text,created_at,updated_at) VALUES (:title,:text,:created_at,:updated_at)`
-	result, err := db.NamedExec(sql, _article)
+	result, err := DB.NamedExec(sql, _article)
 	if err != nil {
 		log.Println(err)
 		return 0, err
@@ -416,12 +587,12 @@ func (_article *Article) Destroy() error {
 	return err
 }
 
-// DestroyArticle will destroy a Article record specified by id parameter.
+// DestroyArticle will destroy a Article record specified by the id parameter.
 func DestroyArticle(id int64) error {
 	// Destroy association objects at first
 	// Not care if exec properly temporarily
 	destroyArticleAssociations(id)
-	stmt, err := db.Preparex(db.Rebind(`DELETE FROM articles WHERE id = ?`))
+	stmt, err := DB.Preparex(DB.Rebind(`DELETE FROM articles WHERE id = ?`))
 	_, err = stmt.Exec(id)
 	if err != nil {
 		return err
@@ -445,7 +616,7 @@ func DestroyArticles(ids ...int64) (int64, error) {
 	for _, id := range ids {
 		idsT = append(idsT, interface{}(id))
 	}
-	stmt, err := db.Preparex(db.Rebind(sql))
+	stmt, err := DB.Preparex(DB.Rebind(sql))
 	result, err := stmt.Exec(idsT...)
 	if err != nil {
 		return 0, err
@@ -457,8 +628,8 @@ func DestroyArticles(ids ...int64) (int64, error) {
 	return cnt, nil
 }
 
-// DestroyArticlesWhere delete records by a where clause
-// like: DestroyArticlesWhere("name = ?", "John")
+// DestroyArticlesWhere delete records by a where clause restriction.
+// e.g. DestroyArticlesWhere("name = ?", "John")
 // And this func will not call the association dependent action
 func DestroyArticlesWhere(where string, args ...interface{}) (int64, error) {
 	sql := `DELETE FROM articles WHERE `
@@ -473,7 +644,7 @@ func DestroyArticlesWhere(where string, args ...interface{}) (int64, error) {
 	} else {
 		destroyArticleAssociations(ids...)
 	}
-	stmt, err := db.Preparex(db.Rebind(sql))
+	stmt, err := DB.Preparex(DB.Rebind(sql))
 	result, err := stmt.Exec(args...)
 	if err != nil {
 		return 0, err
@@ -525,7 +696,7 @@ func (_article *Article) Save() error {
 	_article.UpdatedAt = time.Now()
 	sqlFmt := `UPDATE articles SET %s WHERE id = %v`
 	sqlStr := fmt.Sprintf(sqlFmt, "title = :title, text = :text, updated_at = :updated_at", _article.Id)
-	_, err = db.NamedExec(sqlStr, _article)
+	_, err = DB.NamedExec(sqlStr, _article)
 	return err
 }
 
@@ -548,7 +719,7 @@ func UpdateArticle(id int64, am map[string]interface{}) error {
 		setKeysArr = append(setKeysArr, s)
 	}
 	sqlStr := fmt.Sprintf(sqlFmt, strings.Join(setKeysArr, ", "), id)
-	_, err := db.NamedExec(sqlStr, am)
+	_, err := DB.NamedExec(sqlStr, am)
 	if err != nil {
 		log.Println(err)
 		return err
@@ -565,6 +736,7 @@ func (_article *Article) Update(am map[string]interface{}) error {
 	return err
 }
 
+// UpdateAttributes method is supposed to be used to update Article records as corresponding update_attributes in Ruby on Rails.
 func (_article *Article) UpdateAttributes(am map[string]interface{}) error {
 	if _article.Id == 0 {
 		return errors.New("Invalid Id field: it can't be a zero value")
@@ -573,7 +745,7 @@ func (_article *Article) UpdateAttributes(am map[string]interface{}) error {
 	return err
 }
 
-// UpdateColumns method is supposed to be used to update Article records as corresponding update_columns in Rails
+// UpdateColumns method is supposed to be used to update Article records as corresponding update_columns in Ruby on Rails.
 func (_article *Article) UpdateColumns(am map[string]interface{}) error {
 	if _article.Id == 0 {
 		return errors.New("Invalid Id field: it can't be a zero value")
@@ -583,14 +755,14 @@ func (_article *Article) UpdateColumns(am map[string]interface{}) error {
 }
 
 // UpdateArticlesBySql is used to update Article records by a SQL clause
-// that use '?' binding syntax
+// using the '?' binding syntax.
 func UpdateArticlesBySql(sql string, args ...interface{}) (int64, error) {
 	if sql == "" {
 		return 0, errors.New("A blank SQL clause")
 	}
 	sql = strings.Replace(strings.ToLower(sql), "set", "set updated_at = ?, ", 1)
 	args = append([]interface{}{time.Now()}, args...)
-	stmt, err := db.Preparex(db.Rebind(sql))
+	stmt, err := DB.Preparex(DB.Rebind(sql))
 	result, err := stmt.Exec(args...)
 	if err != nil {
 		return 0, err
