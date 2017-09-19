@@ -364,8 +364,8 @@ Package models includes the functions on the model Comment.
 		
 			<h2 id="pkg-variables">Variables</h2>
 			
-				<pre>var <span id="DB">DB</span> *<a href="/pkg/github.com/jmoiron/sqlx/">sqlx</a>.<a href="/pkg/github.com/jmoiron/sqlx/#DB">DB</a></pre>
 				
+				<pre>var <span id="DB">DB</span> *<a href="/pkg/github.com/jmoiron/sqlx/">sqlx</a>.<a href="/pkg/github.com/jmoiron/sqlx/#DB">DB</a></pre>
 			
 		
 		
@@ -965,15 +965,15 @@ using the &#39;?&#39; binding syntax.
 			<h2 id="Article">type <a href="/gor_article.go?s=284:777#L10">Article</a>
 				<a class="permalink" href="#Article">&#xb6;</a>
 			</h2>
-			<pre>type Article struct {
-    Id        <a href="/pkg/builtin/#int64">int64</a>     `json:&#34;id,omitempty&#34; db:&#34;id&#34; valid:&#34;-&#34;`
-    Title     <a href="/pkg/builtin/#string">string</a>    `json:&#34;title,omitempty&#34; db:&#34;title&#34; valid:&#34;required,length(10|30)&#34;`
-    Text      <a href="/pkg/builtin/#string">string</a>    `json:&#34;text,omitempty&#34; db:&#34;text&#34; valid:&#34;required,length(20|4294967295)&#34;`
-    CreatedAt <a href="/pkg/time/">time</a>.<a href="/pkg/time/#Time">Time</a> `json:&#34;created_at,omitempty&#34; db:&#34;created_at&#34; valid:&#34;-&#34;`
-    UpdatedAt <a href="/pkg/time/">time</a>.<a href="/pkg/time/#Time">Time</a> `json:&#34;updated_at,omitempty&#34; db:&#34;updated_at&#34; valid:&#34;-&#34;`
-    Comments  []<a href="#Comment">Comment</a> `json:&#34;comments,omitempty&#34; db:&#34;comments&#34; valid:&#34;-&#34;`
-}</pre>
 			
+			<pre>type Article struct {
+<span id="Article.Id"></span>    Id        <a href="/pkg/builtin/#int64">int64</a>     `json:&#34;id,omitempty&#34; db:&#34;id&#34; valid:&#34;-&#34;`
+<span id="Article.Title"></span>    Title     <a href="/pkg/builtin/#string">string</a>    `json:&#34;title,omitempty&#34; db:&#34;title&#34; valid:&#34;required,length(10|30)&#34;`
+<span id="Article.Text"></span>    Text      <a href="/pkg/builtin/#string">string</a>    `json:&#34;text,omitempty&#34; db:&#34;text&#34; valid:&#34;required,length(20|4294967295)&#34;`
+<span id="Article.CreatedAt"></span>    CreatedAt <a href="/pkg/time/">time</a>.<a href="/pkg/time/#Time">Time</a> `json:&#34;created_at,omitempty&#34; db:&#34;created_at&#34; valid:&#34;-&#34;`
+<span id="Article.UpdatedAt"></span>    UpdatedAt <a href="/pkg/time/">time</a>.<a href="/pkg/time/#Time">Time</a> `json:&#34;updated_at,omitempty&#34; db:&#34;updated_at&#34; valid:&#34;-&#34;`
+<span id="Article.Comments"></span>    Comments  []<a href="#Comment">Comment</a> `json:&#34;comments,omitempty&#34; db:&#34;comments&#34; valid:&#34;-&#34;`
+}</pre>
 
 			
 
@@ -1161,22 +1161,22 @@ UpdateColumns method is supposed to be used to update Article records as corresp
 			<h2 id="ArticlePage">type <a href="/gor_article.go?s=812:1045#L20">ArticlePage</a>
 				<a class="permalink" href="#ArticlePage">&#xb6;</a>
 			</h2>
-			<pre>type ArticlePage struct {
-    WhereString <a href="/pkg/builtin/#string">string</a>
-    WhereParams []interface{}
-    Order       map[<a href="/pkg/builtin/#string">string</a>]<a href="/pkg/builtin/#string">string</a>
-    FirstId     <a href="/pkg/builtin/#int64">int64</a>
-    LastId      <a href="/pkg/builtin/#int64">int64</a>
-    PageNum     <a href="/pkg/builtin/#int">int</a>
-    PerPage     <a href="/pkg/builtin/#int">int</a>
-    TotalPages  <a href="/pkg/builtin/#int">int</a>
-    TotalItems  <a href="/pkg/builtin/#int64">int64</a>
-    <span class="comment">// contains filtered or unexported fields</span>
-}</pre>
 			<p>
 DataStruct for the pagination
 </p>
 
+			<pre>type ArticlePage struct {
+<span id="ArticlePage.WhereString"></span>    WhereString <a href="/pkg/builtin/#string">string</a>
+<span id="ArticlePage.WhereParams"></span>    WhereParams []interface{}
+<span id="ArticlePage.Order"></span>    Order       map[<a href="/pkg/builtin/#string">string</a>]<a href="/pkg/builtin/#string">string</a>
+<span id="ArticlePage.FirstId"></span>    FirstId     <a href="/pkg/builtin/#int64">int64</a>
+<span id="ArticlePage.LastId"></span>    LastId      <a href="/pkg/builtin/#int64">int64</a>
+<span id="ArticlePage.PageNum"></span>    PageNum     <a href="/pkg/builtin/#int">int</a>
+<span id="ArticlePage.PerPage"></span>    PerPage     <a href="/pkg/builtin/#int">int</a>
+<span id="ArticlePage.TotalPages"></span>    TotalPages  <a href="/pkg/builtin/#int">int</a>
+<span id="ArticlePage.TotalItems"></span>    TotalItems  <a href="/pkg/builtin/#int64">int64</a>
+    <span class="comment">// contains filtered or unexported fields</span>
+}</pre>
 
 			
 
@@ -1234,16 +1234,16 @@ Current get the previous page of ArticlePage object for pagination
 			<h2 id="Comment">type <a href="/gor_comment.go?s=284:846#L10">Comment</a>
 				<a class="permalink" href="#Comment">&#xb6;</a>
 			</h2>
-			<pre>type Comment struct {
-    Id        <a href="/pkg/builtin/#int64">int64</a>     `json:&#34;id,omitempty&#34; db:&#34;id&#34; valid:&#34;-&#34;`
-    Commenter <a href="/pkg/builtin/#string">string</a>    `json:&#34;commenter,omitempty&#34; db:&#34;commenter&#34; valid:&#34;required&#34;`
-    Body      <a href="/pkg/builtin/#string">string</a>    `json:&#34;body,omitempty&#34; db:&#34;body&#34; valid:&#34;required,length(20|4294967295)&#34;`
-    ArticleId <a href="/pkg/builtin/#int64">int64</a>     `json:&#34;article_id,omitempty&#34; db:&#34;article_id&#34; valid:&#34;-&#34;`
-    CreatedAt <a href="/pkg/time/">time</a>.<a href="/pkg/time/#Time">Time</a> `json:&#34;created_at,omitempty&#34; db:&#34;created_at&#34; valid:&#34;-&#34;`
-    UpdatedAt <a href="/pkg/time/">time</a>.<a href="/pkg/time/#Time">Time</a> `json:&#34;updated_at,omitempty&#34; db:&#34;updated_at&#34; valid:&#34;-&#34;`
-    Article   <a href="#Article">Article</a>   `json:&#34;article,omitempty&#34; db:&#34;article&#34; valid:&#34;-&#34;`
-}</pre>
 			
+			<pre>type Comment struct {
+<span id="Comment.Id"></span>    Id        <a href="/pkg/builtin/#int64">int64</a>     `json:&#34;id,omitempty&#34; db:&#34;id&#34; valid:&#34;-&#34;`
+<span id="Comment.Commenter"></span>    Commenter <a href="/pkg/builtin/#string">string</a>    `json:&#34;commenter,omitempty&#34; db:&#34;commenter&#34; valid:&#34;required&#34;`
+<span id="Comment.Body"></span>    Body      <a href="/pkg/builtin/#string">string</a>    `json:&#34;body,omitempty&#34; db:&#34;body&#34; valid:&#34;required,length(20|4294967295)&#34;`
+<span id="Comment.ArticleId"></span>    ArticleId <a href="/pkg/builtin/#int64">int64</a>     `json:&#34;article_id,omitempty&#34; db:&#34;article_id&#34; valid:&#34;-&#34;`
+<span id="Comment.CreatedAt"></span>    CreatedAt <a href="/pkg/time/">time</a>.<a href="/pkg/time/#Time">Time</a> `json:&#34;created_at,omitempty&#34; db:&#34;created_at&#34; valid:&#34;-&#34;`
+<span id="Comment.UpdatedAt"></span>    UpdatedAt <a href="/pkg/time/">time</a>.<a href="/pkg/time/#Time">Time</a> `json:&#34;updated_at,omitempty&#34; db:&#34;updated_at&#34; valid:&#34;-&#34;`
+<span id="Comment.Article"></span>    Article   <a href="#Article">Article</a>   `json:&#34;article,omitempty&#34; db:&#34;article&#34; valid:&#34;-&#34;`
+}</pre>
 
 			
 
@@ -1416,22 +1416,22 @@ UpdateColumns method is supposed to be used to update Comment records as corresp
 			<h2 id="CommentPage">type <a href="/gor_comment.go?s=881:1114#L21">CommentPage</a>
 				<a class="permalink" href="#CommentPage">&#xb6;</a>
 			</h2>
-			<pre>type CommentPage struct {
-    WhereString <a href="/pkg/builtin/#string">string</a>
-    WhereParams []interface{}
-    Order       map[<a href="/pkg/builtin/#string">string</a>]<a href="/pkg/builtin/#string">string</a>
-    FirstId     <a href="/pkg/builtin/#int64">int64</a>
-    LastId      <a href="/pkg/builtin/#int64">int64</a>
-    PageNum     <a href="/pkg/builtin/#int">int</a>
-    PerPage     <a href="/pkg/builtin/#int">int</a>
-    TotalPages  <a href="/pkg/builtin/#int">int</a>
-    TotalItems  <a href="/pkg/builtin/#int64">int64</a>
-    <span class="comment">// contains filtered or unexported fields</span>
-}</pre>
 			<p>
 DataStruct for the pagination
 </p>
 
+			<pre>type CommentPage struct {
+<span id="CommentPage.WhereString"></span>    WhereString <a href="/pkg/builtin/#string">string</a>
+<span id="CommentPage.WhereParams"></span>    WhereParams []interface{}
+<span id="CommentPage.Order"></span>    Order       map[<a href="/pkg/builtin/#string">string</a>]<a href="/pkg/builtin/#string">string</a>
+<span id="CommentPage.FirstId"></span>    FirstId     <a href="/pkg/builtin/#int64">int64</a>
+<span id="CommentPage.LastId"></span>    LastId      <a href="/pkg/builtin/#int64">int64</a>
+<span id="CommentPage.PageNum"></span>    PageNum     <a href="/pkg/builtin/#int">int</a>
+<span id="CommentPage.PerPage"></span>    PerPage     <a href="/pkg/builtin/#int">int</a>
+<span id="CommentPage.TotalPages"></span>    TotalPages  <a href="/pkg/builtin/#int">int</a>
+<span id="CommentPage.TotalItems"></span>    TotalItems  <a href="/pkg/builtin/#int64">int64</a>
+    <span class="comment">// contains filtered or unexported fields</span>
+}</pre>
 
 			
 
