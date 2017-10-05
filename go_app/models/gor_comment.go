@@ -41,7 +41,7 @@ type CommentPage struct {
 	orderStr    string
 }
 
-// Current get the current page of CommentPage object for pagination
+// Current() get the current page of CommentPage object for pagination
 func (_p *CommentPage) Current() ([]Comment, error) {
 	if _, exist := _p.Order["id"]; !exist {
 		return nil, errors.New("No id order specified in Order map")
@@ -69,7 +69,7 @@ func (_p *CommentPage) Current() ([]Comment, error) {
 	return comments, nil
 }
 
-// Current get the previous page of CommentPage object for pagination
+// Previous() get the previous page of CommentPage object for pagination
 func (_p *CommentPage) Previous() ([]Comment, error) {
 	if _p.PageNum == 0 {
 		return nil, errors.New("This's the first page, no previous page yet")
@@ -101,7 +101,7 @@ func (_p *CommentPage) Previous() ([]Comment, error) {
 	return comments, nil
 }
 
-// Current get the next page of CommentPage object for pagination
+// Next() get the next page of CommentPage object for pagination
 func (_p *CommentPage) Next() ([]Comment, error) {
 	if _p.PageNum == _p.TotalPages-1 {
 		return nil, errors.New("This's the last page, no next page yet")
@@ -131,6 +131,22 @@ func (_p *CommentPage) Next() ([]Comment, error) {
 	}
 	_p.PageNum += 1
 	return comments, nil
+}
+
+// GetPage() is a helper function for the CommentPage object to return a corresponding page due to
+// the parameter passed in, one of "previous, current or next"
+func (_p *CommentPage) GetPage(direction string) (ps []Comment, err error) {
+	switch direction {
+	case "previous":
+		ps, _ = _p.Previous()
+	case "next":
+		ps, _ = _p.Next()
+	case "current":
+		ps, _ = _p.Current()
+	default:
+		return nil, errors.New("Error: wrong dircetion! None of previous, current or next!")
+	}
+	return
 }
 
 // buildOrder is for CommentPage object to build SQL ORDER clause
