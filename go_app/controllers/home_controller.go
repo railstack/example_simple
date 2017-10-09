@@ -3,7 +3,7 @@ package controllers
 import (
 	"net/http"
 
-	"gopkg.in/gin-gonic/gin.v1"
+	"github.com/gin-gonic/gin"
 	// you can import models
 	//m "../models"
 )
@@ -23,7 +23,7 @@ func HomeHandler(c *gin.Context) {
 		GolangVer    string
 	}
 
-	gorVer := "0.1.8"
+	gorVer := "0.1.10"
 	golangVer := "go version go1.9 darwin/amd64"
 
 	envs := Envs{GoOnRailsVer: gorVer, GolangVer: golangVer}

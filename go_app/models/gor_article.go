@@ -40,7 +40,7 @@ type ArticlePage struct {
 	orderStr    string
 }
 
-// Current() get the current page of ArticlePage object for pagination
+// Current get the current page of ArticlePage object for pagination
 func (_p *ArticlePage) Current() ([]Article, error) {
 	if _, exist := _p.Order["id"]; !exist {
 		return nil, errors.New("No id order specified in Order map")
@@ -68,7 +68,7 @@ func (_p *ArticlePage) Current() ([]Article, error) {
 	return articles, nil
 }
 
-// Previous() get the previous page of ArticlePage object for pagination
+// Previous get the previous page of ArticlePage object for pagination
 func (_p *ArticlePage) Previous() ([]Article, error) {
 	if _p.PageNum == 0 {
 		return nil, errors.New("This's the first page, no previous page yet")
@@ -100,7 +100,7 @@ func (_p *ArticlePage) Previous() ([]Article, error) {
 	return articles, nil
 }
 
-// Next() get the next page of ArticlePage object for pagination
+// Next get the next page of ArticlePage object for pagination
 func (_p *ArticlePage) Next() ([]Article, error) {
 	if _p.PageNum == _p.TotalPages-1 {
 		return nil, errors.New("This's the last page, no next page yet")
@@ -132,7 +132,7 @@ func (_p *ArticlePage) Next() ([]Article, error) {
 	return articles, nil
 }
 
-// GetPage() is a helper function for the ArticlePage object to return a corresponding page due to
+// GetPage is a helper function for the ArticlePage object to return a corresponding page due to
 // the parameter passed in, one of "previous, current or next"
 func (_p *ArticlePage) GetPage(direction string) (ps []Article, err error) {
 	switch direction {
