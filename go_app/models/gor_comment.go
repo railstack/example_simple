@@ -219,7 +219,7 @@ func FindComment(id int64) (*Comment, error) {
 		return nil, errors.New("Invalid ID: it can't be zero")
 	}
 	_comment := Comment{}
-	err := DB.Get(&_comment, DB.Rebind(`SELECT * FROM comments WHERE id = ? LIMIT 1`), id)
+	err := DB.Get(&_comment, DB.Rebind(`SELECT COALESCE(comments.body, '') AS body, COALESCE(comments.article_id, 0) AS article_id, comments.id, comments.commenter, comments.created_at, comments.updated_at FROM comments WHERE comments.id = ? LIMIT 1`), id)
 	if err != nil {
 		log.Printf("Error: %v\n", err)
 		return nil, err
@@ -230,7 +230,7 @@ func FindComment(id int64) (*Comment, error) {
 // FirstComment find the first one comment by ID ASC order
 func FirstComment() (*Comment, error) {
 	_comment := Comment{}
-	err := DB.Get(&_comment, DB.Rebind(`SELECT * FROM comments ORDER BY id ASC LIMIT 1`))
+	err := DB.Get(&_comment, DB.Rebind(`SELECT COALESCE(comments.body, '') AS body, COALESCE(comments.article_id, 0) AS article_id, comments.id, comments.commenter, comments.created_at, comments.updated_at FROM comments ORDER BY comments.id ASC LIMIT 1`))
 	if err != nil {
 		log.Printf("Error: %v\n", err)
 		return nil, err
@@ -241,7 +241,7 @@ func FirstComment() (*Comment, error) {
 // FirstComments find the first N comments by ID ASC order
 func FirstComments(n uint32) ([]Comment, error) {
 	_comments := []Comment{}
-	sql := fmt.Sprintf("SELECT * FROM comments ORDER BY id ASC LIMIT %v", n)
+	sql := fmt.Sprintf("SELECT COALESCE(comments.body, '') AS body, COALESCE(comments.article_id, 0) AS article_id, comments.id, comments.commenter, comments.created_at, comments.updated_at FROM comments ORDER BY comments.id ASC LIMIT %v", n)
 	err := DB.Select(&_comments, DB.Rebind(sql))
 	if err != nil {
 		log.Printf("Error: %v\n", err)
@@ -253,7 +253,7 @@ func FirstComments(n uint32) ([]Comment, error) {
 // LastComment find the last one comment by ID DESC order
 func LastComment() (*Comment, error) {
 	_comment := Comment{}
-	err := DB.Get(&_comment, DB.Rebind(`SELECT * FROM comments ORDER BY id DESC LIMIT 1`))
+	err := DB.Get(&_comment, DB.Rebind(`SELECT COALESCE(comments.body, '') AS body, COALESCE(comments.article_id, 0) AS article_id, comments.id, comments.commenter, comments.created_at, comments.updated_at FROM comments ORDER BY comments.id DESC LIMIT 1`))
 	if err != nil {
 		log.Printf("Error: %v\n", err)
 		return nil, err
@@ -264,7 +264,7 @@ func LastComment() (*Comment, error) {
 // LastComments find the last N comments by ID DESC order
 func LastComments(n uint32) ([]Comment, error) {
 	_comments := []Comment{}
-	sql := fmt.Sprintf("SELECT * FROM comments ORDER BY id DESC LIMIT %v", n)
+	sql := fmt.Sprintf("SELECT COALESCE(comments.body, '') AS body, COALESCE(comments.article_id, 0) AS article_id, comments.id, comments.commenter, comments.created_at, comments.updated_at FROM comments ORDER BY comments.id DESC LIMIT %v", n)
 	err := DB.Select(&_comments, DB.Rebind(sql))
 	if err != nil {
 		log.Printf("Error: %v\n", err)
@@ -282,7 +282,7 @@ func FindComments(ids ...int64) ([]Comment, error) {
 	}
 	_comments := []Comment{}
 	idsHolder := strings.Repeat(",?", len(ids)-1)
-	sql := DB.Rebind(fmt.Sprintf(`SELECT * FROM comments WHERE id IN (?%s)`, idsHolder))
+	sql := DB.Rebind(fmt.Sprintf(`SELECT COALESCE(comments.body, '') AS body, COALESCE(comments.article_id, 0) AS article_id, comments.id, comments.commenter, comments.created_at, comments.updated_at FROM comments WHERE comments.id IN (?%s)`, idsHolder))
 	idsT := []interface{}{}
 	for _, id := range ids {
 		idsT = append(idsT, interface{}(id))
@@ -298,7 +298,7 @@ func FindComments(ids ...int64) ([]Comment, error) {
 // FindCommentBy find a single comment by a field name and a value
 func FindCommentBy(field string, val interface{}) (*Comment, error) {
 	_comment := Comment{}
-	sqlFmt := `SELECT * FROM comments WHERE %s = ? LIMIT 1`
+	sqlFmt := `SELECT COALESCE(comments.body, '') AS body, COALESCE(comments.article_id, 0) AS article_id, comments.id, comments.commenter, comments.created_at, comments.updated_at FROM comments WHERE %s = ? LIMIT 1`
 	sqlStr := fmt.Sprintf(sqlFmt, field)
 	err := DB.Get(&_comment, DB.Rebind(sqlStr), val)
 	if err != nil {
@@ -310,7 +310,7 @@ func FindCommentBy(field string, val interface{}) (*Comment, error) {
 
 // FindCommentsBy find all comments by a field name and a value
 func FindCommentsBy(field string, val interface{}) (_comments []Comment, err error) {
-	sqlFmt := `SELECT * FROM comments WHERE %s = ?`
+	sqlFmt := `SELECT COALESCE(comments.body, '') AS body, COALESCE(comments.article_id, 0) AS article_id, comments.id, comments.commenter, comments.created_at, comments.updated_at FROM comments WHERE %s = ?`
 	sqlStr := fmt.Sprintf(sqlFmt, field)
 	err = DB.Select(&_comments, DB.Rebind(sqlStr), val)
 	if err != nil {
@@ -322,7 +322,7 @@ func FindCommentsBy(field string, val interface{}) (_comments []Comment, err err
 
 // AllComments get all the Comment records
 func AllComments() (comments []Comment, err error) {
-	err = DB.Select(&comments, "SELECT * FROM comments")
+	err = DB.Select(&comments, "SELECT COALESCE(comments.body, '') AS body, COALESCE(comments.article_id, 0) AS article_id, comments.id, comments.commenter, comments.created_at, comments.updated_at FROM comments")
 	if err != nil {
 		log.Println(err)
 		return nil, err
@@ -438,7 +438,7 @@ func CommentStrCol(col, where string, args ...interface{}) (strColRecs []string,
 // with placeholders, eg: FindUsersWhere("first_name = ? AND age > ?", "John", 18)
 // will return those records in the table "users" whose first_name is "John" and age elder than 18
 func FindCommentsWhere(where string, args ...interface{}) (comments []Comment, err error) {
-	sql := "SELECT * FROM comments"
+	sql := "SELECT COALESCE(comments.body, '') AS body, COALESCE(comments.article_id, 0) AS article_id, comments.id, comments.commenter, comments.created_at, comments.updated_at FROM comments"
 	if len(where) > 0 {
 		sql = sql + " WHERE " + where
 	}

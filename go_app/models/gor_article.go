@@ -218,7 +218,7 @@ func FindArticle(id int64) (*Article, error) {
 		return nil, errors.New("Invalid ID: it can't be zero")
 	}
 	_article := Article{}
-	err := DB.Get(&_article, DB.Rebind(`SELECT * FROM articles WHERE id = ? LIMIT 1`), id)
+	err := DB.Get(&_article, DB.Rebind(`SELECT COALESCE(articles.text, '') AS text, articles.id, articles.title, articles.created_at, articles.updated_at FROM articles WHERE articles.id = ? LIMIT 1`), id)
 	if err != nil {
 		log.Printf("Error: %v\n", err)
 		return nil, err
@@ -229,7 +229,7 @@ func FindArticle(id int64) (*Article, error) {
 // FirstArticle find the first one article by ID ASC order
 func FirstArticle() (*Article, error) {
 	_article := Article{}
-	err := DB.Get(&_article, DB.Rebind(`SELECT * FROM articles ORDER BY id ASC LIMIT 1`))
+	err := DB.Get(&_article, DB.Rebind(`SELECT COALESCE(articles.text, '') AS text, articles.id, articles.title, articles.created_at, articles.updated_at FROM articles ORDER BY articles.id ASC LIMIT 1`))
 	if err != nil {
 		log.Printf("Error: %v\n", err)
 		return nil, err
@@ -240,7 +240,7 @@ func FirstArticle() (*Article, error) {
 // FirstArticles find the first N articles by ID ASC order
 func FirstArticles(n uint32) ([]Article, error) {
 	_articles := []Article{}
-	sql := fmt.Sprintf("SELECT * FROM articles ORDER BY id ASC LIMIT %v", n)
+	sql := fmt.Sprintf("SELECT COALESCE(articles.text, '') AS text, articles.id, articles.title, articles.created_at, articles.updated_at FROM articles ORDER BY articles.id ASC LIMIT %v", n)
 	err := DB.Select(&_articles, DB.Rebind(sql))
 	if err != nil {
 		log.Printf("Error: %v\n", err)
@@ -252,7 +252,7 @@ func FirstArticles(n uint32) ([]Article, error) {
 // LastArticle find the last one article by ID DESC order
 func LastArticle() (*Article, error) {
 	_article := Article{}
-	err := DB.Get(&_article, DB.Rebind(`SELECT * FROM articles ORDER BY id DESC LIMIT 1`))
+	err := DB.Get(&_article, DB.Rebind(`SELECT COALESCE(articles.text, '') AS text, articles.id, articles.title, articles.created_at, articles.updated_at FROM articles ORDER BY articles.id DESC LIMIT 1`))
 	if err != nil {
 		log.Printf("Error: %v\n", err)
 		return nil, err
@@ -263,7 +263,7 @@ func LastArticle() (*Article, error) {
 // LastArticles find the last N articles by ID DESC order
 func LastArticles(n uint32) ([]Article, error) {
 	_articles := []Article{}
-	sql := fmt.Sprintf("SELECT * FROM articles ORDER BY id DESC LIMIT %v", n)
+	sql := fmt.Sprintf("SELECT COALESCE(articles.text, '') AS text, articles.id, articles.title, articles.created_at, articles.updated_at FROM articles ORDER BY articles.id DESC LIMIT %v", n)
 	err := DB.Select(&_articles, DB.Rebind(sql))
 	if err != nil {
 		log.Printf("Error: %v\n", err)
@@ -281,7 +281,7 @@ func FindArticles(ids ...int64) ([]Article, error) {
 	}
 	_articles := []Article{}
 	idsHolder := strings.Repeat(",?", len(ids)-1)
-	sql := DB.Rebind(fmt.Sprintf(`SELECT * FROM articles WHERE id IN (?%s)`, idsHolder))
+	sql := DB.Rebind(fmt.Sprintf(`SELECT COALESCE(articles.text, '') AS text, articles.id, articles.title, articles.created_at, articles.updated_at FROM articles WHERE articles.id IN (?%s)`, idsHolder))
 	idsT := []interface{}{}
 	for _, id := range ids {
 		idsT = append(idsT, interface{}(id))
@@ -297,7 +297,7 @@ func FindArticles(ids ...int64) ([]Article, error) {
 // FindArticleBy find a single article by a field name and a value
 func FindArticleBy(field string, val interface{}) (*Article, error) {
 	_article := Article{}
-	sqlFmt := `SELECT * FROM articles WHERE %s = ? LIMIT 1`
+	sqlFmt := `SELECT COALESCE(articles.text, '') AS text, articles.id, articles.title, articles.created_at, articles.updated_at FROM articles WHERE %s = ? LIMIT 1`
 	sqlStr := fmt.Sprintf(sqlFmt, field)
 	err := DB.Get(&_article, DB.Rebind(sqlStr), val)
 	if err != nil {
@@ -309,7 +309,7 @@ func FindArticleBy(field string, val interface{}) (*Article, error) {
 
 // FindArticlesBy find all articles by a field name and a value
 func FindArticlesBy(field string, val interface{}) (_articles []Article, err error) {
-	sqlFmt := `SELECT * FROM articles WHERE %s = ?`
+	sqlFmt := `SELECT COALESCE(articles.text, '') AS text, articles.id, articles.title, articles.created_at, articles.updated_at FROM articles WHERE %s = ?`
 	sqlStr := fmt.Sprintf(sqlFmt, field)
 	err = DB.Select(&_articles, DB.Rebind(sqlStr), val)
 	if err != nil {
@@ -321,7 +321,7 @@ func FindArticlesBy(field string, val interface{}) (_articles []Article, err err
 
 // AllArticles get all the Article records
 func AllArticles() (articles []Article, err error) {
-	err = DB.Select(&articles, "SELECT * FROM articles")
+	err = DB.Select(&articles, "SELECT COALESCE(articles.text, '') AS text, articles.id, articles.title, articles.created_at, articles.updated_at FROM articles")
 	if err != nil {
 		log.Println(err)
 		return nil, err
@@ -457,7 +457,7 @@ func ArticleStrCol(col, where string, args ...interface{}) (strColRecs []string,
 // with placeholders, eg: FindUsersWhere("first_name = ? AND age > ?", "John", 18)
 // will return those records in the table "users" whose first_name is "John" and age elder than 18
 func FindArticlesWhere(where string, args ...interface{}) (articles []Article, err error) {
-	sql := "SELECT * FROM articles"
+	sql := "SELECT COALESCE(articles.text, '') AS text, articles.id, articles.title, articles.created_at, articles.updated_at FROM articles"
 	if len(where) > 0 {
 		sql = sql + " WHERE " + where
 	}
