@@ -40,7 +40,7 @@ type ArticlePage struct {
 	orderStr    string
 }
 
-// Current get the current page of ArticlePage object for pagination
+// Current get the current page of ArticlePage object for pagination.
 func (_p *ArticlePage) Current() ([]Article, error) {
 	if _, exist := _p.Order["id"]; !exist {
 		return nil, errors.New("No id order specified in Order map")
@@ -68,7 +68,7 @@ func (_p *ArticlePage) Current() ([]Article, error) {
 	return articles, nil
 }
 
-// Previous get the previous page of ArticlePage object for pagination
+// Previous get the previous page of ArticlePage object for pagination.
 func (_p *ArticlePage) Previous() ([]Article, error) {
 	if _p.PageNum == 0 {
 		return nil, errors.New("This's the first page, no previous page yet")
@@ -100,7 +100,7 @@ func (_p *ArticlePage) Previous() ([]Article, error) {
 	return articles, nil
 }
 
-// Next get the next page of ArticlePage object for pagination
+// Next get the next page of ArticlePage object for pagination.
 func (_p *ArticlePage) Next() ([]Article, error) {
 	if _p.PageNum == _p.TotalPages-1 {
 		return nil, errors.New("This's the last page, no next page yet")
@@ -133,7 +133,7 @@ func (_p *ArticlePage) Next() ([]Article, error) {
 }
 
 // GetPage is a helper function for the ArticlePage object to return a corresponding page due to
-// the parameter passed in, one of "previous, current or next"
+// the parameter passed in, i.e. one of "previous, current or next".
 func (_p *ArticlePage) GetPage(direction string) (ps []Article, err error) {
 	switch direction {
 	case "previous":
@@ -148,7 +148,7 @@ func (_p *ArticlePage) GetPage(direction string) (ps []Article, err error) {
 	return
 }
 
-// buildOrder is for ArticlePage object to build SQL ORDER clause
+// buildOrder is for ArticlePage object to build a SQL ORDER BY clause.
 func (_p *ArticlePage) buildOrder() {
 	tempList := []string{}
 	for k, v := range _p.Order {
@@ -158,7 +158,7 @@ func (_p *ArticlePage) buildOrder() {
 }
 
 // buildIdRestrict is for ArticlePage object to build a SQL clause for ID restriction,
-// implementing a simple keyset style pagination
+// implementing a simple keyset style pagination.
 func (_p *ArticlePage) buildIdRestrict(direction string) (idStr string, idParams []interface{}) {
 	switch direction {
 	case "previous":
@@ -198,7 +198,7 @@ func (_p *ArticlePage) buildIdRestrict(direction string) (idStr string, idParams
 	return
 }
 
-// buildPageCount calculate the TotalItems/TotalPages for the ArticlePage object
+// buildPageCount calculate the TotalItems/TotalPages for the ArticlePage object.
 func (_p *ArticlePage) buildPageCount() error {
 	count, err := ArticleCountWhere(_p.WhereString, _p.WhereParams...)
 	if err != nil {
@@ -212,7 +212,7 @@ func (_p *ArticlePage) buildPageCount() error {
 	return nil
 }
 
-// FindArticle find a single article by an ID
+// FindArticle find a single article by an ID.
 func FindArticle(id int64) (*Article, error) {
 	if id == 0 {
 		return nil, errors.New("Invalid ID: it can't be zero")
@@ -226,7 +226,7 @@ func FindArticle(id int64) (*Article, error) {
 	return &_article, nil
 }
 
-// FirstArticle find the first one article by ID ASC order
+// FirstArticle find the first one article by ID ASC order.
 func FirstArticle() (*Article, error) {
 	_article := Article{}
 	err := DB.Get(&_article, DB.Rebind(`SELECT COALESCE(articles.text, '') AS text, articles.id, articles.title, articles.created_at, articles.updated_at FROM articles ORDER BY articles.id ASC LIMIT 1`))
@@ -237,7 +237,7 @@ func FirstArticle() (*Article, error) {
 	return &_article, nil
 }
 
-// FirstArticles find the first N articles by ID ASC order
+// FirstArticles find the first N articles by ID ASC order.
 func FirstArticles(n uint32) ([]Article, error) {
 	_articles := []Article{}
 	sql := fmt.Sprintf("SELECT COALESCE(articles.text, '') AS text, articles.id, articles.title, articles.created_at, articles.updated_at FROM articles ORDER BY articles.id ASC LIMIT %v", n)
@@ -249,7 +249,7 @@ func FirstArticles(n uint32) ([]Article, error) {
 	return _articles, nil
 }
 
-// LastArticle find the last one article by ID DESC order
+// LastArticle find the last one article by ID DESC order.
 func LastArticle() (*Article, error) {
 	_article := Article{}
 	err := DB.Get(&_article, DB.Rebind(`SELECT COALESCE(articles.text, '') AS text, articles.id, articles.title, articles.created_at, articles.updated_at FROM articles ORDER BY articles.id DESC LIMIT 1`))
@@ -260,7 +260,7 @@ func LastArticle() (*Article, error) {
 	return &_article, nil
 }
 
-// LastArticles find the last N articles by ID DESC order
+// LastArticles find the last N articles by ID DESC order.
 func LastArticles(n uint32) ([]Article, error) {
 	_articles := []Article{}
 	sql := fmt.Sprintf("SELECT COALESCE(articles.text, '') AS text, articles.id, articles.title, articles.created_at, articles.updated_at FROM articles ORDER BY articles.id DESC LIMIT %v", n)
@@ -272,7 +272,7 @@ func LastArticles(n uint32) ([]Article, error) {
 	return _articles, nil
 }
 
-// FindArticles find one or more articles by the given ID(s)
+// FindArticles find one or more articles by the given ID(s).
 func FindArticles(ids ...int64) ([]Article, error) {
 	if len(ids) == 0 {
 		msg := "At least one or more ids needed"
@@ -294,7 +294,7 @@ func FindArticles(ids ...int64) ([]Article, error) {
 	return _articles, nil
 }
 
-// FindArticleBy find a single article by a field name and a value
+// FindArticleBy find a single article by a field name and a value.
 func FindArticleBy(field string, val interface{}) (*Article, error) {
 	_article := Article{}
 	sqlFmt := `SELECT COALESCE(articles.text, '') AS text, articles.id, articles.title, articles.created_at, articles.updated_at FROM articles WHERE %s = ? LIMIT 1`
@@ -307,7 +307,7 @@ func FindArticleBy(field string, val interface{}) (*Article, error) {
 	return &_article, nil
 }
 
-// FindArticlesBy find all articles by a field name and a value
+// FindArticlesBy find all articles by a field name and a value.
 func FindArticlesBy(field string, val interface{}) (_articles []Article, err error) {
 	sqlFmt := `SELECT COALESCE(articles.text, '') AS text, articles.id, articles.title, articles.created_at, articles.updated_at FROM articles WHERE %s = ?`
 	sqlStr := fmt.Sprintf(sqlFmt, field)
@@ -319,7 +319,7 @@ func FindArticlesBy(field string, val interface{}) (_articles []Article, err err
 	return _articles, nil
 }
 
-// AllArticles get all the Article records
+// AllArticles get all the Article records.
 func AllArticles() (articles []Article, err error) {
 	err = DB.Select(&articles, "SELECT COALESCE(articles.text, '') AS text, articles.id, articles.title, articles.created_at, articles.updated_at FROM articles")
 	if err != nil {
@@ -329,7 +329,7 @@ func AllArticles() (articles []Article, err error) {
 	return articles, nil
 }
 
-// ArticleCount get the count of all the Article records
+// ArticleCount get the count of all the Article records.
 func ArticleCount() (c int64, err error) {
 	err = DB.Get(&c, "SELECT count(*) FROM articles")
 	if err != nil {
@@ -339,7 +339,7 @@ func ArticleCount() (c int64, err error) {
 	return c, nil
 }
 
-// ArticleCountWhere get the count of all the Article records with a where clause
+// ArticleCountWhere get the count of all the Article records with a where clause.
 func ArticleCountWhere(where string, args ...interface{}) (c int64, err error) {
 	sql := "SELECT count(*) FROM articles"
 	if len(where) > 0 {
@@ -358,7 +358,7 @@ func ArticleCountWhere(where string, args ...interface{}) (c int64, err error) {
 	return c, nil
 }
 
-// ArticleIncludesWhere get the Article associated models records, it's just the eager_load function
+// ArticleIncludesWhere get the Article associated models records, currently it's not same as the corresponding "includes" function but "preload" instead in Ruby on Rails. It means that the "sql" should be restricted on Article model.
 func ArticleIncludesWhere(assocs []string, sql string, args ...interface{}) (_articles []Article, err error) {
 	_articles, err = FindArticlesWhere(sql, args...)
 	if err != nil {
@@ -399,7 +399,7 @@ func ArticleIncludesWhere(assocs []string, sql string, args ...interface{}) (_ar
 	return _articles, nil
 }
 
-// ArticleIds get all the IDs of Article records
+// ArticleIds get all the IDs of Article records.
 func ArticleIds() (ids []int64, err error) {
 	err = DB.Select(&ids, "SELECT id FROM articles")
 	if err != nil {
@@ -409,13 +409,13 @@ func ArticleIds() (ids []int64, err error) {
 	return ids, nil
 }
 
-// ArticleIdsWhere get all the IDs of Article records by where restriction
+// ArticleIdsWhere get all the IDs of Article records by where restriction.
 func ArticleIdsWhere(where string, args ...interface{}) ([]int64, error) {
 	ids, err := ArticleIntCol("id", where, args...)
 	return ids, err
 }
 
-// ArticleIntCol get some int64 typed column of Article by where restriction
+// ArticleIntCol get some int64 typed column of Article by where restriction.
 func ArticleIntCol(col, where string, args ...interface{}) (intColRecs []int64, err error) {
 	sql := "SELECT " + col + " FROM articles"
 	if len(where) > 0 {
@@ -434,7 +434,7 @@ func ArticleIntCol(col, where string, args ...interface{}) (intColRecs []int64, 
 	return intColRecs, nil
 }
 
-// ArticleStrCol get some string typed column of Article by where restriction
+// ArticleStrCol get some string typed column of Article by where restriction.
 func ArticleStrCol(col, where string, args ...interface{}) (strColRecs []string, err error) {
 	sql := "SELECT " + col + " FROM articles"
 	if len(where) > 0 {
@@ -455,7 +455,7 @@ func ArticleStrCol(col, where string, args ...interface{}) (strColRecs []string,
 
 // FindArticlesWhere query use a partial SQL clause that usually following after WHERE
 // with placeholders, eg: FindUsersWhere("first_name = ? AND age > ?", "John", 18)
-// will return those records in the table "users" whose first_name is "John" and age elder than 18
+// will return those records in the table "users" whose first_name is "John" and age elder than 18.
 func FindArticlesWhere(where string, args ...interface{}) (articles []Article, err error) {
 	sql := "SELECT COALESCE(articles.text, '') AS text, articles.id, articles.title, articles.created_at, articles.updated_at FROM articles"
 	if len(where) > 0 {
@@ -476,7 +476,7 @@ func FindArticlesWhere(where string, args ...interface{}) (articles []Article, e
 
 // FindArticleBySql query use a complete SQL clause
 // with placeholders, eg: FindUserBySql("SELECT * FROM users WHERE first_name = ? AND age > ? ORDER BY DESC LIMIT 1", "John", 18)
-// will return only One record in the table "users" whose first_name is "John" and age elder than 18
+// will return only One record in the table "users" whose first_name is "John" and age elder than 18.
 func FindArticleBySql(sql string, args ...interface{}) (*Article, error) {
 	stmt, err := DB.Preparex(DB.Rebind(sql))
 	if err != nil {
@@ -494,7 +494,7 @@ func FindArticleBySql(sql string, args ...interface{}) (*Article, error) {
 
 // FindArticlesBySql query use a complete SQL clause
 // with placeholders, eg: FindUsersBySql("SELECT * FROM users WHERE first_name = ? AND age > ?", "John", 18)
-// will return those records in the table "users" whose first_name is "John" and age elder than 18
+// will return those records in the table "users" whose first_name is "John" and age elder than 18.
 func FindArticlesBySql(sql string, args ...interface{}) (articles []Article, err error) {
 	stmt, err := DB.Preparex(DB.Rebind(sql))
 	if err != nil {
@@ -542,7 +542,7 @@ func CreateArticle(am map[string]interface{}) (int64, error) {
 	return lastId, nil
 }
 
-// Create is a method for Article to create a record
+// Create is a method for Article to create a record.
 func (_article *Article) Create() (int64, error) {
 	ok, err := govalidator.ValidateStruct(_article)
 	if !ok {
@@ -579,7 +579,7 @@ func (_article *Article) CommentsCreate(am map[string]interface{}) error {
 
 // GetComments is used for Article to get associated objects Comments
 // Say you have a Article object named article, when you call article.GetComments(),
-// the object will get the associated Comments attributes evaluated in the struct
+// the object will get the associated Comments attributes evaluated in the struct.
 func (_article *Article) GetComments() error {
 	_comments, err := ArticleGetComments(_article.Id)
 	if err == nil {
@@ -588,7 +588,7 @@ func (_article *Article) GetComments() error {
 	return err
 }
 
-// ArticleGetComments a helper fuction used to get associated objects for ArticleIncludesWhere()
+// ArticleGetComments a helper fuction used to get associated objects for ArticleIncludesWhere().
 func ArticleGetComments(id int64) ([]Comment, error) {
 	_comments, err := FindCommentsBy("article_id", id)
 	return _comments, err
@@ -694,7 +694,7 @@ func destroyArticleAssociations(ids ...int64) {
 }
 
 // Save method is used for a Article object to update an existed record mainly.
-// If no id provided a new record will be created. A UPSERT action will be implemented further.
+// If no id provided a new record will be created. FIXME: A UPSERT action will be implemented further.
 func (_article *Article) Save() error {
 	ok, err := govalidator.ValidateStruct(_article)
 	if !ok {

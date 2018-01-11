@@ -28,7 +28,7 @@ change to the new directory, add the gem `go-on-rails`:
 
 ```bash
 # edit Gemfile
-gem 'go-on-rails', '~> 0.1.11'
+gem 'go-on-rails', '~> 0.3.0'
 ```
 and then bundle:
 
@@ -129,7 +129,7 @@ when the installation completed after some while, make sure you now under the ro
 go run main.go
 ```
 
-open http://localhost:3000 by default in your browser, you can see a  welcome page from go-on-rails:
+open http://localhost:4000 by default in your browser, you can see a  welcome page from go-on-rails:
 
 <img src="go-on-rails-home-page.jpg" width=700>
 
@@ -190,13 +190,13 @@ In a terminal window run `go run main.go`, in another terminal use `curl` comman
 For example, to get all `article` records:
 
 ```bash
-curl -XGET 'http://localhost:3000/articles'
+curl -XGET 'http://localhost:4000/articles'
 ```
 
 To create a new article, run:
 
 ```bash
-curl -XPOST 'http://localhost:3000/articles' -d '{ "title": "Use go-on-rails to build a Golang app", "text": "blablabla..." }'
+curl -XPOST 'http://localhost:4000/articles' -d '{ "title": "Use go-on-rails to build a Golang app", "text": "blablabla..." }'
 ```
 
 You can check the [main.go](https://github.com/goonr/example_simple/blob/master/go_app/main.go) and [controller files](https://github.com/goonr/example_simple/tree/master/go_app/controllers) in this repository for details.

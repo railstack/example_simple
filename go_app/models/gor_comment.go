@@ -41,7 +41,7 @@ type CommentPage struct {
 	orderStr    string
 }
 
-// Current get the current page of CommentPage object for pagination
+// Current get the current page of CommentPage object for pagination.
 func (_p *CommentPage) Current() ([]Comment, error) {
 	if _, exist := _p.Order["id"]; !exist {
 		return nil, errors.New("No id order specified in Order map")
@@ -69,7 +69,7 @@ func (_p *CommentPage) Current() ([]Comment, error) {
 	return comments, nil
 }
 
-// Previous get the previous page of CommentPage object for pagination
+// Previous get the previous page of CommentPage object for pagination.
 func (_p *CommentPage) Previous() ([]Comment, error) {
 	if _p.PageNum == 0 {
 		return nil, errors.New("This's the first page, no previous page yet")
@@ -101,7 +101,7 @@ func (_p *CommentPage) Previous() ([]Comment, error) {
 	return comments, nil
 }
 
-// Next get the next page of CommentPage object for pagination
+// Next get the next page of CommentPage object for pagination.
 func (_p *CommentPage) Next() ([]Comment, error) {
 	if _p.PageNum == _p.TotalPages-1 {
 		return nil, errors.New("This's the last page, no next page yet")
@@ -134,7 +134,7 @@ func (_p *CommentPage) Next() ([]Comment, error) {
 }
 
 // GetPage is a helper function for the CommentPage object to return a corresponding page due to
-// the parameter passed in, one of "previous, current or next"
+// the parameter passed in, i.e. one of "previous, current or next".
 func (_p *CommentPage) GetPage(direction string) (ps []Comment, err error) {
 	switch direction {
 	case "previous":
@@ -149,7 +149,7 @@ func (_p *CommentPage) GetPage(direction string) (ps []Comment, err error) {
 	return
 }
 
-// buildOrder is for CommentPage object to build SQL ORDER clause
+// buildOrder is for CommentPage object to build a SQL ORDER BY clause.
 func (_p *CommentPage) buildOrder() {
 	tempList := []string{}
 	for k, v := range _p.Order {
@@ -159,7 +159,7 @@ func (_p *CommentPage) buildOrder() {
 }
 
 // buildIdRestrict is for CommentPage object to build a SQL clause for ID restriction,
-// implementing a simple keyset style pagination
+// implementing a simple keyset style pagination.
 func (_p *CommentPage) buildIdRestrict(direction string) (idStr string, idParams []interface{}) {
 	switch direction {
 	case "previous":
@@ -199,7 +199,7 @@ func (_p *CommentPage) buildIdRestrict(direction string) (idStr string, idParams
 	return
 }
 
-// buildPageCount calculate the TotalItems/TotalPages for the CommentPage object
+// buildPageCount calculate the TotalItems/TotalPages for the CommentPage object.
 func (_p *CommentPage) buildPageCount() error {
 	count, err := CommentCountWhere(_p.WhereString, _p.WhereParams...)
 	if err != nil {
@@ -213,7 +213,7 @@ func (_p *CommentPage) buildPageCount() error {
 	return nil
 }
 
-// FindComment find a single comment by an ID
+// FindComment find a single comment by an ID.
 func FindComment(id int64) (*Comment, error) {
 	if id == 0 {
 		return nil, errors.New("Invalid ID: it can't be zero")
@@ -227,7 +227,7 @@ func FindComment(id int64) (*Comment, error) {
 	return &_comment, nil
 }
 
-// FirstComment find the first one comment by ID ASC order
+// FirstComment find the first one comment by ID ASC order.
 func FirstComment() (*Comment, error) {
 	_comment := Comment{}
 	err := DB.Get(&_comment, DB.Rebind(`SELECT COALESCE(comments.body, '') AS body, COALESCE(comments.article_id, 0) AS article_id, comments.id, comments.commenter, comments.created_at, comments.updated_at FROM comments ORDER BY comments.id ASC LIMIT 1`))
@@ -238,7 +238,7 @@ func FirstComment() (*Comment, error) {
 	return &_comment, nil
 }
 
-// FirstComments find the first N comments by ID ASC order
+// FirstComments find the first N comments by ID ASC order.
 func FirstComments(n uint32) ([]Comment, error) {
 	_comments := []Comment{}
 	sql := fmt.Sprintf("SELECT COALESCE(comments.body, '') AS body, COALESCE(comments.article_id, 0) AS article_id, comments.id, comments.commenter, comments.created_at, comments.updated_at FROM comments ORDER BY comments.id ASC LIMIT %v", n)
@@ -250,7 +250,7 @@ func FirstComments(n uint32) ([]Comment, error) {
 	return _comments, nil
 }
 
-// LastComment find the last one comment by ID DESC order
+// LastComment find the last one comment by ID DESC order.
 func LastComment() (*Comment, error) {
 	_comment := Comment{}
 	err := DB.Get(&_comment, DB.Rebind(`SELECT COALESCE(comments.body, '') AS body, COALESCE(comments.article_id, 0) AS article_id, comments.id, comments.commenter, comments.created_at, comments.updated_at FROM comments ORDER BY comments.id DESC LIMIT 1`))
@@ -261,7 +261,7 @@ func LastComment() (*Comment, error) {
 	return &_comment, nil
 }
 
-// LastComments find the last N comments by ID DESC order
+// LastComments find the last N comments by ID DESC order.
 func LastComments(n uint32) ([]Comment, error) {
 	_comments := []Comment{}
 	sql := fmt.Sprintf("SELECT COALESCE(comments.body, '') AS body, COALESCE(comments.article_id, 0) AS article_id, comments.id, comments.commenter, comments.created_at, comments.updated_at FROM comments ORDER BY comments.id DESC LIMIT %v", n)
@@ -273,7 +273,7 @@ func LastComments(n uint32) ([]Comment, error) {
 	return _comments, nil
 }
 
-// FindComments find one or more comments by the given ID(s)
+// FindComments find one or more comments by the given ID(s).
 func FindComments(ids ...int64) ([]Comment, error) {
 	if len(ids) == 0 {
 		msg := "At least one or more ids needed"
@@ -295,7 +295,7 @@ func FindComments(ids ...int64) ([]Comment, error) {
 	return _comments, nil
 }
 
-// FindCommentBy find a single comment by a field name and a value
+// FindCommentBy find a single comment by a field name and a value.
 func FindCommentBy(field string, val interface{}) (*Comment, error) {
 	_comment := Comment{}
 	sqlFmt := `SELECT COALESCE(comments.body, '') AS body, COALESCE(comments.article_id, 0) AS article_id, comments.id, comments.commenter, comments.created_at, comments.updated_at FROM comments WHERE %s = ? LIMIT 1`
@@ -308,7 +308,7 @@ func FindCommentBy(field string, val interface{}) (*Comment, error) {
 	return &_comment, nil
 }
 
-// FindCommentsBy find all comments by a field name and a value
+// FindCommentsBy find all comments by a field name and a value.
 func FindCommentsBy(field string, val interface{}) (_comments []Comment, err error) {
 	sqlFmt := `SELECT COALESCE(comments.body, '') AS body, COALESCE(comments.article_id, 0) AS article_id, comments.id, comments.commenter, comments.created_at, comments.updated_at FROM comments WHERE %s = ?`
 	sqlStr := fmt.Sprintf(sqlFmt, field)
@@ -320,7 +320,7 @@ func FindCommentsBy(field string, val interface{}) (_comments []Comment, err err
 	return _comments, nil
 }
 
-// AllComments get all the Comment records
+// AllComments get all the Comment records.
 func AllComments() (comments []Comment, err error) {
 	err = DB.Select(&comments, "SELECT COALESCE(comments.body, '') AS body, COALESCE(comments.article_id, 0) AS article_id, comments.id, comments.commenter, comments.created_at, comments.updated_at FROM comments")
 	if err != nil {
@@ -330,7 +330,7 @@ func AllComments() (comments []Comment, err error) {
 	return comments, nil
 }
 
-// CommentCount get the count of all the Comment records
+// CommentCount get the count of all the Comment records.
 func CommentCount() (c int64, err error) {
 	err = DB.Get(&c, "SELECT count(*) FROM comments")
 	if err != nil {
@@ -340,7 +340,7 @@ func CommentCount() (c int64, err error) {
 	return c, nil
 }
 
-// CommentCountWhere get the count of all the Comment records with a where clause
+// CommentCountWhere get the count of all the Comment records with a where clause.
 func CommentCountWhere(where string, args ...interface{}) (c int64, err error) {
 	sql := "SELECT count(*) FROM comments"
 	if len(where) > 0 {
@@ -359,7 +359,7 @@ func CommentCountWhere(where string, args ...interface{}) (c int64, err error) {
 	return c, nil
 }
 
-// CommentIncludesWhere get the Comment associated models records, it's just the eager_load function
+// CommentIncludesWhere get the Comment associated models records, currently it's not same as the corresponding "includes" function but "preload" instead in Ruby on Rails. It means that the "sql" should be restricted on Comment model.
 func CommentIncludesWhere(assocs []string, sql string, args ...interface{}) (_comments []Comment, err error) {
 	_comments, err = FindCommentsWhere(sql, args...)
 	if err != nil {
@@ -380,7 +380,7 @@ func CommentIncludesWhere(assocs []string, sql string, args ...interface{}) (_co
 	return _comments, nil
 }
 
-// CommentIds get all the IDs of Comment records
+// CommentIds get all the IDs of Comment records.
 func CommentIds() (ids []int64, err error) {
 	err = DB.Select(&ids, "SELECT id FROM comments")
 	if err != nil {
@@ -390,13 +390,13 @@ func CommentIds() (ids []int64, err error) {
 	return ids, nil
 }
 
-// CommentIdsWhere get all the IDs of Comment records by where restriction
+// CommentIdsWhere get all the IDs of Comment records by where restriction.
 func CommentIdsWhere(where string, args ...interface{}) ([]int64, error) {
 	ids, err := CommentIntCol("id", where, args...)
 	return ids, err
 }
 
-// CommentIntCol get some int64 typed column of Comment by where restriction
+// CommentIntCol get some int64 typed column of Comment by where restriction.
 func CommentIntCol(col, where string, args ...interface{}) (intColRecs []int64, err error) {
 	sql := "SELECT " + col + " FROM comments"
 	if len(where) > 0 {
@@ -415,7 +415,7 @@ func CommentIntCol(col, where string, args ...interface{}) (intColRecs []int64, 
 	return intColRecs, nil
 }
 
-// CommentStrCol get some string typed column of Comment by where restriction
+// CommentStrCol get some string typed column of Comment by where restriction.
 func CommentStrCol(col, where string, args ...interface{}) (strColRecs []string, err error) {
 	sql := "SELECT " + col + " FROM comments"
 	if len(where) > 0 {
@@ -436,7 +436,7 @@ func CommentStrCol(col, where string, args ...interface{}) (strColRecs []string,
 
 // FindCommentsWhere query use a partial SQL clause that usually following after WHERE
 // with placeholders, eg: FindUsersWhere("first_name = ? AND age > ?", "John", 18)
-// will return those records in the table "users" whose first_name is "John" and age elder than 18
+// will return those records in the table "users" whose first_name is "John" and age elder than 18.
 func FindCommentsWhere(where string, args ...interface{}) (comments []Comment, err error) {
 	sql := "SELECT COALESCE(comments.body, '') AS body, COALESCE(comments.article_id, 0) AS article_id, comments.id, comments.commenter, comments.created_at, comments.updated_at FROM comments"
 	if len(where) > 0 {
@@ -457,7 +457,7 @@ func FindCommentsWhere(where string, args ...interface{}) (comments []Comment, e
 
 // FindCommentBySql query use a complete SQL clause
 // with placeholders, eg: FindUserBySql("SELECT * FROM users WHERE first_name = ? AND age > ? ORDER BY DESC LIMIT 1", "John", 18)
-// will return only One record in the table "users" whose first_name is "John" and age elder than 18
+// will return only One record in the table "users" whose first_name is "John" and age elder than 18.
 func FindCommentBySql(sql string, args ...interface{}) (*Comment, error) {
 	stmt, err := DB.Preparex(DB.Rebind(sql))
 	if err != nil {
@@ -475,7 +475,7 @@ func FindCommentBySql(sql string, args ...interface{}) (*Comment, error) {
 
 // FindCommentsBySql query use a complete SQL clause
 // with placeholders, eg: FindUsersBySql("SELECT * FROM users WHERE first_name = ? AND age > ?", "John", 18)
-// will return those records in the table "users" whose first_name is "John" and age elder than 18
+// will return those records in the table "users" whose first_name is "John" and age elder than 18.
 func FindCommentsBySql(sql string, args ...interface{}) (comments []Comment, err error) {
 	stmt, err := DB.Preparex(DB.Rebind(sql))
 	if err != nil {
@@ -523,7 +523,7 @@ func CreateComment(am map[string]interface{}) (int64, error) {
 	return lastId, nil
 }
 
-// Create is a method for Comment to create a record
+// Create is a method for Comment to create a record.
 func (_comment *Comment) Create() (int64, error) {
 	ok, err := govalidator.ValidateStruct(_comment)
 	if !ok {
@@ -551,7 +551,7 @@ func (_comment *Comment) Create() (int64, error) {
 	return lastId, nil
 }
 
-// CreateArticle is a method for a Comment object to create an associated Article record
+// CreateArticle is a method for a Comment object to create an associated Article record.
 func (_comment *Comment) CreateArticle(am map[string]interface{}) error {
 	am["comment_id"] = _comment.Id
 	_, err := CreateArticle(am)
@@ -625,7 +625,7 @@ func DestroyCommentsWhere(where string, args ...interface{}) (int64, error) {
 }
 
 // Save method is used for a Comment object to update an existed record mainly.
-// If no id provided a new record will be created. A UPSERT action will be implemented further.
+// If no id provided a new record will be created. FIXME: A UPSERT action will be implemented further.
 func (_comment *Comment) Save() error {
 	ok, err := govalidator.ValidateStruct(_comment)
 	if !ok {
