@@ -1,10 +1,10 @@
 # A simple example on usage of go-on-rails generator
 
-This is an simple example for the [go-on-rails](https://github.com/goonr/go-on-rails), a Rails generator.
+This is an simple example for the [go-on-rails](https://github.com/railstack/go-on-rails), a Rails generator.
 
 You can take the example as a tutorial, too. I'll make it as simple and clear as possible to show how to use the go-on-rails generator to generate Golang codes in a Rails app.
 
-Even though I highly recommend you to get a quick overview of [go-on-rails](https://github.com/goonr/go-on-rails) to learn some commands usage before taking further in this example.
+Even though I highly recommend you to get a quick overview of [go-on-rails](https://github.com/railstack/go-on-rails) to learn some commands usage before taking further in this example.
 
 ### Environments
 
@@ -199,4 +199,4 @@ To create a new article, run:
 curl -XPOST 'http://localhost:4000/articles' -d '{ "title": "Use go-on-rails to build a Golang app", "text": "blablabla..." }'
 ```
 
-You can check the [main.go](https://github.com/goonr/example_simple/blob/master/go_app/main.go) and [controller files](https://github.com/goonr/example_simple/tree/master/go_app/controllers) in this repository for details.
+You can check the [main.go](https://github.com/railstack/example_simple/blob/master/go_app/main.go) and [controller files](https://github.com/railstack/example_simple/tree/master/go_app/controllers) in this repository for details.
