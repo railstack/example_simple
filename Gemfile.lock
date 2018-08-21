@@ -50,7 +50,7 @@ GEM
     ffi (1.9.23)
     globalid (0.4.1)
       activesupport (>= 4.2.0)
-    go-on-rails (0.3.0)
+    go-on-rails (0.3.1)
     i18n (1.0.1)
       concurrent-ruby (~> 1.0)
     listen (3.0.8)
@@ -126,7 +126,7 @@ PLATFORMS
 DEPENDENCIES
   annotate
   byebug
-  go-on-rails (~> 0.3.0)
+  go-on-rails (~> 0.3.1)
   listen (~> 3.0.5)
   mysql2 (>= 0.3.18, < 0.5)
   puma (~> 3.0)

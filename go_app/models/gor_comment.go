@@ -54,9 +54,7 @@ func (_p *CommentPage) Current() ([]Comment, error) {
 		_p.buildOrder()
 	}
 	idStr, idParams := _p.buildIdRestrict("current")
-
 	whereStr := fmt.Sprintf("%s %s %s LIMIT %v", _p.WhereString, idStr, _p.orderStr, _p.PerPage)
-
 	whereParams := []interface{}{}
 	whereParams = append(append(whereParams, _p.WhereParams...), idParams...)
 	comments, err := FindCommentsWhere(whereStr, whereParams...)
@@ -85,9 +83,7 @@ func (_p *CommentPage) Previous() ([]Comment, error) {
 		_p.buildOrder()
 	}
 	idStr, idParams := _p.buildIdRestrict("previous")
-
 	whereStr := fmt.Sprintf("%s %s %s LIMIT %v", _p.WhereString, idStr, _p.orderStr, _p.PerPage)
-
 	whereParams := []interface{}{}
 	whereParams = append(append(whereParams, _p.WhereParams...), idParams...)
 	comments, err := FindCommentsWhere(whereStr, whereParams...)
@@ -117,9 +113,7 @@ func (_p *CommentPage) Next() ([]Comment, error) {
 		_p.buildOrder()
 	}
 	idStr, idParams := _p.buildIdRestrict("next")
-
 	whereStr := fmt.Sprintf("%s %s %s LIMIT %v", _p.WhereString, idStr, _p.orderStr, _p.PerPage)
-
 	whereParams := []interface{}{}
 	whereParams = append(append(whereParams, _p.WhereParams...), idParams...)
 	comments, err := FindCommentsWhere(whereStr, whereParams...)
@@ -502,15 +496,10 @@ func CreateComment(am map[string]interface{}) (int64, error) {
 			am[v] = t
 		}
 	}
-	keys := make([]string, len(am))
-	i := 0
-	for k := range am {
-		keys[i] = k
-		i++
-	}
+	keys := allKeys(am)
 	sqlFmt := `INSERT INTO comments (%s) VALUES (%s)`
-	sqlStr := fmt.Sprintf(sqlFmt, strings.Join(keys, ","), ":"+strings.Join(keys, ",:"))
-	result, err := DB.NamedExec(sqlStr, am)
+	sql := fmt.Sprintf(sqlFmt, strings.Join(keys, ","), ":"+strings.Join(keys, ",:"))
+	result, err := DB.NamedExec(sql, am)
 	if err != nil {
 		log.Println(err)
 		return 0, err
@@ -653,12 +642,7 @@ func UpdateComment(id int64, am map[string]interface{}) error {
 		return errors.New("Zero key in the attributes map!")
 	}
 	am["updated_at"] = time.Now()
-	keys := make([]string, len(am))
-	i := 0
-	for k := range am {
-		keys[i] = k
-		i++
-	}
+	keys := allKeys(am)
 	sqlFmt := `UPDATE comments SET %s WHERE id = %v`
 	setKeysArr := []string{}
 	for _, v := range keys {
@@ -707,8 +691,6 @@ func UpdateCommentsBySql(sql string, args ...interface{}) (int64, error) {
 	if sql == "" {
 		return 0, errors.New("A blank SQL clause")
 	}
-	sql = strings.Replace(strings.ToLower(sql), "set", "set updated_at = ?, ", 1)
-	args = append([]interface{}{time.Now()}, args...)
 	stmt, err := DB.Preparex(DB.Rebind(sql))
 	result, err := stmt.Exec(args...)
 	if err != nil {

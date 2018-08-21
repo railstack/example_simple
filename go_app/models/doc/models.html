@@ -64,28 +64,16 @@ Package models includes the functions on the model Comment.
 			
 			
 				
-				<dd><a href="#AllArticles">func AllArticles() (articles []Article, err error)</a></dd>
-			
-				
-				<dd><a href="#AllComments">func AllComments() (comments []Comment, err error)</a></dd>
-			
-				
 				<dd><a href="#ArticleCount">func ArticleCount() (c int64, err error)</a></dd>
 			
 				
 				<dd><a href="#ArticleCountWhere">func ArticleCountWhere(where string, args ...interface{}) (c int64, err error)</a></dd>
 			
 				
-				<dd><a href="#ArticleGetComments">func ArticleGetComments(id int64) ([]Comment, error)</a></dd>
-			
-				
 				<dd><a href="#ArticleIds">func ArticleIds() (ids []int64, err error)</a></dd>
 			
 				
 				<dd><a href="#ArticleIdsWhere">func ArticleIdsWhere(where string, args ...interface{}) ([]int64, error)</a></dd>
-			
-				
-				<dd><a href="#ArticleIncludesWhere">func ArticleIncludesWhere(assocs []string, sql string, args ...interface{}) (_articles []Article, err error)</a></dd>
 			
 				
 				<dd><a href="#ArticleIntCol">func ArticleIntCol(col, where string, args ...interface{}) (intColRecs []int64, err error)</a></dd>
@@ -104,9 +92,6 @@ Package models includes the functions on the model Comment.
 			
 				
 				<dd><a href="#CommentIdsWhere">func CommentIdsWhere(where string, args ...interface{}) ([]int64, error)</a></dd>
-			
-				
-				<dd><a href="#CommentIncludesWhere">func CommentIncludesWhere(assocs []string, sql string, args ...interface{}) (_comments []Comment, err error)</a></dd>
 			
 				
 				<dd><a href="#CommentIntCol">func CommentIntCol(col, where string, args ...interface{}) (intColRecs []int64, err error)</a></dd>
@@ -139,42 +124,6 @@ Package models includes the functions on the model Comment.
 				<dd><a href="#DestroyCommentsWhere">func DestroyCommentsWhere(where string, args ...interface{}) (int64, error)</a></dd>
 			
 				
-				<dd><a href="#FindArticles">func FindArticles(ids ...int64) ([]Article, error)</a></dd>
-			
-				
-				<dd><a href="#FindArticlesBy">func FindArticlesBy(field string, val interface{}) (_articles []Article, err error)</a></dd>
-			
-				
-				<dd><a href="#FindArticlesBySql">func FindArticlesBySql(sql string, args ...interface{}) (articles []Article, err error)</a></dd>
-			
-				
-				<dd><a href="#FindArticlesWhere">func FindArticlesWhere(where string, args ...interface{}) (articles []Article, err error)</a></dd>
-			
-				
-				<dd><a href="#FindComments">func FindComments(ids ...int64) ([]Comment, error)</a></dd>
-			
-				
-				<dd><a href="#FindCommentsBy">func FindCommentsBy(field string, val interface{}) (_comments []Comment, err error)</a></dd>
-			
-				
-				<dd><a href="#FindCommentsBySql">func FindCommentsBySql(sql string, args ...interface{}) (comments []Comment, err error)</a></dd>
-			
-				
-				<dd><a href="#FindCommentsWhere">func FindCommentsWhere(where string, args ...interface{}) (comments []Comment, err error)</a></dd>
-			
-				
-				<dd><a href="#FirstArticles">func FirstArticles(n uint32) ([]Article, error)</a></dd>
-			
-				
-				<dd><a href="#FirstComments">func FirstComments(n uint32) ([]Comment, error)</a></dd>
-			
-				
-				<dd><a href="#LastArticles">func LastArticles(n uint32) ([]Article, error)</a></dd>
-			
-				
-				<dd><a href="#LastComments">func LastComments(n uint32) ([]Comment, error)</a></dd>
-			
-				
 				<dd><a href="#UpdateArticle">func UpdateArticle(id int64, am map[string]interface{}) error</a></dd>
 			
 				
@@ -191,6 +140,12 @@ Package models includes the functions on the model Comment.
 				<dd><a href="#Article">type Article</a></dd>
 				
 					
+					<dd>&nbsp; &nbsp; <a href="#AllArticles">func AllArticles() (articles []Article, err error)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#ArticleIncludesWhere">func ArticleIncludesWhere(assocs []string, sql string, args ...interface{}) (_articles []Article, err error)</a></dd>
+				
+					
 					<dd>&nbsp; &nbsp; <a href="#FindArticle">func FindArticle(id int64) (*Article, error)</a></dd>
 				
 					
@@ -200,10 +155,28 @@ Package models includes the functions on the model Comment.
 					<dd>&nbsp; &nbsp; <a href="#FindArticleBySql">func FindArticleBySql(sql string, args ...interface{}) (*Article, error)</a></dd>
 				
 					
+					<dd>&nbsp; &nbsp; <a href="#FindArticles">func FindArticles(ids ...int64) ([]Article, error)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#FindArticlesBy">func FindArticlesBy(field string, val interface{}) (_articles []Article, err error)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#FindArticlesBySql">func FindArticlesBySql(sql string, args ...interface{}) (articles []Article, err error)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#FindArticlesWhere">func FindArticlesWhere(where string, args ...interface{}) (articles []Article, err error)</a></dd>
+				
+					
 					<dd>&nbsp; &nbsp; <a href="#FirstArticle">func FirstArticle() (*Article, error)</a></dd>
 				
 					
+					<dd>&nbsp; &nbsp; <a href="#FirstArticles">func FirstArticles(n uint32) ([]Article, error)</a></dd>
+				
+					
 					<dd>&nbsp; &nbsp; <a href="#LastArticle">func LastArticle() (*Article, error)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#LastArticles">func LastArticles(n uint32) ([]Article, error)</a></dd>
 				
 				
 					
@@ -252,6 +225,15 @@ Package models includes the functions on the model Comment.
 				<dd><a href="#Comment">type Comment</a></dd>
 				
 					
+					<dd>&nbsp; &nbsp; <a href="#AllComments">func AllComments() (comments []Comment, err error)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#ArticleGetComments">func ArticleGetComments(id int64) ([]Comment, error)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#CommentIncludesWhere">func CommentIncludesWhere(assocs []string, sql string, args ...interface{}) (_comments []Comment, err error)</a></dd>
+				
+					
 					<dd>&nbsp; &nbsp; <a href="#FindComment">func FindComment(id int64) (*Comment, error)</a></dd>
 				
 					
@@ -261,10 +243,28 @@ Package models includes the functions on the model Comment.
 					<dd>&nbsp; &nbsp; <a href="#FindCommentBySql">func FindCommentBySql(sql string, args ...interface{}) (*Comment, error)</a></dd>
 				
 					
+					<dd>&nbsp; &nbsp; <a href="#FindComments">func FindComments(ids ...int64) ([]Comment, error)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#FindCommentsBy">func FindCommentsBy(field string, val interface{}) (_comments []Comment, err error)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#FindCommentsBySql">func FindCommentsBySql(sql string, args ...interface{}) (comments []Comment, err error)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#FindCommentsWhere">func FindCommentsWhere(where string, args ...interface{}) (comments []Comment, err error)</a></dd>
+				
+					
 					<dd>&nbsp; &nbsp; <a href="#FirstComment">func FirstComment() (*Comment, error)</a></dd>
 				
 					
+					<dd>&nbsp; &nbsp; <a href="#FirstComments">func FirstComments(n uint32) ([]Comment, error)</a></dd>
+				
+					
 					<dd>&nbsp; &nbsp; <a href="#LastComment">func LastComment() (*Comment, error)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#LastComments">func LastComments(n uint32) ([]Comment, error)</a></dd>
 				
 				
 					
@@ -313,7 +313,7 @@ Package models includes the functions on the model Comment.
 		
 
 		
-			<h4>Package files</h4>
+			<h3>Package files</h3>
 			<p>
 			<span style="font-size:90%">
 			
@@ -322,6 +322,8 @@ Package models includes the functions on the model Comment.
 				<a href="/gor_article.go">gor_article.go</a>
 			
 				<a href="/gor_comment.go">gor_comment.go</a>
+			
+				<a href="/utils.go">utils.go</a>
 			
 			</span>
 			</p>
@@ -377,35 +379,7 @@ Package models includes the functions on the model Comment.
 		
 			
 			
-			<h2 id="AllArticles">func <a href="/gor_article.go?s=10263:10313#L313">AllArticles</a>
-				<a class="permalink" href="#AllArticles">&#xb6;</a>
-			</h2>
-			<pre>func AllArticles() (articles []<a href="#Article">Article</a>, err <a href="/pkg/builtin/#error">error</a>)</pre>
-			<p>
-AllArticles get all the Article records.
-</p>
-
-			
-			
-
-		
-			
-			
-			<h2 id="AllComments">func <a href="/gor_comment.go?s=10748:10798#L314">AllComments</a>
-				<a class="permalink" href="#AllComments">&#xb6;</a>
-			</h2>
-			<pre>func AllComments() (comments []<a href="#Comment">Comment</a>, err <a href="/pkg/builtin/#error">error</a>)</pre>
-			<p>
-AllComments get all the Comment records.
-</p>
-
-			
-			
-
-		
-			
-			
-			<h2 id="ArticleCount">func <a href="/gor_article.go?s=10615:10655#L323">ArticleCount</a>
+			<h2 id="ArticleCount">func <a href="/gor_article.go?s=10609:10649#L317">ArticleCount</a>
 				<a class="permalink" href="#ArticleCount">&#xb6;</a>
 			</h2>
 			<pre>func ArticleCount() (c <a href="/pkg/builtin/#int64">int64</a>, err <a href="/pkg/builtin/#error">error</a>)</pre>
@@ -419,7 +393,7 @@ ArticleCount get the count of all the Article records.
 		
 			
 			
-			<h2 id="ArticleCountWhere">func <a href="/gor_article.go?s=10865:10943#L333">ArticleCountWhere</a>
+			<h2 id="ArticleCountWhere">func <a href="/gor_article.go?s=10859:10937#L327">ArticleCountWhere</a>
 				<a class="permalink" href="#ArticleCountWhere">&#xb6;</a>
 			</h2>
 			<pre>func ArticleCountWhere(where <a href="/pkg/builtin/#string">string</a>, args ...interface{}) (c <a href="/pkg/builtin/#int64">int64</a>, err <a href="/pkg/builtin/#error">error</a>)</pre>
@@ -433,21 +407,7 @@ ArticleCountWhere get the count of all the Article records with a where clause.
 		
 			
 			
-			<h2 id="ArticleGetComments">func <a href="/gor_article.go?s=18289:18341#L582">ArticleGetComments</a>
-				<a class="permalink" href="#ArticleGetComments">&#xb6;</a>
-			</h2>
-			<pre>func ArticleGetComments(id <a href="/pkg/builtin/#int64">int64</a>) ([]<a href="#Comment">Comment</a>, <a href="/pkg/builtin/#error">error</a>)</pre>
-			<p>
-ArticleGetComments a helper fuction used to get associated objects for ArticleIncludesWhere().
-</p>
-
-			
-			
-
-		
-			
-			
-			<h2 id="ArticleIds">func <a href="/gor_article.go?s=12614:12656#L393">ArticleIds</a>
+			<h2 id="ArticleIds">func <a href="/gor_article.go?s=12608:12650#L387">ArticleIds</a>
 				<a class="permalink" href="#ArticleIds">&#xb6;</a>
 			</h2>
 			<pre>func ArticleIds() (ids []<a href="/pkg/builtin/#int64">int64</a>, err <a href="/pkg/builtin/#error">error</a>)</pre>
@@ -461,7 +421,7 @@ ArticleIds get all the IDs of Article records.
 		
 			
 			
-			<h2 id="ArticleIdsWhere">func <a href="/gor_article.go?s=12862:12934#L403">ArticleIdsWhere</a>
+			<h2 id="ArticleIdsWhere">func <a href="/gor_article.go?s=12856:12928#L397">ArticleIdsWhere</a>
 				<a class="permalink" href="#ArticleIdsWhere">&#xb6;</a>
 			</h2>
 			<pre>func ArticleIdsWhere(where <a href="/pkg/builtin/#string">string</a>, args ...interface{}) ([]<a href="/pkg/builtin/#int64">int64</a>, <a href="/pkg/builtin/#error">error</a>)</pre>
@@ -475,21 +435,7 @@ ArticleIdsWhere get all the IDs of Article records by where restriction.
 		
 			
 			
-			<h2 id="ArticleIncludesWhere">func <a href="/gor_article.go?s=11476:11584#L352">ArticleIncludesWhere</a>
-				<a class="permalink" href="#ArticleIncludesWhere">&#xb6;</a>
-			</h2>
-			<pre>func ArticleIncludesWhere(assocs []<a href="/pkg/builtin/#string">string</a>, sql <a href="/pkg/builtin/#string">string</a>, args ...interface{}) (_articles []<a href="#Article">Article</a>, err <a href="/pkg/builtin/#error">error</a>)</pre>
-			<p>
-ArticleIncludesWhere get the Article associated models records, currently it&#39;s not same as the corresponding &#34;includes&#34; function but &#34;preload&#34; instead in Ruby on Rails. It means that the &#34;sql&#34; should be restricted on Article model.
-</p>
-
-			
-			
-
-		
-			
-			
-			<h2 id="ArticleIntCol">func <a href="/gor_article.go?s=13084:13174#L409">ArticleIntCol</a>
+			<h2 id="ArticleIntCol">func <a href="/gor_article.go?s=13078:13168#L403">ArticleIntCol</a>
 				<a class="permalink" href="#ArticleIntCol">&#xb6;</a>
 			</h2>
 			<pre>func ArticleIntCol(col, where <a href="/pkg/builtin/#string">string</a>, args ...interface{}) (intColRecs []<a href="/pkg/builtin/#int64">int64</a>, err <a href="/pkg/builtin/#error">error</a>)</pre>
@@ -503,7 +449,7 @@ ArticleIntCol get some int64 typed column of Article by where restriction.
 		
 			
 			
-			<h2 id="ArticleStrCol">func <a href="/gor_article.go?s=13579:13670#L428">ArticleStrCol</a>
+			<h2 id="ArticleStrCol">func <a href="/gor_article.go?s=13573:13664#L422">ArticleStrCol</a>
 				<a class="permalink" href="#ArticleStrCol">&#xb6;</a>
 			</h2>
 			<pre>func ArticleStrCol(col, where <a href="/pkg/builtin/#string">string</a>, args ...interface{}) (strColRecs []<a href="/pkg/builtin/#string">string</a>, err <a href="/pkg/builtin/#error">error</a>)</pre>
@@ -517,7 +463,7 @@ ArticleStrCol get some string typed column of Article by where restriction.
 		
 			
 			
-			<h2 id="CommentCount">func <a href="/gor_comment.go?s=11152:11192#L324">CommentCount</a>
+			<h2 id="CommentCount">func <a href="/gor_comment.go?s=11146:11186#L318">CommentCount</a>
 				<a class="permalink" href="#CommentCount">&#xb6;</a>
 			</h2>
 			<pre>func CommentCount() (c <a href="/pkg/builtin/#int64">int64</a>, err <a href="/pkg/builtin/#error">error</a>)</pre>
@@ -531,7 +477,7 @@ CommentCount get the count of all the Comment records.
 		
 			
 			
-			<h2 id="CommentCountWhere">func <a href="/gor_comment.go?s=11402:11480#L334">CommentCountWhere</a>
+			<h2 id="CommentCountWhere">func <a href="/gor_comment.go?s=11396:11474#L328">CommentCountWhere</a>
 				<a class="permalink" href="#CommentCountWhere">&#xb6;</a>
 			</h2>
 			<pre>func CommentCountWhere(where <a href="/pkg/builtin/#string">string</a>, args ...interface{}) (c <a href="/pkg/builtin/#int64">int64</a>, err <a href="/pkg/builtin/#error">error</a>)</pre>
@@ -545,7 +491,7 @@ CommentCountWhere get the count of all the Comment records with a where clause.
 		
 			
 			
-			<h2 id="CommentIds">func <a href="/gor_comment.go?s=12604:12646#L374">CommentIds</a>
+			<h2 id="CommentIds">func <a href="/gor_comment.go?s=12598:12640#L368">CommentIds</a>
 				<a class="permalink" href="#CommentIds">&#xb6;</a>
 			</h2>
 			<pre>func CommentIds() (ids []<a href="/pkg/builtin/#int64">int64</a>, err <a href="/pkg/builtin/#error">error</a>)</pre>
@@ -559,7 +505,7 @@ CommentIds get all the IDs of Comment records.
 		
 			
 			
-			<h2 id="CommentIdsWhere">func <a href="/gor_comment.go?s=12852:12924#L384">CommentIdsWhere</a>
+			<h2 id="CommentIdsWhere">func <a href="/gor_comment.go?s=12846:12918#L378">CommentIdsWhere</a>
 				<a class="permalink" href="#CommentIdsWhere">&#xb6;</a>
 			</h2>
 			<pre>func CommentIdsWhere(where <a href="/pkg/builtin/#string">string</a>, args ...interface{}) ([]<a href="/pkg/builtin/#int64">int64</a>, <a href="/pkg/builtin/#error">error</a>)</pre>
@@ -573,21 +519,7 @@ CommentIdsWhere get all the IDs of Comment records by where restriction.
 		
 			
 			
-			<h2 id="CommentIncludesWhere">func <a href="/gor_comment.go?s=12013:12121#L353">CommentIncludesWhere</a>
-				<a class="permalink" href="#CommentIncludesWhere">&#xb6;</a>
-			</h2>
-			<pre>func CommentIncludesWhere(assocs []<a href="/pkg/builtin/#string">string</a>, sql <a href="/pkg/builtin/#string">string</a>, args ...interface{}) (_comments []<a href="#Comment">Comment</a>, err <a href="/pkg/builtin/#error">error</a>)</pre>
-			<p>
-CommentIncludesWhere get the Comment associated models records, currently it&#39;s not same as the corresponding &#34;includes&#34; function but &#34;preload&#34; instead in Ruby on Rails. It means that the &#34;sql&#34; should be restricted on Comment model.
-</p>
-
-			
-			
-
-		
-			
-			
-			<h2 id="CommentIntCol">func <a href="/gor_comment.go?s=13074:13164#L390">CommentIntCol</a>
+			<h2 id="CommentIntCol">func <a href="/gor_comment.go?s=13068:13158#L384">CommentIntCol</a>
 				<a class="permalink" href="#CommentIntCol">&#xb6;</a>
 			</h2>
 			<pre>func CommentIntCol(col, where <a href="/pkg/builtin/#string">string</a>, args ...interface{}) (intColRecs []<a href="/pkg/builtin/#int64">int64</a>, err <a href="/pkg/builtin/#error">error</a>)</pre>
@@ -601,7 +533,7 @@ CommentIntCol get some int64 typed column of Comment by where restriction.
 		
 			
 			
-			<h2 id="CommentStrCol">func <a href="/gor_comment.go?s=13569:13660#L409">CommentStrCol</a>
+			<h2 id="CommentStrCol">func <a href="/gor_comment.go?s=13563:13654#L403">CommentStrCol</a>
 				<a class="permalink" href="#CommentStrCol">&#xb6;</a>
 			</h2>
 			<pre>func CommentStrCol(col, where <a href="/pkg/builtin/#string">string</a>, args ...interface{}) (strColRecs []<a href="/pkg/builtin/#string">string</a>, err <a href="/pkg/builtin/#error">error</a>)</pre>
@@ -615,7 +547,7 @@ CommentStrCol get some string typed column of Comment by where restriction.
 		
 			
 			
-			<h2 id="CreateArticle">func <a href="/gor_article.go?s=16112:16172#L504">CreateArticle</a>
+			<h2 id="CreateArticle">func <a href="/gor_article.go?s=16106:16166#L498">CreateArticle</a>
 				<a class="permalink" href="#CreateArticle">&#xb6;</a>
 			</h2>
 			<pre>func CreateArticle(am map[<a href="/pkg/builtin/#string">string</a>]interface{}) (<a href="/pkg/builtin/#int64">int64</a>, <a href="/pkg/builtin/#error">error</a>)</pre>
@@ -630,7 +562,7 @@ A named params is key-value map like map[string]interface{}{&#34;first_name&#34;
 		
 			
 			
-			<h2 id="CreateComment">func <a href="/gor_comment.go?s=16154:16214#L485">CreateComment</a>
+			<h2 id="CreateComment">func <a href="/gor_comment.go?s=16148:16208#L479">CreateComment</a>
 				<a class="permalink" href="#CreateComment">&#xb6;</a>
 			</h2>
 			<pre>func CreateComment(am map[<a href="/pkg/builtin/#string">string</a>]interface{}) (<a href="/pkg/builtin/#int64">int64</a>, <a href="/pkg/builtin/#error">error</a>)</pre>
@@ -645,7 +577,7 @@ A named params is key-value map like map[string]interface{}{&#34;first_name&#34;
 		
 			
 			
-			<h2 id="DestroyArticle">func <a href="/gor_article.go?s=18751:18786#L597">DestroyArticle</a>
+			<h2 id="DestroyArticle">func <a href="/gor_article.go?s=18675:18710#L586">DestroyArticle</a>
 				<a class="permalink" href="#DestroyArticle">&#xb6;</a>
 			</h2>
 			<pre>func DestroyArticle(id <a href="/pkg/builtin/#int64">int64</a>) <a href="/pkg/builtin/#error">error</a></pre>
@@ -659,7 +591,7 @@ DestroyArticle will destroy a Article record specified by the id parameter.
 		
 			
 			
-			<h2 id="DestroyArticles">func <a href="/gor_article.go?s=19137:19186#L610">DestroyArticles</a>
+			<h2 id="DestroyArticles">func <a href="/gor_article.go?s=19061:19110#L599">DestroyArticles</a>
 				<a class="permalink" href="#DestroyArticles">&#xb6;</a>
 			</h2>
 			<pre>func DestroyArticles(ids ...<a href="/pkg/builtin/#int64">int64</a>) (<a href="/pkg/builtin/#int64">int64</a>, <a href="/pkg/builtin/#error">error</a>)</pre>
@@ -673,7 +605,7 @@ DestroyArticles will destroy Article records those specified by the ids paramete
 		
 			
 			
-			<h2 id="DestroyArticlesWhere">func <a href="/gor_article.go?s=20021:20096#L640">DestroyArticlesWhere</a>
+			<h2 id="DestroyArticlesWhere">func <a href="/gor_article.go?s=19945:20020#L629">DestroyArticlesWhere</a>
 				<a class="permalink" href="#DestroyArticlesWhere">&#xb6;</a>
 			</h2>
 			<pre>func DestroyArticlesWhere(where <a href="/pkg/builtin/#string">string</a>, args ...interface{}) (<a href="/pkg/builtin/#int64">int64</a>, <a href="/pkg/builtin/#error">error</a>)</pre>
@@ -689,7 +621,7 @@ And this func will not call the association dependent action
 		
 			
 			
-			<h2 id="DestroyComment">func <a href="/gor_comment.go?s=18199:18234#L561">DestroyComment</a>
+			<h2 id="DestroyComment">func <a href="/gor_comment.go?s=18123:18158#L550">DestroyComment</a>
 				<a class="permalink" href="#DestroyComment">&#xb6;</a>
 			</h2>
 			<pre>func DestroyComment(id <a href="/pkg/builtin/#int64">int64</a>) <a href="/pkg/builtin/#error">error</a></pre>
@@ -703,7 +635,7 @@ DestroyComment will destroy a Comment record specified by the id parameter.
 		
 			
 			
-			<h2 id="DestroyComments">func <a href="/gor_comment.go?s=18470:18519#L571">DestroyComments</a>
+			<h2 id="DestroyComments">func <a href="/gor_comment.go?s=18394:18443#L560">DestroyComments</a>
 				<a class="permalink" href="#DestroyComments">&#xb6;</a>
 			</h2>
 			<pre>func DestroyComments(ids ...<a href="/pkg/builtin/#int64">int64</a>) (<a href="/pkg/builtin/#int64">int64</a>, <a href="/pkg/builtin/#error">error</a>)</pre>
@@ -717,7 +649,7 @@ DestroyComments will destroy Comment records those specified by the ids paramete
 		
 			
 			
-			<h2 id="DestroyCommentsWhere">func <a href="/gor_comment.go?s=19235:19310#L598">DestroyCommentsWhere</a>
+			<h2 id="DestroyCommentsWhere">func <a href="/gor_comment.go?s=19159:19234#L587">DestroyCommentsWhere</a>
 				<a class="permalink" href="#DestroyCommentsWhere">&#xb6;</a>
 			</h2>
 			<pre>func DestroyCommentsWhere(where <a href="/pkg/builtin/#string">string</a>, args ...interface{}) (<a href="/pkg/builtin/#int64">int64</a>, <a href="/pkg/builtin/#error">error</a>)</pre>
@@ -733,183 +665,7 @@ And this func will not call the association dependent action
 		
 			
 			
-			<h2 id="FindArticles">func <a href="/gor_article.go?s=8543:8593#L266">FindArticles</a>
-				<a class="permalink" href="#FindArticles">&#xb6;</a>
-			</h2>
-			<pre>func FindArticles(ids ...<a href="/pkg/builtin/#int64">int64</a>) ([]<a href="#Article">Article</a>, <a href="/pkg/builtin/#error">error</a>)</pre>
-			<p>
-FindArticles find one or more articles by the given ID(s).
-</p>
-
-			
-			
-
-		
-			
-			
-			<h2 id="FindArticlesBy">func <a href="/gor_article.go?s=9791:9874#L301">FindArticlesBy</a>
-				<a class="permalink" href="#FindArticlesBy">&#xb6;</a>
-			</h2>
-			<pre>func FindArticlesBy(field <a href="/pkg/builtin/#string">string</a>, val interface{}) (_articles []<a href="#Article">Article</a>, err <a href="/pkg/builtin/#error">error</a>)</pre>
-			<p>
-FindArticlesBy find all articles by a field name and a value.
-</p>
-
-			
-			
-
-		
-			
-			
-			<h2 id="FindArticlesBySql">func <a href="/gor_article.go?s=15633:15720#L488">FindArticlesBySql</a>
-				<a class="permalink" href="#FindArticlesBySql">&#xb6;</a>
-			</h2>
-			<pre>func FindArticlesBySql(sql <a href="/pkg/builtin/#string">string</a>, args ...interface{}) (articles []<a href="#Article">Article</a>, err <a href="/pkg/builtin/#error">error</a>)</pre>
-			<p>
-FindArticlesBySql query use a complete SQL clause
-with placeholders, eg: FindUsersBySql(&#34;SELECT * FROM users WHERE first_name = ? AND age &gt; ?&#34;, &#34;John&#34;, 18)
-will return those records in the table &#34;users&#34; whose first_name is &#34;John&#34; and age elder than 18.
-</p>
-
-			
-			
-
-		
-			
-			
-			<h2 id="FindArticlesWhere">func <a href="/gor_article.go?s=14266:14355#L449">FindArticlesWhere</a>
-				<a class="permalink" href="#FindArticlesWhere">&#xb6;</a>
-			</h2>
-			<pre>func FindArticlesWhere(where <a href="/pkg/builtin/#string">string</a>, args ...interface{}) (articles []<a href="#Article">Article</a>, err <a href="/pkg/builtin/#error">error</a>)</pre>
-			<p>
-FindArticlesWhere query use a partial SQL clause that usually following after WHERE
-with placeholders, eg: FindUsersWhere(&#34;first_name = ? AND age &gt; ?&#34;, &#34;John&#34;, 18)
-will return those records in the table &#34;users&#34; whose first_name is &#34;John&#34; and age elder than 18.
-</p>
-
-			
-			
-
-		
-			
-			
-			<h2 id="FindComments">func <a href="/gor_comment.go?s=8872:8922#L267">FindComments</a>
-				<a class="permalink" href="#FindComments">&#xb6;</a>
-			</h2>
-			<pre>func FindComments(ids ...<a href="/pkg/builtin/#int64">int64</a>) ([]<a href="#Comment">Comment</a>, <a href="/pkg/builtin/#error">error</a>)</pre>
-			<p>
-FindComments find one or more comments by the given ID(s).
-</p>
-
-			
-			
-
-		
-			
-			
-			<h2 id="FindCommentsBy">func <a href="/gor_comment.go?s=10224:10307#L302">FindCommentsBy</a>
-				<a class="permalink" href="#FindCommentsBy">&#xb6;</a>
-			</h2>
-			<pre>func FindCommentsBy(field <a href="/pkg/builtin/#string">string</a>, val interface{}) (_comments []<a href="#Comment">Comment</a>, err <a href="/pkg/builtin/#error">error</a>)</pre>
-			<p>
-FindCommentsBy find all comments by a field name and a value.
-</p>
-
-			
-			
-
-		
-			
-			
-			<h2 id="FindCommentsBySql">func <a href="/gor_comment.go?s=15675:15762#L469">FindCommentsBySql</a>
-				<a class="permalink" href="#FindCommentsBySql">&#xb6;</a>
-			</h2>
-			<pre>func FindCommentsBySql(sql <a href="/pkg/builtin/#string">string</a>, args ...interface{}) (comments []<a href="#Comment">Comment</a>, err <a href="/pkg/builtin/#error">error</a>)</pre>
-			<p>
-FindCommentsBySql query use a complete SQL clause
-with placeholders, eg: FindUsersBySql(&#34;SELECT * FROM users WHERE first_name = ? AND age &gt; ?&#34;, &#34;John&#34;, 18)
-will return those records in the table &#34;users&#34; whose first_name is &#34;John&#34; and age elder than 18.
-</p>
-
-			
-			
-
-		
-			
-			
-			<h2 id="FindCommentsWhere">func <a href="/gor_comment.go?s=14256:14345#L430">FindCommentsWhere</a>
-				<a class="permalink" href="#FindCommentsWhere">&#xb6;</a>
-			</h2>
-			<pre>func FindCommentsWhere(where <a href="/pkg/builtin/#string">string</a>, args ...interface{}) (comments []<a href="#Comment">Comment</a>, err <a href="/pkg/builtin/#error">error</a>)</pre>
-			<p>
-FindCommentsWhere query use a partial SQL clause that usually following after WHERE
-with placeholders, eg: FindUsersWhere(&#34;first_name = ? AND age &gt; ?&#34;, &#34;John&#34;, 18)
-will return those records in the table &#34;users&#34; whose first_name is &#34;John&#34; and age elder than 18.
-</p>
-
-			
-			
-
-		
-			
-			
-			<h2 id="FirstArticles">func <a href="/gor_article.go?s=7188:7235#L231">FirstArticles</a>
-				<a class="permalink" href="#FirstArticles">&#xb6;</a>
-			</h2>
-			<pre>func FirstArticles(n <a href="/pkg/builtin/#uint32">uint32</a>) ([]<a href="#Article">Article</a>, <a href="/pkg/builtin/#error">error</a>)</pre>
-			<p>
-FirstArticles find the first N articles by ID ASC order.
-</p>
-
-			
-			
-
-		
-			
-			
-			<h2 id="FirstComments">func <a href="/gor_comment.go?s=7361:7408#L232">FirstComments</a>
-				<a class="permalink" href="#FirstComments">&#xb6;</a>
-			</h2>
-			<pre>func FirstComments(n <a href="/pkg/builtin/#uint32">uint32</a>) ([]<a href="#Comment">Comment</a>, <a href="/pkg/builtin/#error">error</a>)</pre>
-			<p>
-FirstComments find the first N comments by ID ASC order.
-</p>
-
-			
-			
-
-		
-			
-			
-			<h2 id="LastArticles">func <a href="/gor_article.go?s=8074:8120#L254">LastArticles</a>
-				<a class="permalink" href="#LastArticles">&#xb6;</a>
-			</h2>
-			<pre>func LastArticles(n <a href="/pkg/builtin/#uint32">uint32</a>) ([]<a href="#Article">Article</a>, <a href="/pkg/builtin/#error">error</a>)</pre>
-			<p>
-LastArticles find the last N articles by ID DESC order.
-</p>
-
-			
-			
-
-		
-			
-			
-			<h2 id="LastComments">func <a href="/gor_comment.go?s=8351:8397#L255">LastComments</a>
-				<a class="permalink" href="#LastComments">&#xb6;</a>
-			</h2>
-			<pre>func LastComments(n <a href="/pkg/builtin/#uint32">uint32</a>) ([]<a href="#Comment">Comment</a>, <a href="/pkg/builtin/#error">error</a>)</pre>
-			<p>
-LastComments find the last N comments by ID DESC order.
-</p>
-
-			
-			
-
-		
-			
-			
-			<h2 id="UpdateArticle">func <a href="/gor_article.go?s=22191:22252#L710">UpdateArticle</a>
+			<h2 id="UpdateArticle">func <a href="/gor_article.go?s=22115:22176#L699">UpdateArticle</a>
 				<a class="permalink" href="#UpdateArticle">&#xb6;</a>
 			</h2>
 			<pre>func UpdateArticle(id <a href="/pkg/builtin/#int64">int64</a>, am map[<a href="/pkg/builtin/#string">string</a>]interface{}) <a href="/pkg/builtin/#error">error</a></pre>
@@ -923,7 +679,7 @@ UpdateArticle is used to update a record with a id and map[string]interface{} ty
 		
 			
 			
-			<h2 id="UpdateArticlesBySql">func <a href="/gor_article.go?s=23926:23998#L765">UpdateArticlesBySql</a>
+			<h2 id="UpdateArticlesBySql">func <a href="/gor_article.go?s=23786:23858#L749">UpdateArticlesBySql</a>
 				<a class="permalink" href="#UpdateArticlesBySql">&#xb6;</a>
 			</h2>
 			<pre>func UpdateArticlesBySql(sql <a href="/pkg/builtin/#string">string</a>, args ...interface{}) (<a href="/pkg/builtin/#int64">int64</a>, <a href="/pkg/builtin/#error">error</a>)</pre>
@@ -938,7 +694,7 @@ using the &#39;?&#39; binding syntax.
 		
 			
 			
-			<h2 id="UpdateComment">func <a href="/gor_comment.go?s=20592:20653#L641">UpdateComment</a>
+			<h2 id="UpdateComment">func <a href="/gor_comment.go?s=20516:20577#L630">UpdateComment</a>
 				<a class="permalink" href="#UpdateComment">&#xb6;</a>
 			</h2>
 			<pre>func UpdateComment(id <a href="/pkg/builtin/#int64">int64</a>, am map[<a href="/pkg/builtin/#string">string</a>]interface{}) <a href="/pkg/builtin/#error">error</a></pre>
@@ -952,7 +708,7 @@ UpdateComment is used to update a record with a id and map[string]interface{} ty
 		
 			
 			
-			<h2 id="UpdateCommentsBySql">func <a href="/gor_comment.go?s=22327:22399#L696">UpdateCommentsBySql</a>
+			<h2 id="UpdateCommentsBySql">func <a href="/gor_comment.go?s=22187:22259#L680">UpdateCommentsBySql</a>
 				<a class="permalink" href="#UpdateCommentsBySql">&#xb6;</a>
 			</h2>
 			<pre>func UpdateCommentsBySql(sql <a href="/pkg/builtin/#string">string</a>, args ...interface{}) (<a href="/pkg/builtin/#int64">int64</a>, <a href="/pkg/builtin/#error">error</a>)</pre>
@@ -991,7 +747,31 @@ using the &#39;?&#39; binding syntax.
 
 			
 				
-				<h3 id="FindArticle">func <a href="/gor_article.go?s=6264:6308#L206">FindArticle</a>
+				<h3 id="AllArticles">func <a href="/gor_article.go?s=10257:10307#L307">AllArticles</a>
+					<a class="permalink" href="#AllArticles">&#xb6;</a>
+				</h3>
+				<pre>func AllArticles() (articles []<a href="#Article">Article</a>, err <a href="/pkg/builtin/#error">error</a>)</pre>
+				<p>
+AllArticles get all the Article records.
+</p>
+
+				
+				
+			
+				
+				<h3 id="ArticleIncludesWhere">func <a href="/gor_article.go?s=11470:11578#L346">ArticleIncludesWhere</a>
+					<a class="permalink" href="#ArticleIncludesWhere">&#xb6;</a>
+				</h3>
+				<pre>func ArticleIncludesWhere(assocs []<a href="/pkg/builtin/#string">string</a>, sql <a href="/pkg/builtin/#string">string</a>, args ...interface{}) (_articles []<a href="#Article">Article</a>, err <a href="/pkg/builtin/#error">error</a>)</pre>
+				<p>
+ArticleIncludesWhere get the Article associated models records, currently it&#39;s not same as the corresponding &#34;includes&#34; function but &#34;preload&#34; instead in Ruby on Rails. It means that the &#34;sql&#34; should be restricted on Article model.
+</p>
+
+				
+				
+			
+				
+				<h3 id="FindArticle">func <a href="/gor_article.go?s=6258:6302#L200">FindArticle</a>
 					<a class="permalink" href="#FindArticle">&#xb6;</a>
 				</h3>
 				<pre>func FindArticle(id <a href="/pkg/builtin/#int64">int64</a>) (*<a href="#Article">Article</a>, <a href="/pkg/builtin/#error">error</a>)</pre>
@@ -1003,7 +783,7 @@ FindArticle find a single article by an ID.
 				
 			
 				
-				<h3 id="FindArticleBy">func <a href="/gor_article.go?s=9286:9353#L288">FindArticleBy</a>
+				<h3 id="FindArticleBy">func <a href="/gor_article.go?s=9280:9347#L282">FindArticleBy</a>
 					<a class="permalink" href="#FindArticleBy">&#xb6;</a>
 				</h3>
 				<pre>func FindArticleBy(field <a href="/pkg/builtin/#string">string</a>, val interface{}) (*<a href="#Article">Article</a>, <a href="/pkg/builtin/#error">error</a>)</pre>
@@ -1015,7 +795,7 @@ FindArticleBy find a single article by a field name and a value.
 				
 			
 				
-				<h3 id="FindArticleBySql">func <a href="/gor_article.go?s=15056:15128#L470">FindArticleBySql</a>
+				<h3 id="FindArticleBySql">func <a href="/gor_article.go?s=15050:15122#L464">FindArticleBySql</a>
 					<a class="permalink" href="#FindArticleBySql">&#xb6;</a>
 				</h3>
 				<pre>func FindArticleBySql(sql <a href="/pkg/builtin/#string">string</a>, args ...interface{}) (*<a href="#Article">Article</a>, <a href="/pkg/builtin/#error">error</a>)</pre>
@@ -1029,7 +809,59 @@ will return only One record in the table &#34;users&#34; whose first_name is &#3
 				
 			
 				
-				<h3 id="FirstArticle">func <a href="/gor_article.go?s=6767:6804#L220">FirstArticle</a>
+				<h3 id="FindArticles">func <a href="/gor_article.go?s=8537:8587#L260">FindArticles</a>
+					<a class="permalink" href="#FindArticles">&#xb6;</a>
+				</h3>
+				<pre>func FindArticles(ids ...<a href="/pkg/builtin/#int64">int64</a>) ([]<a href="#Article">Article</a>, <a href="/pkg/builtin/#error">error</a>)</pre>
+				<p>
+FindArticles find one or more articles by the given ID(s).
+</p>
+
+				
+				
+			
+				
+				<h3 id="FindArticlesBy">func <a href="/gor_article.go?s=9785:9868#L295">FindArticlesBy</a>
+					<a class="permalink" href="#FindArticlesBy">&#xb6;</a>
+				</h3>
+				<pre>func FindArticlesBy(field <a href="/pkg/builtin/#string">string</a>, val interface{}) (_articles []<a href="#Article">Article</a>, err <a href="/pkg/builtin/#error">error</a>)</pre>
+				<p>
+FindArticlesBy find all articles by a field name and a value.
+</p>
+
+				
+				
+			
+				
+				<h3 id="FindArticlesBySql">func <a href="/gor_article.go?s=15627:15714#L482">FindArticlesBySql</a>
+					<a class="permalink" href="#FindArticlesBySql">&#xb6;</a>
+				</h3>
+				<pre>func FindArticlesBySql(sql <a href="/pkg/builtin/#string">string</a>, args ...interface{}) (articles []<a href="#Article">Article</a>, err <a href="/pkg/builtin/#error">error</a>)</pre>
+				<p>
+FindArticlesBySql query use a complete SQL clause
+with placeholders, eg: FindUsersBySql(&#34;SELECT * FROM users WHERE first_name = ? AND age &gt; ?&#34;, &#34;John&#34;, 18)
+will return those records in the table &#34;users&#34; whose first_name is &#34;John&#34; and age elder than 18.
+</p>
+
+				
+				
+			
+				
+				<h3 id="FindArticlesWhere">func <a href="/gor_article.go?s=14260:14349#L443">FindArticlesWhere</a>
+					<a class="permalink" href="#FindArticlesWhere">&#xb6;</a>
+				</h3>
+				<pre>func FindArticlesWhere(where <a href="/pkg/builtin/#string">string</a>, args ...interface{}) (articles []<a href="#Article">Article</a>, err <a href="/pkg/builtin/#error">error</a>)</pre>
+				<p>
+FindArticlesWhere query use a partial SQL clause that usually following after WHERE
+with placeholders, eg: FindUsersWhere(&#34;first_name = ? AND age &gt; ?&#34;, &#34;John&#34;, 18)
+will return those records in the table &#34;users&#34; whose first_name is &#34;John&#34; and age elder than 18.
+</p>
+
+				
+				
+			
+				
+				<h3 id="FirstArticle">func <a href="/gor_article.go?s=6761:6798#L214">FirstArticle</a>
 					<a class="permalink" href="#FirstArticle">&#xb6;</a>
 				</h3>
 				<pre>func FirstArticle() (*<a href="#Article">Article</a>, <a href="/pkg/builtin/#error">error</a>)</pre>
@@ -1041,7 +873,19 @@ FirstArticle find the first one article by ID ASC order.
 				
 			
 				
-				<h3 id="LastArticle">func <a href="/gor_article.go?s=7654:7690#L243">LastArticle</a>
+				<h3 id="FirstArticles">func <a href="/gor_article.go?s=7182:7229#L225">FirstArticles</a>
+					<a class="permalink" href="#FirstArticles">&#xb6;</a>
+				</h3>
+				<pre>func FirstArticles(n <a href="/pkg/builtin/#uint32">uint32</a>) ([]<a href="#Article">Article</a>, <a href="/pkg/builtin/#error">error</a>)</pre>
+				<p>
+FirstArticles find the first N articles by ID ASC order.
+</p>
+
+				
+				
+			
+				
+				<h3 id="LastArticle">func <a href="/gor_article.go?s=7648:7684#L237">LastArticle</a>
 					<a class="permalink" href="#LastArticle">&#xb6;</a>
 				</h3>
 				<pre>func LastArticle() (*<a href="#Article">Article</a>, <a href="/pkg/builtin/#error">error</a>)</pre>
@@ -1052,10 +896,22 @@ LastArticle find the last one article by ID DESC order.
 				
 				
 			
+				
+				<h3 id="LastArticles">func <a href="/gor_article.go?s=8068:8114#L248">LastArticles</a>
+					<a class="permalink" href="#LastArticles">&#xb6;</a>
+				</h3>
+				<pre>func LastArticles(n <a href="/pkg/builtin/#uint32">uint32</a>) ([]<a href="#Article">Article</a>, <a href="/pkg/builtin/#error">error</a>)</pre>
+				<p>
+LastArticles find the last N articles by ID DESC order.
+</p>
+
+				
+				
+			
 
 			
 				
-				<h3 id="Article.CommentsCreate">func (*Article) <a href="/gor_article.go?s=17637:17709#L564">CommentsCreate</a>
+				<h3 id="Article.CommentsCreate">func (*Article) <a href="/gor_article.go?s=17561:17633#L553">CommentsCreate</a>
 					<a class="permalink" href="#Article.CommentsCreate">&#xb6;</a>
 				</h3>
 				<pre>func (_article *<a href="#Article">Article</a>) CommentsCreate(am map[<a href="/pkg/builtin/#string">string</a>]interface{}) <a href="/pkg/builtin/#error">error</a></pre>
@@ -1068,7 +924,7 @@ CommentsCreate is used for Article to create the associated objects Comments
 				
 			
 				
-				<h3 id="Article.Create">func (*Article) <a href="/gor_article.go?s=16858:16906#L536">Create</a>
+				<h3 id="Article.Create">func (*Article) <a href="/gor_article.go?s=16782:16830#L525">Create</a>
 					<a class="permalink" href="#Article.Create">&#xb6;</a>
 				</h3>
 				<pre>func (_article *<a href="#Article">Article</a>) Create() (<a href="/pkg/builtin/#int64">int64</a>, <a href="/pkg/builtin/#error">error</a>)</pre>
@@ -1081,7 +937,7 @@ Create is a method for Article to create a record.
 				
 			
 				
-				<h3 id="Article.Destroy">func (*Article) <a href="/gor_article.go?s=18486:18526#L588">Destroy</a>
+				<h3 id="Article.Destroy">func (*Article) <a href="/gor_article.go?s=18410:18450#L577">Destroy</a>
 					<a class="permalink" href="#Article.Destroy">&#xb6;</a>
 				</h3>
 				<pre>func (_article *<a href="#Article">Article</a>) Destroy() <a href="/pkg/builtin/#error">error</a></pre>
@@ -1094,7 +950,7 @@ Destroy is method used for a Article object to be destroyed.
 				
 			
 				
-				<h3 id="Article.GetComments">func (*Article) <a href="/gor_article.go?s=18026:18070#L573">GetComments</a>
+				<h3 id="Article.GetComments">func (*Article) <a href="/gor_article.go?s=17950:17994#L562">GetComments</a>
 					<a class="permalink" href="#Article.GetComments">&#xb6;</a>
 				</h3>
 				<pre>func (_article *<a href="#Article">Article</a>) GetComments() <a href="/pkg/builtin/#error">error</a></pre>
@@ -1109,7 +965,7 @@ the object will get the associated Comments attributes evaluated in the struct.
 				
 			
 				
-				<h3 id="Article.Save">func (*Article) <a href="/gor_article.go?s=21480:21517#L688">Save</a>
+				<h3 id="Article.Save">func (*Article) <a href="/gor_article.go?s=21404:21441#L677">Save</a>
 					<a class="permalink" href="#Article.Save">&#xb6;</a>
 				</h3>
 				<pre>func (_article *<a href="#Article">Article</a>) Save() <a href="/pkg/builtin/#error">error</a></pre>
@@ -1123,7 +979,7 @@ If no id provided a new record will be created. FIXME: A UPSERT action will be i
 				
 			
 				
-				<h3 id="Article.Update">func (*Article) <a href="/gor_article.go?s=22912:22976#L737">Update</a>
+				<h3 id="Article.Update">func (*Article) <a href="/gor_article.go?s=22772:22836#L721">Update</a>
 					<a class="permalink" href="#Article.Update">&#xb6;</a>
 				</h3>
 				<pre>func (_article *<a href="#Article">Article</a>) Update(am map[<a href="/pkg/builtin/#string">string</a>]interface{}) <a href="/pkg/builtin/#error">error</a></pre>
@@ -1136,7 +992,7 @@ Update is a method used to update a Article record with the map[string]interface
 				
 			
 				
-				<h3 id="Article.UpdateAttributes">func (*Article) <a href="/gor_article.go?s=23254:23328#L746">UpdateAttributes</a>
+				<h3 id="Article.UpdateAttributes">func (*Article) <a href="/gor_article.go?s=23114:23188#L730">UpdateAttributes</a>
 					<a class="permalink" href="#Article.UpdateAttributes">&#xb6;</a>
 				</h3>
 				<pre>func (_article *<a href="#Article">Article</a>) UpdateAttributes(am map[<a href="/pkg/builtin/#string">string</a>]interface{}) <a href="/pkg/builtin/#error">error</a></pre>
@@ -1149,7 +1005,7 @@ UpdateAttributes method is supposed to be used to update Article records as corr
 				
 			
 				
-				<h3 id="Article.UpdateColumns">func (*Article) <a href="/gor_article.go?s=23600:23671#L755">UpdateColumns</a>
+				<h3 id="Article.UpdateColumns">func (*Article) <a href="/gor_article.go?s=23460:23531#L739">UpdateColumns</a>
 					<a class="permalink" href="#Article.UpdateColumns">&#xb6;</a>
 				</h3>
 				<pre>func (_article *<a href="#Article">Article</a>) UpdateColumns(am map[<a href="/pkg/builtin/#string">string</a>]interface{}) <a href="/pkg/builtin/#error">error</a></pre>
@@ -1209,7 +1065,7 @@ Current get the current page of ArticlePage object for pagination.
 				
 			
 				
-				<h3 id="ArticlePage.GetPage">func (*ArticlePage) <a href="/gor_article.go?s=4037:4111#L127">GetPage</a>
+				<h3 id="ArticlePage.GetPage">func (*ArticlePage) <a href="/gor_article.go?s=4031:4105#L121">GetPage</a>
 					<a class="permalink" href="#ArticlePage.GetPage">&#xb6;</a>
 				</h3>
 				<pre>func (_p *<a href="#ArticlePage">ArticlePage</a>) GetPage(direction <a href="/pkg/builtin/#string">string</a>) (ps []<a href="#Article">Article</a>, err <a href="/pkg/builtin/#error">error</a>)</pre>
@@ -1223,7 +1079,7 @@ the parameter passed in, i.e. one of &#34;previous, current or next&#34;.
 				
 			
 				
-				<h3 id="ArticlePage.Next">func (*ArticlePage) <a href="/gor_article.go?s=2959:3007#L94">Next</a>
+				<h3 id="ArticlePage.Next">func (*ArticlePage) <a href="/gor_article.go?s=2955:3003#L90">Next</a>
 					<a class="permalink" href="#ArticlePage.Next">&#xb6;</a>
 				</h3>
 				<pre>func (_p *<a href="#ArticlePage">ArticlePage</a>) Next() ([]<a href="#Article">Article</a>, <a href="/pkg/builtin/#error">error</a>)</pre>
@@ -1236,7 +1092,7 @@ Next get the next page of ArticlePage object for pagination.
 				
 			
 				
-				<h3 id="ArticlePage.Previous">func (*ArticlePage) <a href="/gor_article.go?s=1984:2036#L62">Previous</a>
+				<h3 id="ArticlePage.Previous">func (*ArticlePage) <a href="/gor_article.go?s=1982:2034#L60">Previous</a>
 					<a class="permalink" href="#ArticlePage.Previous">&#xb6;</a>
 				</h3>
 				<pre>func (_p *<a href="#ArticlePage">ArticlePage</a>) Previous() ([]<a href="#Article">Article</a>, <a href="/pkg/builtin/#error">error</a>)</pre>
@@ -1275,7 +1131,43 @@ Previous get the previous page of ArticlePage object for pagination.
 
 			
 				
-				<h3 id="FindComment">func <a href="/gor_comment.go?s=6333:6377#L207">FindComment</a>
+				<h3 id="AllComments">func <a href="/gor_comment.go?s=10742:10792#L308">AllComments</a>
+					<a class="permalink" href="#AllComments">&#xb6;</a>
+				</h3>
+				<pre>func AllComments() (comments []<a href="#Comment">Comment</a>, err <a href="/pkg/builtin/#error">error</a>)</pre>
+				<p>
+AllComments get all the Comment records.
+</p>
+
+				
+				
+			
+				
+				<h3 id="ArticleGetComments">func <a href="/gor_article.go?s=18213:18265#L571">ArticleGetComments</a>
+					<a class="permalink" href="#ArticleGetComments">&#xb6;</a>
+				</h3>
+				<pre>func ArticleGetComments(id <a href="/pkg/builtin/#int64">int64</a>) ([]<a href="#Comment">Comment</a>, <a href="/pkg/builtin/#error">error</a>)</pre>
+				<p>
+ArticleGetComments a helper fuction used to get associated objects for ArticleIncludesWhere().
+</p>
+
+				
+				
+			
+				
+				<h3 id="CommentIncludesWhere">func <a href="/gor_comment.go?s=12007:12115#L347">CommentIncludesWhere</a>
+					<a class="permalink" href="#CommentIncludesWhere">&#xb6;</a>
+				</h3>
+				<pre>func CommentIncludesWhere(assocs []<a href="/pkg/builtin/#string">string</a>, sql <a href="/pkg/builtin/#string">string</a>, args ...interface{}) (_comments []<a href="#Comment">Comment</a>, err <a href="/pkg/builtin/#error">error</a>)</pre>
+				<p>
+CommentIncludesWhere get the Comment associated models records, currently it&#39;s not same as the corresponding &#34;includes&#34; function but &#34;preload&#34; instead in Ruby on Rails. It means that the &#34;sql&#34; should be restricted on Comment model.
+</p>
+
+				
+				
+			
+				
+				<h3 id="FindComment">func <a href="/gor_comment.go?s=6327:6371#L201">FindComment</a>
 					<a class="permalink" href="#FindComment">&#xb6;</a>
 				</h3>
 				<pre>func FindComment(id <a href="/pkg/builtin/#int64">int64</a>) (*<a href="#Comment">Comment</a>, <a href="/pkg/builtin/#error">error</a>)</pre>
@@ -1287,7 +1179,7 @@ FindComment find a single comment by an ID.
 				
 			
 				
-				<h3 id="FindCommentBy">func <a href="/gor_comment.go?s=9667:9734#L289">FindCommentBy</a>
+				<h3 id="FindCommentBy">func <a href="/gor_comment.go?s=9661:9728#L283">FindCommentBy</a>
 					<a class="permalink" href="#FindCommentBy">&#xb6;</a>
 				</h3>
 				<pre>func FindCommentBy(field <a href="/pkg/builtin/#string">string</a>, val interface{}) (*<a href="#Comment">Comment</a>, <a href="/pkg/builtin/#error">error</a>)</pre>
@@ -1299,7 +1191,7 @@ FindCommentBy find a single comment by a field name and a value.
 				
 			
 				
-				<h3 id="FindCommentBySql">func <a href="/gor_comment.go?s=15098:15170#L451">FindCommentBySql</a>
+				<h3 id="FindCommentBySql">func <a href="/gor_comment.go?s=15092:15164#L445">FindCommentBySql</a>
 					<a class="permalink" href="#FindCommentBySql">&#xb6;</a>
 				</h3>
 				<pre>func FindCommentBySql(sql <a href="/pkg/builtin/#string">string</a>, args ...interface{}) (*<a href="#Comment">Comment</a>, <a href="/pkg/builtin/#error">error</a>)</pre>
@@ -1313,7 +1205,59 @@ will return only One record in the table &#34;users&#34; whose first_name is &#3
 				
 			
 				
-				<h3 id="FirstComment">func <a href="/gor_comment.go?s=6888:6925#L221">FirstComment</a>
+				<h3 id="FindComments">func <a href="/gor_comment.go?s=8866:8916#L261">FindComments</a>
+					<a class="permalink" href="#FindComments">&#xb6;</a>
+				</h3>
+				<pre>func FindComments(ids ...<a href="/pkg/builtin/#int64">int64</a>) ([]<a href="#Comment">Comment</a>, <a href="/pkg/builtin/#error">error</a>)</pre>
+				<p>
+FindComments find one or more comments by the given ID(s).
+</p>
+
+				
+				
+			
+				
+				<h3 id="FindCommentsBy">func <a href="/gor_comment.go?s=10218:10301#L296">FindCommentsBy</a>
+					<a class="permalink" href="#FindCommentsBy">&#xb6;</a>
+				</h3>
+				<pre>func FindCommentsBy(field <a href="/pkg/builtin/#string">string</a>, val interface{}) (_comments []<a href="#Comment">Comment</a>, err <a href="/pkg/builtin/#error">error</a>)</pre>
+				<p>
+FindCommentsBy find all comments by a field name and a value.
+</p>
+
+				
+				
+			
+				
+				<h3 id="FindCommentsBySql">func <a href="/gor_comment.go?s=15669:15756#L463">FindCommentsBySql</a>
+					<a class="permalink" href="#FindCommentsBySql">&#xb6;</a>
+				</h3>
+				<pre>func FindCommentsBySql(sql <a href="/pkg/builtin/#string">string</a>, args ...interface{}) (comments []<a href="#Comment">Comment</a>, err <a href="/pkg/builtin/#error">error</a>)</pre>
+				<p>
+FindCommentsBySql query use a complete SQL clause
+with placeholders, eg: FindUsersBySql(&#34;SELECT * FROM users WHERE first_name = ? AND age &gt; ?&#34;, &#34;John&#34;, 18)
+will return those records in the table &#34;users&#34; whose first_name is &#34;John&#34; and age elder than 18.
+</p>
+
+				
+				
+			
+				
+				<h3 id="FindCommentsWhere">func <a href="/gor_comment.go?s=14250:14339#L424">FindCommentsWhere</a>
+					<a class="permalink" href="#FindCommentsWhere">&#xb6;</a>
+				</h3>
+				<pre>func FindCommentsWhere(where <a href="/pkg/builtin/#string">string</a>, args ...interface{}) (comments []<a href="#Comment">Comment</a>, err <a href="/pkg/builtin/#error">error</a>)</pre>
+				<p>
+FindCommentsWhere query use a partial SQL clause that usually following after WHERE
+with placeholders, eg: FindUsersWhere(&#34;first_name = ? AND age &gt; ?&#34;, &#34;John&#34;, 18)
+will return those records in the table &#34;users&#34; whose first_name is &#34;John&#34; and age elder than 18.
+</p>
+
+				
+				
+			
+				
+				<h3 id="FirstComment">func <a href="/gor_comment.go?s=6882:6919#L215">FirstComment</a>
 					<a class="permalink" href="#FirstComment">&#xb6;</a>
 				</h3>
 				<pre>func FirstComment() (*<a href="#Comment">Comment</a>, <a href="/pkg/builtin/#error">error</a>)</pre>
@@ -1325,7 +1269,19 @@ FirstComment find the first one comment by ID ASC order.
 				
 			
 				
-				<h3 id="LastComment">func <a href="/gor_comment.go?s=7879:7915#L244">LastComment</a>
+				<h3 id="FirstComments">func <a href="/gor_comment.go?s=7355:7402#L226">FirstComments</a>
+					<a class="permalink" href="#FirstComments">&#xb6;</a>
+				</h3>
+				<pre>func FirstComments(n <a href="/pkg/builtin/#uint32">uint32</a>) ([]<a href="#Comment">Comment</a>, <a href="/pkg/builtin/#error">error</a>)</pre>
+				<p>
+FirstComments find the first N comments by ID ASC order.
+</p>
+
+				
+				
+			
+				
+				<h3 id="LastComment">func <a href="/gor_comment.go?s=7873:7909#L238">LastComment</a>
 					<a class="permalink" href="#LastComment">&#xb6;</a>
 				</h3>
 				<pre>func LastComment() (*<a href="#Comment">Comment</a>, <a href="/pkg/builtin/#error">error</a>)</pre>
@@ -1336,10 +1292,22 @@ LastComment find the last one comment by ID DESC order.
 				
 				
 			
+				
+				<h3 id="LastComments">func <a href="/gor_comment.go?s=8345:8391#L249">LastComments</a>
+					<a class="permalink" href="#LastComments">&#xb6;</a>
+				</h3>
+				<pre>func LastComments(n <a href="/pkg/builtin/#uint32">uint32</a>) ([]<a href="#Comment">Comment</a>, <a href="/pkg/builtin/#error">error</a>)</pre>
+				<p>
+LastComments find the last N comments by ID DESC order.
+</p>
+
+				
+				
+			
 
 			
 				
-				<h3 id="Comment.Create">func (*Comment) <a href="/gor_comment.go?s=16900:16948#L517">Create</a>
+				<h3 id="Comment.Create">func (*Comment) <a href="/gor_comment.go?s=16824:16872#L506">Create</a>
 					<a class="permalink" href="#Comment.Create">&#xb6;</a>
 				</h3>
 				<pre>func (_comment *<a href="#Comment">Comment</a>) Create() (<a href="/pkg/builtin/#int64">int64</a>, <a href="/pkg/builtin/#error">error</a>)</pre>
@@ -1352,7 +1320,7 @@ Create is a method for Comment to create a record.
 				
 			
 				
-				<h3 id="Comment.CreateArticle">func (*Comment) <a href="/gor_comment.go?s=17720:17791#L545">CreateArticle</a>
+				<h3 id="Comment.CreateArticle">func (*Comment) <a href="/gor_comment.go?s=17644:17715#L534">CreateArticle</a>
 					<a class="permalink" href="#Comment.CreateArticle">&#xb6;</a>
 				</h3>
 				<pre>func (_comment *<a href="#Comment">Comment</a>) CreateArticle(am map[<a href="/pkg/builtin/#string">string</a>]interface{}) <a href="/pkg/builtin/#error">error</a></pre>
@@ -1365,7 +1333,7 @@ CreateArticle is a method for a Comment object to create an associated Article r
 				
 			
 				
-				<h3 id="Comment.Destroy">func (*Comment) <a href="/gor_comment.go?s=17934:17974#L552">Destroy</a>
+				<h3 id="Comment.Destroy">func (*Comment) <a href="/gor_comment.go?s=17858:17898#L541">Destroy</a>
 					<a class="permalink" href="#Comment.Destroy">&#xb6;</a>
 				</h3>
 				<pre>func (_comment *<a href="#Comment">Comment</a>) Destroy() <a href="/pkg/builtin/#error">error</a></pre>
@@ -1378,7 +1346,7 @@ Destroy is method used for a Comment object to be destroyed.
 				
 			
 				
-				<h3 id="Comment.Save">func (*Comment) <a href="/gor_comment.go?s=19847:19884#L619">Save</a>
+				<h3 id="Comment.Save">func (*Comment) <a href="/gor_comment.go?s=19771:19808#L608">Save</a>
 					<a class="permalink" href="#Comment.Save">&#xb6;</a>
 				</h3>
 				<pre>func (_comment *<a href="#Comment">Comment</a>) Save() <a href="/pkg/builtin/#error">error</a></pre>
@@ -1392,7 +1360,7 @@ If no id provided a new record will be created. FIXME: A UPSERT action will be i
 				
 			
 				
-				<h3 id="Comment.Update">func (*Comment) <a href="/gor_comment.go?s=21313:21377#L668">Update</a>
+				<h3 id="Comment.Update">func (*Comment) <a href="/gor_comment.go?s=21173:21237#L652">Update</a>
 					<a class="permalink" href="#Comment.Update">&#xb6;</a>
 				</h3>
 				<pre>func (_comment *<a href="#Comment">Comment</a>) Update(am map[<a href="/pkg/builtin/#string">string</a>]interface{}) <a href="/pkg/builtin/#error">error</a></pre>
@@ -1405,7 +1373,7 @@ Update is a method used to update a Comment record with the map[string]interface
 				
 			
 				
-				<h3 id="Comment.UpdateAttributes">func (*Comment) <a href="/gor_comment.go?s=21655:21729#L677">UpdateAttributes</a>
+				<h3 id="Comment.UpdateAttributes">func (*Comment) <a href="/gor_comment.go?s=21515:21589#L661">UpdateAttributes</a>
 					<a class="permalink" href="#Comment.UpdateAttributes">&#xb6;</a>
 				</h3>
 				<pre>func (_comment *<a href="#Comment">Comment</a>) UpdateAttributes(am map[<a href="/pkg/builtin/#string">string</a>]interface{}) <a href="/pkg/builtin/#error">error</a></pre>
@@ -1418,7 +1386,7 @@ UpdateAttributes method is supposed to be used to update Comment records as corr
 				
 			
 				
-				<h3 id="Comment.UpdateColumns">func (*Comment) <a href="/gor_comment.go?s=22001:22072#L686">UpdateColumns</a>
+				<h3 id="Comment.UpdateColumns">func (*Comment) <a href="/gor_comment.go?s=21861:21932#L670">UpdateColumns</a>
 					<a class="permalink" href="#Comment.UpdateColumns">&#xb6;</a>
 				</h3>
 				<pre>func (_comment *<a href="#Comment">Comment</a>) UpdateColumns(am map[<a href="/pkg/builtin/#string">string</a>]interface{}) <a href="/pkg/builtin/#error">error</a></pre>
@@ -1478,7 +1446,7 @@ Current get the current page of CommentPage object for pagination.
 				
 			
 				
-				<h3 id="CommentPage.GetPage">func (*CommentPage) <a href="/gor_comment.go?s=4106:4180#L128">GetPage</a>
+				<h3 id="CommentPage.GetPage">func (*CommentPage) <a href="/gor_comment.go?s=4100:4174#L122">GetPage</a>
 					<a class="permalink" href="#CommentPage.GetPage">&#xb6;</a>
 				</h3>
 				<pre>func (_p *<a href="#CommentPage">CommentPage</a>) GetPage(direction <a href="/pkg/builtin/#string">string</a>) (ps []<a href="#Comment">Comment</a>, err <a href="/pkg/builtin/#error">error</a>)</pre>
@@ -1492,7 +1460,7 @@ the parameter passed in, i.e. one of &#34;previous, current or next&#34;.
 				
 			
 				
-				<h3 id="CommentPage.Next">func (*CommentPage) <a href="/gor_comment.go?s=3028:3076#L95">Next</a>
+				<h3 id="CommentPage.Next">func (*CommentPage) <a href="/gor_comment.go?s=3024:3072#L91">Next</a>
 					<a class="permalink" href="#CommentPage.Next">&#xb6;</a>
 				</h3>
 				<pre>func (_p *<a href="#CommentPage">CommentPage</a>) Next() ([]<a href="#Comment">Comment</a>, <a href="/pkg/builtin/#error">error</a>)</pre>
@@ -1505,7 +1473,7 @@ Next get the next page of CommentPage object for pagination.
 				
 			
 				
-				<h3 id="CommentPage.Previous">func (*CommentPage) <a href="/gor_comment.go?s=2053:2105#L63">Previous</a>
+				<h3 id="CommentPage.Previous">func (*CommentPage) <a href="/gor_comment.go?s=2051:2103#L61">Previous</a>
 					<a class="permalink" href="#CommentPage.Previous">&#xb6;</a>
 				</h3>
 				<pre>func (_p *<a href="#CommentPage">CommentPage</a>) Previous() ([]<a href="#Comment">Comment</a>, <a href="/pkg/builtin/#error">error</a>)</pre>

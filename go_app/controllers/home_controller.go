@@ -23,8 +23,8 @@ func HomeHandler(c *gin.Context) {
 		GolangVer    string
 	}
 
-	gorVer := "0.3.0"
-	golangVer := "go version go1.9.2 darwin/amd64"
+	gorVer := "0.3.1"
+	golangVer := "go version go1.10.2 darwin/amd64"
 
 	envs := Envs{GoOnRailsVer: gorVer, GolangVer: golangVer}
 	c.HTML(http.StatusOK, "index.tmpl", envs)
