@@ -1,3 +1,5 @@
+
+
 // Package models includes the functions on the model Comment.
 package models
 
@@ -18,13 +20,13 @@ func init() {
 }
 
 type Comment struct {
-	Id        int64     `json:"id,omitempty" db:"id" valid:"-"`
-	Commenter string    `json:"commenter,omitempty" db:"commenter" valid:"required"`
-	Body      string    `json:"body,omitempty" db:"body" valid:"required,length(20|4294967295)"`
-	ArticleId int64     `json:"article_id,omitempty" db:"article_id" valid:"-"`
-	CreatedAt time.Time `json:"created_at,omitempty" db:"created_at" valid:"-"`
-	UpdatedAt time.Time `json:"updated_at,omitempty" db:"updated_at" valid:"-"`
-	Article   Article   `json:"article,omitempty" db:"article" valid:"-"`
+	Id int64 `json:"id,omitempty" db:"id" valid:"-"`
+Commenter string `json:"commenter,omitempty" db:"commenter" valid:"required"`
+Body string `json:"body,omitempty" db:"body" valid:"required,length(20|4294967295)"`
+ArticleId int64 `json:"article_id,omitempty" db:"article_id" valid:"-"`
+CreatedAt time.Time `json:"created_at,omitempty" db:"created_at" valid:"-"`
+UpdatedAt time.Time `json:"updated_at,omitempty" db:"updated_at" valid:"-"`
+Article Article `json:"article,omitempty" db:"article" valid:"-"`
 }
 
 // DataStruct for the pagination
@@ -207,6 +209,7 @@ func (_p *CommentPage) buildPageCount() error {
 	return nil
 }
 
+
 // FindComment find a single comment by an ID.
 func FindComment(id int64) (*Comment, error) {
 	if id == 0 {
@@ -278,7 +281,7 @@ func FindComments(ids ...int64) ([]Comment, error) {
 	idsHolder := strings.Repeat(",?", len(ids)-1)
 	sql := DB.Rebind(fmt.Sprintf(`SELECT COALESCE(comments.body, '') AS body, COALESCE(comments.article_id, 0) AS article_id, comments.id, comments.commenter, comments.created_at, comments.updated_at FROM comments WHERE comments.id IN (?%s)`, idsHolder))
 	idsT := []interface{}{}
-	for _, id := range ids {
+	for _,id := range ids {
 		idsT = append(idsT, interface{}(id))
 	}
 	err := DB.Select(&_comments, sql, idsT...)
@@ -526,8 +529,8 @@ func (_comment *Comment) Create() (int64, error) {
 	t := time.Now()
 	_comment.CreatedAt = t
 	_comment.UpdatedAt = t
-	sql := `INSERT INTO comments (commenter,body,article_id,created_at,updated_at) VALUES (:commenter,:body,:article_id,:created_at,:updated_at)`
-	result, err := DB.NamedExec(sql, _comment)
+    sql := `INSERT INTO comments (commenter,body,article_id,created_at,updated_at) VALUES (:commenter,:body,:article_id,:created_at,:updated_at)`
+    result, err := DB.NamedExec(sql, _comment)
 	if err != nil {
 		log.Println(err)
 		return 0, err
@@ -539,6 +542,8 @@ func (_comment *Comment) Create() (int64, error) {
 	}
 	return lastId, nil
 }
+
+
 
 // CreateArticle is a method for a Comment object to create an associated Article record.
 func (_comment *Comment) CreateArticle(am map[string]interface{}) error {
@@ -576,7 +581,7 @@ func DestroyComments(ids ...int64) (int64, error) {
 	idsHolder := strings.Repeat(",?", len(ids)-1)
 	sql := fmt.Sprintf(`DELETE FROM comments WHERE id IN (?%s)`, idsHolder)
 	idsT := []interface{}{}
-	for _, id := range ids {
+	for _,id := range ids {
 		idsT = append(idsT, interface{}(id))
 	}
 	stmt, err := DB.Preparex(DB.Rebind(sql))
@@ -613,6 +618,7 @@ func DestroyCommentsWhere(where string, args ...interface{}) (int64, error) {
 	return cnt, nil
 }
 
+
 // Save method is used for a Comment object to update an existed record mainly.
 // If no id provided a new record will be created. FIXME: A UPSERT action will be implemented further.
 func (_comment *Comment) Save() error {
@@ -632,8 +638,8 @@ func (_comment *Comment) Save() error {
 	_comment.UpdatedAt = time.Now()
 	sqlFmt := `UPDATE comments SET %s WHERE id = %v`
 	sqlStr := fmt.Sprintf(sqlFmt, "commenter = :commenter, body = :body, article_id = :article_id, updated_at = :updated_at", _comment.Id)
-	_, err = DB.NamedExec(sqlStr, _comment)
-	return err
+    _, err = DB.NamedExec(sqlStr, _comment)
+    return err
 }
 
 // UpdateComment is used to update a record with a id and map[string]interface{} typed key-value parameters.
@@ -645,7 +651,7 @@ func UpdateComment(id int64, am map[string]interface{}) error {
 	keys := allKeys(am)
 	sqlFmt := `UPDATE comments SET %s WHERE id = %v`
 	setKeysArr := []string{}
-	for _, v := range keys {
+	for _,v := range keys {
 		s := fmt.Sprintf(" %s = :%s", v, v)
 		setKeysArr = append(setKeysArr, s)
 	}

@@ -1,3 +1,5 @@
+
+
 // Package models includes the functions on the model Article.
 package models
 
@@ -18,12 +20,12 @@ func init() {
 }
 
 type Article struct {
-	Id        int64     `json:"id,omitempty" db:"id" valid:"-"`
-	Title     string    `json:"title,omitempty" db:"title" valid:"required,length(10|30)"`
-	Text      string    `json:"text,omitempty" db:"text" valid:"required,length(20|4294967295)"`
-	CreatedAt time.Time `json:"created_at,omitempty" db:"created_at" valid:"-"`
-	UpdatedAt time.Time `json:"updated_at,omitempty" db:"updated_at" valid:"-"`
-	Comments  []Comment `json:"comments,omitempty" db:"comments" valid:"-"`
+	Id int64 `json:"id,omitempty" db:"id" valid:"-"`
+Title string `json:"title,omitempty" db:"title" valid:"required,length(10|30)"`
+Text string `json:"text,omitempty" db:"text" valid:"required,length(20|4294967295)"`
+CreatedAt time.Time `json:"created_at,omitempty" db:"created_at" valid:"-"`
+UpdatedAt time.Time `json:"updated_at,omitempty" db:"updated_at" valid:"-"`
+Comments []Comment `json:"comments,omitempty" db:"comments" valid:"-"`
 }
 
 // DataStruct for the pagination
@@ -206,6 +208,7 @@ func (_p *ArticlePage) buildPageCount() error {
 	return nil
 }
 
+
 // FindArticle find a single article by an ID.
 func FindArticle(id int64) (*Article, error) {
 	if id == 0 {
@@ -277,7 +280,7 @@ func FindArticles(ids ...int64) ([]Article, error) {
 	idsHolder := strings.Repeat(",?", len(ids)-1)
 	sql := DB.Rebind(fmt.Sprintf(`SELECT COALESCE(articles.text, '') AS text, articles.id, articles.title, articles.created_at, articles.updated_at FROM articles WHERE articles.id IN (?%s)`, idsHolder))
 	idsT := []interface{}{}
-	for _, id := range ids {
+	for _,id := range ids {
 		idsT = append(idsT, interface{}(id))
 	}
 	err := DB.Select(&_articles, sql, idsT...)
@@ -373,21 +376,21 @@ func ArticleIncludesWhere(assocs []string, sql string, args ...interface{}) (_ar
 	idsHolder := strings.Repeat(",?", len(ids)-1)
 	for _, assoc := range assocs {
 		switch assoc {
-		case "comments":
-			where := fmt.Sprintf("article_id IN (?%s)", idsHolder)
-			_comments, err := FindCommentsWhere(where, ids...)
-			if err != nil {
-				log.Printf("Error when query associated objects: %v\n", assoc)
-				continue
-			}
-			for _, vv := range _comments {
-				for i, vvv := range _articles {
-					if vv.ArticleId == vvv.Id {
-						vvv.Comments = append(vvv.Comments, vv)
-					}
-					_articles[i].Comments = vvv.Comments
-				}
-			}
+				case "comments":
+							where := fmt.Sprintf("article_id IN (?%s)", idsHolder)
+						_comments, err := FindCommentsWhere(where, ids...)
+						if err != nil {
+							log.Printf("Error when query associated objects: %v\n", assoc)
+							continue
+						}
+						for _, vv := range _comments {
+							for i, vvv := range  _articles {
+									if vv.ArticleId == vvv.Id {
+										vvv.Comments = append(vvv.Comments, vv)
+									}
+								_articles[i].Comments = vvv.Comments
+						    }
+					    }
 		}
 	}
 	return _articles, nil
@@ -545,8 +548,8 @@ func (_article *Article) Create() (int64, error) {
 	t := time.Now()
 	_article.CreatedAt = t
 	_article.UpdatedAt = t
-	sql := `INSERT INTO articles (title,text,created_at,updated_at) VALUES (:title,:text,:created_at,:updated_at)`
-	result, err := DB.NamedExec(sql, _article)
+    sql := `INSERT INTO articles (title,text,created_at,updated_at) VALUES (:title,:text,:created_at,:updated_at)`
+    result, err := DB.NamedExec(sql, _article)
 	if err != nil {
 		log.Println(err)
 		return 0, err
@@ -561,8 +564,8 @@ func (_article *Article) Create() (int64, error) {
 
 // CommentsCreate is used for Article to create the associated objects Comments
 func (_article *Article) CommentsCreate(am map[string]interface{}) error {
-	am["article_id"] = _article.Id
-	_, err := CreateComment(am)
+			am["article_id"] = _article.Id
+		_, err := CreateComment(am)
 	return err
 }
 
@@ -573,15 +576,18 @@ func (_article *Article) GetComments() error {
 	_comments, err := ArticleGetComments(_article.Id)
 	if err == nil {
 		_article.Comments = _comments
-	}
-	return err
+    }
+    return err
 }
 
 // ArticleGetComments a helper fuction used to get associated objects for ArticleIncludesWhere().
 func ArticleGetComments(id int64) ([]Comment, error) {
-	_comments, err := FindCommentsBy("article_id", id)
+			_comments, err := FindCommentsBy("article_id", id)
 	return _comments, err
 }
+
+
+
 
 // Destroy is method used for a Article object to be destroyed.
 func (_article *Article) Destroy() error {
@@ -618,7 +624,7 @@ func DestroyArticles(ids ...int64) (int64, error) {
 	idsHolder := strings.Repeat(",?", len(ids)-1)
 	sql := fmt.Sprintf(`DELETE FROM articles WHERE id IN (?%s)`, idsHolder)
 	idsT := []interface{}{}
-	for _, id := range ids {
+	for _,id := range ids {
 		idsT = append(idsT, interface{}(id))
 	}
 	stmt, err := DB.Preparex(DB.Rebind(sql))
@@ -675,11 +681,11 @@ func destroyArticleAssociations(ids ...int64) {
 	var err error
 	// make sure no declared-and-not-used exception
 	_, _, _ = idsHolder, idsT, err
-	where := fmt.Sprintf("article_id IN (?%s)", idsHolder)
-	_, err = DestroyCommentsWhere(where, idsT...)
-	if err != nil {
-		log.Printf("Destroy associated object %s error: %v\n", "Comments", err)
-	}
+								where := fmt.Sprintf("article_id IN (?%s)", idsHolder)
+							_, err = DestroyCommentsWhere(where, idsT...)
+							if err != nil {
+								log.Printf("Destroy associated object %s error: %v\n", "Comments", err)
+							}
 }
 
 // Save method is used for a Article object to update an existed record mainly.
@@ -701,8 +707,8 @@ func (_article *Article) Save() error {
 	_article.UpdatedAt = time.Now()
 	sqlFmt := `UPDATE articles SET %s WHERE id = %v`
 	sqlStr := fmt.Sprintf(sqlFmt, "title = :title, text = :text, updated_at = :updated_at", _article.Id)
-	_, err = DB.NamedExec(sqlStr, _article)
-	return err
+    _, err = DB.NamedExec(sqlStr, _article)
+    return err
 }
 
 // UpdateArticle is used to update a record with a id and map[string]interface{} typed key-value parameters.
@@ -714,7 +720,7 @@ func UpdateArticle(id int64, am map[string]interface{}) error {
 	keys := allKeys(am)
 	sqlFmt := `UPDATE articles SET %s WHERE id = %v`
 	setKeysArr := []string{}
-	for _, v := range keys {
+	for _,v := range keys {
 		s := fmt.Sprintf(" %s = :%s", v, v)
 		setKeysArr = append(setKeysArr, s)
 	}
