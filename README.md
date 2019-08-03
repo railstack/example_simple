@@ -9,10 +9,10 @@ Even though I highly recommend you to get a quick overview of [go-on-rails](http
 ### Environments
 
 * macOS Sierra v10.12.4
-* Ruby v2.3.3
+* Ruby v2.6.3
 * Rails v5.0.2
 * MySQL v5.7.11
-* Golang v1.7.4 darwin/amd64
+* Golang v1.12.6 darwin/amd64
 
 ### Build a Rails app
 
@@ -28,7 +28,7 @@ change to the new directory, add the gem `go-on-rails`:
 
 ```bash
 # edit Gemfile
-gem 'go-on-rails', '~> 0.3.1'
+gem 'go-on-rails', '~> 0.4.0'
 ```
 and then bundle:
 
