@@ -69,7 +69,8 @@ GEM
     nio4r (2.5.2)
     nokogiri (1.10.7)
       mini_portile2 (~> 2.4.0)
-    puma (3.12.2)
+    puma (4.3.9)
+      nio4r (~> 2.0)
     rack (2.0.8)
     rack-test (0.6.3)
       rack (>= 1.0)
@@ -128,7 +129,7 @@ DEPENDENCIES
   go-on-rails (~> 0.4.0)
   listen (~> 3.0.5)
   mysql2 (>= 0.3.18, < 0.5)
-  puma (~> 3.12)
+  puma (~> 4.3)
   rails (~> 5.0.2)
   spring
   spring-watcher-listen (~> 2.0.0)
